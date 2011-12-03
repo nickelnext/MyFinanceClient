@@ -1,1 +1,46 @@
 * text=auto !eol
+/.classpath -text svneol=unset#text/plain
+/.project -text svneol=unset#text/plain
+/AndroidManifest.xml -text svneol=unset#text/plain
+bin/classes.dex -text
+bin/myFinance.apk -text
+bin/res/drawable-hdpi/ic_launcher.png -text
+bin/res/drawable-hdpi/ic_menu_refresh.png -text
+bin/res/drawable-ldpi/ic_launcher.png -text
+bin/res/drawable-ldpi/ic_menu_refresh.png -text
+bin/res/drawable-mdpi/ic_launcher.png -text
+bin/res/drawable-mdpi/ic_menu_refresh.png -text
+bin/resources.ap_ -text
+/proguard.cfg -text
+/project.properties -text svneol=unset#text/plain
+res/drawable-hdpi/ic_launcher.png -text
+res/drawable-hdpi/ic_menu_refresh.png -text
+res/drawable-ldpi/ic_launcher.png -text
+res/drawable-ldpi/ic_menu_refresh.png -text
+res/drawable-mdpi/ic_launcher.png -text
+res/drawable-mdpi/ic_menu_refresh.png -text
+res/layout/add_new_portfolio.xml -text svneol=unset#text/plain
+res/layout/add_new_share.xml -text svneol=unset#text/plain
+res/layout/bond_details.xml -text svneol=unset#text/plain
+res/layout/fund_details.xml -text svneol=unset#text/plain
+res/layout/main.xml -text svneol=unset#text/plain
+res/layout/modify_portfolio.xml -text svneol=unset#text/plain
+res/layout/portfolio_listview_items.xml -text svneol=unset#text/plain
+res/layout/share_details.xml -text svneol=unset#text/plain
+res/layout/share_list.xml -text svneol=unset#text/plain
+res/layout/share_listview_items.xml -text svneol=unset#text/plain
+res/layout/update_option.xml -text svneol=unset#text/plain
+res/menu/add_portfolio_menu.xml -text svneol=unset#text/plain
+res/menu/add_share_menu.xml -text svneol=unset#text/plain
+res/menu/select_portfolio_context_menu.xml -text svneol=unset#text/plain
+res/values/strings.xml -text svneol=unset#text/plain
+src/it/dev/AddNewPortfolioActivity.java -text svneol=unset#text/plain
+src/it/dev/AddNewShareActivity.java -text svneol=unset#text/plain
+src/it/dev/BondDetailsActivity.java -text svneol=unset#text/plain
+src/it/dev/EditPortfolioActivity.java -text svneol=unset#text/plain
+src/it/dev/FundDetailsActivity.java -text svneol=unset#text/plain
+src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
+src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
+src/it/dev/ShareDetailsActivity.java -text svneol=unset#text/plain
+src/it/dev/ShareListActivity.java -text svneol=unset#text/plain
+src/it/dev/UpdateOptionActivity.java -text svneol=unset#text/plain

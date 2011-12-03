@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15px"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Share ISIN or Code" />
+
+    <EditText
+        android:id="@+id/shareISINEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:hint="ISIN or Code">
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5px"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Select the share buy date" />
+    
+    <DatePicker
+        android:id="@+id/buyDateDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content" 
+    		android:layout_marginTop="5px"   		
+    		android:stretchColumns="0,1">
+    	    <TableRow>
+        		<TextView
+        		    android:id="@+id/textView1"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:layout_marginTop="5px"
+        		    android:layout_marginLeft="5px"
+        		    android:text="Buy Price [€]"/>
+
+        		<EditText
+        		    android:id="@+id/buyPriceEditText"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:inputType="number|numberDecimal" android:hint="price"/>
+
+    		</TableRow>
+    		<TableRow>
+        		<TextView
+        		    android:id="@+id/textView1"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:layout_marginTop="5px"
+        		    android:layout_marginLeft="5px"
+        		    android:text="Round Lot"/>
+
+        		<EditText
+        		    android:id="@+id/roundLotEditText"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:inputType="number" android:hint="round lot"/>
+
+    		</TableRow>
+	</TableLayout>
+	
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="30px"
+    		android:stretchColumns="0,1">
+        	
+    	    <TableRow>
+        		<Button
+        		    android:id="@+id/undoNewShareButton"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:text="Back"/>
+        		<Button
+        		    android:id="@+id/saveNewShareButton"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:text="Add Share"/>
+        		
+    		</TableRow>
+	</TableLayout>
+
+</LinearLayout>
