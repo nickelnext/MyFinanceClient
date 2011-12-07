@@ -45,3 +45,4 @@ src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
 src/it/dev/ShareDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/ShareListActivity.java -text svneol=unset#text/plain
 src/it/dev/UpdateOptionActivity.java -text svneol=unset#text/plain
+src/it/util/Conn.java -text svneol=unset#text/plain
