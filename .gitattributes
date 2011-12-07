@@ -39,7 +39,6 @@ src/it/dev/AddNewShareActivity.java -text svneol=unset#text/plain
 src/it/dev/BondDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/EditPortfolioActivity.java -text svneol=unset#text/plain
 src/it/dev/FundDetailsActivity.java -text svneol=unset#text/plain
-src/it/dev/JavaClass.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
 src/it/dev/ShareDetailsActivity.java -text svneol=unset#text/plain
