@@ -1,5 +1,4 @@
 * text=auto !eol
-/.classpath -text svneol=unset#text/plain
 /.project -text svneol=unset#text/plain
 .settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 /AndroidManifest.xml -text svneol=unset#text/plain
