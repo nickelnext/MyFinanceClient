@@ -99,7 +99,6 @@ public class AddNewPortfolioActivity extends Activity
     	alert_builder.setCancelable(false);
     	alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}
@@ -116,7 +115,6 @@ public class AddNewPortfolioActivity extends Activity
     	alert_builder.setCancelable(false);
     	alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}

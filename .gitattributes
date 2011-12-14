@@ -1,6 +1,7 @@
 * text=auto !eol
 /.classpath -text svneol=unset#text/plain
 /.project -text svneol=unset#text/plain
+.settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 /AndroidManifest.xml -text svneol=unset#text/plain
 bin/classes.dex -text
 bin/myFinance.apk -text
@@ -45,3 +46,9 @@ src/it/dev/ShareDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/ShareListActivity.java -text svneol=unset#text/plain
 src/it/dev/UpdateOptionActivity.java -text svneol=unset#text/plain
 src/it/util/Conn.java -text svneol=unset#text/plain
+src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
+src/it/util/DbUpdate.java -text svneol=unset#text/plain
+src/it/util/QuotationType.java -text svneol=unset#text/plain
+src/it/util/Request.java -text svneol=unset#text/plain
+src/it/util/RequestContainer.java -text svneol=unset#text/plain
+src/it/util/RequestType.java -text svneol=unset#text/plain

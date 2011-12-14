@@ -1,5 +1,7 @@
 package it.dev;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import it.util.*;
+import org.json.JSONObject;
+
+import com.google.gson.Gson;
 
 public class AddNewShareActivity extends Activity 
 {
@@ -54,7 +60,10 @@ public class AddNewShareActivity extends Activity
 	    	    case R.id.saveNewShareButton:
 	    	    	if(notNullValues())
 	  				{
-	    	    		//saveNewShare();
+	    	    		//Conn conn = new Conn();
+	    	    		//JSONObject json = new JSONObject();
+	    	    		//conn.getInputStreamFromUrl(json);
+	    	    		saveNewShare();	    	    		
 	  					finish();  					
 	  				}
 	  				else
@@ -86,7 +95,6 @@ public class AddNewShareActivity extends Activity
     	alert_builder.setCancelable(false);
     	alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
-			@Override
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}
@@ -97,9 +105,10 @@ public class AddNewShareActivity extends Activity
 	
 	private void saveNewShare()
 	{						
-		if(shareISINEditText.getText().length()==12)
+		if(shareISINEditText.getText().length()==12 && shareISINEditText.getText().toString().matches("[A-Z]{2}//d{10}"))
 		{
 			//richiesta isin
+	    				
 		}
 		else
 		{
