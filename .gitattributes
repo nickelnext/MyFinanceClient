@@ -14,6 +14,7 @@ bin/res/drawable-mdpi/ic_menu_refresh.png -text
 bin/resources.ap_ -text
 /proguard.cfg -text
 /project.properties -text svneol=unset#text/plain
+res/AddNewPortfolioActivity.java -text svneol=unset#text/plain
 res/drawable-hdpi/ic_launcher.png -text
 res/drawable-hdpi/ic_menu_refresh.png -text
 res/drawable-ldpi/ic_launcher.png -text
@@ -47,7 +48,6 @@ src/it/dev/ShareListActivity.java -text svneol=unset#text/plain
 src/it/dev/UpdateOptionActivity.java -text svneol=unset#text/plain
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
-src/it/util/DbUpdate.java -text svneol=unset#text/plain
 src/it/util/QuotationType.java -text svneol=unset#text/plain
 src/it/util/Request.java -text svneol=unset#text/plain
 src/it/util/RequestContainer.java -text svneol=unset#text/plain

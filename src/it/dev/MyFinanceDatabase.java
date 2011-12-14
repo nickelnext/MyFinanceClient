@@ -1,5 +1,8 @@
 package it.dev;
 
+import Quotes.Quotation_Bond;
+import Quotes.Quotation_Fund;
+import Quotes.Quotation_Share;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -381,6 +384,40 @@ public class MyFinanceDatabase
 		database.insert(BondMetaData.BOND_TABLE, null, cv);
 	}
 	
+	public void addNewBondByQuotationObject(Quotation_Bond newBond, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(BondMetaData.ID, 1);
+		cv.put(BondMetaData.BOND_ISIN, newBond.getISIN());
+		cv.put(BondMetaData.BOND_NAME_KEY, newBond.getName());
+		cv.put(BondMetaData.BOND_CURRENCY_KEY, newBond.getValuta());
+		cv.put(BondMetaData.BOND_MARKET_KEY, newBond.getMercato());
+		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, newBond.getFaseMercato());
+		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, newBond.getPrezzoUltimoContratto());
+		cv.put(BondMetaData.BOND_PERCVAR_KEY, newBond.getVariazionePercentuale());
+		cv.put(BondMetaData.BOND_VARIATION_KEY, newBond.getVariazioneAssoluta());
+		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto().toGMTString());
+		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, newBond.getVolumeUltimo());
+		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, newBond.getVolumeAcquisto());
+		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, newBond.getVolumeVendita());
+		cv.put(BondMetaData.BOND_TOTALVOLUME_KEY, newBond.getVolumeTotale());
+		cv.put(BondMetaData.BOND_BUYPRICE_KEY, newBond.getPrezzoAcquisto());
+		cv.put(BondMetaData.BOND_SELLPRICE_KEY, newBond.getPrezzoVendita());
+		cv.put(BondMetaData.BOND_MAXTODAY_KEY, newBond.getMaxOggi());
+		cv.put(BondMetaData.BOND_MINTODAY_KEY, newBond.getMinOggi());
+		cv.put(BondMetaData.BOND_MAXYEAR_KEY, newBond.getMaxAnno());
+		cv.put(BondMetaData.BOND_MINYEAR_KEY, newBond.getMinAnno());
+		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno().toGMTString());
+		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno().toGMTString());
+		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, newBond.getAperturaChiusuraPrecedente());
+		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toGMTString());
+		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola().toGMTString());
+		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
+		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
+		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
+		database.insert(BondMetaData.BOND_TABLE, null, cv);
+	}
+	
 	public void addNewFund(int _id, String isin, String name, String manager, String category, String benchmark, 
 			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
 			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate)
@@ -402,6 +439,29 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, performance3Month);
 		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
+		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
+		database.insert(FundMetaData.FUND_TABLE, null, cv);
+	}
+	
+	public void addNewFundByQuotationObject(Quotation_Fund newFund, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(FundMetaData.ID, 1);
+		cv.put(FundMetaData.FUND_ISIN, newFund.getISIN());
+		cv.put(FundMetaData.FUND_NAME_KEY, newFund.getName());
+		cv.put(FundMetaData.FUND_MANAGER_KEY, newFund.getNomeGestore());
+		cv.put(FundMetaData.FUND_CATEGORY_KEY, newFund.getCategoriaAssociati());
+		cv.put(FundMetaData.FUND_BENCHMARK_KEY, newFund.getBenchmarkDichiarato());
+		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, newFund.getUltimoPrezzo());
+		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, newFund.getDataUltimoPrezzo().toGMTString());
+		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, newFund.getPrezzoPrecedente());
+		cv.put(FundMetaData.FUND_CURRENCY_KEY, newFund.getValuta());
+		cv.put(FundMetaData.FUND_PERCVAR_KEY, newFund.getVariazionePercentuale());
+		cv.put(FundMetaData.FUND_VARIATION_KEY, newFund.getVariazioneAssoluta());
+		cv.put(FundMetaData.FUND_PERFORMANCE1MONTH, newFund.getPerformance1Mese());
+		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, newFund.getPerformance3Mesi());
+		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, newFund.getPerformance1Anno());
+		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, newFund.getPerformance3Anni());
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
 		database.insert(FundMetaData.FUND_TABLE, null, cv);
 	}
@@ -434,6 +494,35 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, maxYearDate);
 		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
+		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
+		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
+	}
+	
+	public void addNewShareByQuotationObject(Quotation_Share newShare, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(ShareMetaData.ID, 1);
+		cv.put(ShareMetaData.SHARE_CODE, newShare.getISIN());
+		cv.put(ShareMetaData.SHARE_NAME_KEY, newShare.getName());
+		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, newShare.getLottoMinimo());
+		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, newShare.getFaseMercato());
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, newShare.getPrezzoUltimoContratto());
+		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, newShare.getVariazionePercentuale());
+		cv.put(ShareMetaData.SHARE_VARIATION_KEY, newShare.getVariazioneAssoluta());
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, newShare.getDataOraUltimoAcquisto().toGMTString());
+		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, newShare.getPrezzoAcquisto());
+		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, newShare.getPrezzoVendita());
+		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, newShare.getQuantitaUltimo());
+		cv.put(ShareMetaData.SHARE_BUYAMOUNT_KEY, newShare.getQuantitaAcquisto());
+		cv.put(ShareMetaData.SHARE_SELLAMOUNT_KEY, newShare.getQuantitaVendita());
+		cv.put(ShareMetaData.SHARE_TOTALAMOUNT_KEY, newShare.getQuantitaTotale());
+		cv.put(ShareMetaData.SHARE_MAXTODAY_KEY, newShare.getMaxOggi());
+		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, newShare.getMinOggi());
+		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, newShare.getMaxAnno());
+		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, newShare.getMinAnno());
+		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, newShare.getDataMaxAnno().toGMTString());
+		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno().toGMTString());
+		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
 	}
