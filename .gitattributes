@@ -1,18 +1,6 @@
 * text=auto !eol
-/.project -text svneol=unset#text/plain
 .settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 /AndroidManifest.xml -text svneol=unset#text/plain
-bin/classes.dex -text
-bin/myFinance.apk -text
-bin/res/drawable-hdpi/ic_launcher.png -text
-bin/res/drawable-hdpi/ic_menu_refresh.png -text
-bin/res/drawable-ldpi/ic_launcher.png -text
-bin/res/drawable-ldpi/ic_menu_refresh.png -text
-bin/res/drawable-mdpi/ic_launcher.png -text
-bin/res/drawable-mdpi/ic_menu_refresh.png -text
-bin/resources.ap_ -text
-/proguard.cfg -text
-/project.properties -text svneol=unset#text/plain
 res/AddNewPortfolioActivity.java -text svneol=unset#text/plain
 res/drawable-hdpi/ic_launcher.png -text
 res/drawable-hdpi/ic_menu_refresh.png -text
