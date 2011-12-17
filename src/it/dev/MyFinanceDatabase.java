@@ -1,8 +1,6 @@
 package it.dev;
 
-import Quotes.Quotation_Bond;
-import Quotes.Quotation_Fund;
-import Quotes.Quotation_Share;
+import Quotes.*;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
