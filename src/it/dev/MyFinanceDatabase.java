@@ -1,6 +1,8 @@
 package it.dev;
 
-import Quotes.*;
+import Quotes.Quotation_Bond;
+import Quotes.Quotation_Fund;
+import Quotes.Quotation_Share;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -523,6 +525,21 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
+	}
+	
+	public void addNewBondInTransitionTable(String portfolioName, String bondISIN, String buyDate, float buyPrice, 
+			int roundLot, float capitalGainTax, float couponTax)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(PortfolioBondMetadata.ID, 1);
+		cv.put(PortfolioBondMetadata.PORTFOLIO_NAME_KEY, portfolioName);
+		cv.put(PortfolioBondMetadata.BOND_ISIN_KEY, bondISIN);
+		cv.put(PortfolioBondMetadata.BOND_BUYDATE_KEY, buyDate);
+		cv.put(PortfolioBondMetadata.BOND_BUYPRICE_KEY, buyPrice);
+		cv.put(PortfolioBondMetadata.BOND_ROUNDLOT_KEY, roundLot);
+		cv.put(PortfolioBondMetadata.BOND_CAPITALGAINTAX_KEY, capitalGainTax);
+		cv.put(PortfolioBondMetadata.BOND_COUPONTAX_KEY, couponTax);
+		database.insert(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, cv);
 	}
 	
 	//.........

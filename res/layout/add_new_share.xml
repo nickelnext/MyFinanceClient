@@ -70,12 +70,41 @@
         		    android:inputType="number" android:hint="round lot"/>
 
     		</TableRow>
+    		<TableRow>
+        		<TextView
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:layout_marginTop="5px"
+        		    android:layout_marginLeft="5px"
+        		    android:text="Capital Gain Tax"/>
+
+        		<EditText
+        		    android:id="@+id/capitalGainTaxEditText"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:inputType="number" android:hint="capital gain tax"/>
+
+    		</TableRow>
+    		<TableRow>
+        		<TextView
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:layout_marginTop="5px"
+        		    android:layout_marginLeft="5px"
+        		    android:text="Coupon Tax"/>
+
+        		<EditText
+        		    android:id="@+id/couponTaxEditText"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:inputType="number" android:hint="coupon tax"/>
+
+    		</TableRow>
 	</TableLayout>
 	
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
-    		android:layout_marginTop="30px"
     		android:stretchColumns="0,1">
         	
     	    <TableRow>
