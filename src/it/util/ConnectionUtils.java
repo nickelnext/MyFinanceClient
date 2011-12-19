@@ -23,8 +23,9 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class ConnectionUtils {
 	
-	private static String URL = "localhost:8080/Pinellas/MainServlet";
-	private static String JSONREQ = "[{\"idCode\":\"IT0004572910\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"__NONE__\"},{\"idCode\":\"IT0004719297\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"Borsaitaliana_it\"},{\"idCode\":\"IT0004220627\",\"reqType\":\"QUOTATION\"},{\"idCode\":\"IT0003926547\",\"reqType\":\"QUOTATION\"},{\"idCode\":\"IT0001233417\",\"reqType\":\"QUOTATION\"},{\"idCode\":\"LU0336083497\",\"reqType\":\"QUOTATION\"},{\"idCode\":\"US38259P5089\",\"reqType\":\"QUOTATION\"},{\"idCode\":\"IT0003406334\",\"reqType\":\"QUOTATION\"},{\"idCode\":\"IT0004168826\",\"reqType\":\"QUOTATION\"},{\"idCode\":\"IT0000382983\",\"reqType\":\"QUOTATION\"}]";
+//	private static String URL = "http://localhost:8083/Pinellas/MainServlet";
+	private static String URL = "http://bbcentrale.dyndns-server.com:8083/Pinellas/MainServlet";
+	private static String JSONREQ = "[{\"idCode\":\"IT0004572910\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"__NONE__\"}]";
 
 	public static void main(String[] args) {
 		//System.out.println(getInputStreamFromUrl(JSONREQ));
@@ -45,18 +46,16 @@ public class ConnectionUtils {
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(URL);
-
 	    try {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 //	        nameValuePairs.add(new BasicNameValuePair("username", "12345"));
 //	        nameValuePairs.add(new BasicNameValuePair("password", "PINO"));
-	        nameValuePairs.add(new BasicNameValuePair("json", jsonReq));	        
-	        
+	        nameValuePairs.add(new BasicNameValuePair("json", jsonReq));	        	        
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-	        // Execute HTTP Post Request
+	        // Execute HTTP Post Request	        
 	        HttpResponse response = httpclient.execute(httppost);
+	        
 	        InputStream content = response.getEntity().getContent();
 	        String result = convertStreamToString(content);
 	        System.out.println(result);

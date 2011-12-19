@@ -23,6 +23,16 @@ res/menu/add_portfolio_menu.xml -text svneol=unset#text/plain
 res/menu/add_share_menu.xml -text svneol=unset#text/plain
 res/menu/select_portfolio_context_menu.xml -text svneol=unset#text/plain
 res/values/strings.xml -text svneol=unset#text/plain
+serverside/Quotes/Quotation.java -text
+serverside/Quotes/QuotationContainer.java -text
+serverside/Quotes/QuotationType.java -text
+serverside/Quotes/Quotation_Bond.java -text
+serverside/Quotes/Quotation_Fund.java -text
+serverside/Quotes/Quotation_Share.java -text
+serverside/Requests/Request.java -text
+serverside/Requests/RequestContainer.java -text
+serverside/Requests/RequestType.java -text
+serverside/myUtils/UtilFuncs.java -text
 src/it/dev/AddNewPortfolioActivity.java -text svneol=unset#text/plain
 src/it/dev/AddNewShareActivity.java -text svneol=unset#text/plain
 src/it/dev/BondDetailsActivity.java -text svneol=unset#text/plain
@@ -39,3 +49,4 @@ src/it/util/QuotationType.java -text svneol=unset#text/plain
 src/it/util/Request.java -text svneol=unset#text/plain
 src/it/util/RequestContainer.java -text svneol=unset#text/plain
 src/it/util/RequestType.java -text svneol=unset#text/plain
+src/it/util/ResponseHandler.java -text

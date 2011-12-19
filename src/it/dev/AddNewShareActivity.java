@@ -1,12 +1,12 @@
 package it.dev;
 
 import it.util.ConnectionUtils;
-import it.util.Request;
+import Requests.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import mainpackage.RequestHandler;
+import it.util.ResponseHandler;
 import Quotes.QuotationContainer;
 import Quotes.Quotation_Bond;
 import Quotes.Quotation_Fund;
@@ -117,20 +117,30 @@ public class AddNewShareActivity extends Activity
 	
 	private void saveNewShare()
 	{						
+		
+		
+//		ArrayList<Request> array = new ArrayList<Request>();
+//		array.add(new Request(shareISINEditText.getText().toString()));		
+//		Gson converter = new Gson();
+//		String jsonReq = converter.toJson(array);
+//		Log.d(getPackageName(), "jsonreq = "+jsonReq );
+//		String prova = ConnectionUtils.postData(jsonReq);
+//		Log.d(getPackageName(), "prova = "+prova);
+		
 		if(shareISINEditText.getText().length()==12)
 		{
-			Log.d(getPackageName(), "entrato");
 			String buyDate = String.valueOf(buyDateDatePicker.getMonth())+"/"+String.valueOf(buyDateDatePicker.getDayOfMonth())+"/"+String.valueOf(buyDateDatePicker.getYear());
 			ArrayList<Request> array = new ArrayList<Request>();
 			array.add(new Request(shareISINEditText.getText().toString()));
 			
 			Gson converter = new Gson();
 			String jsonReq = converter.toJson(array);
-			Log.d(getPackageName(), "faccio la post data: "+jsonReq);
+			Log.d(getPackageName(), "postData: "+jsonReq);
 			String jsonResponse = ConnectionUtils.postData(jsonReq);
-			QuotationContainer quotCont = RequestHandler.decodeQuotations(jsonResponse);
+			Log.d(getPackageName(), "jsonResponse: "+jsonResponse);
+			if(jsonResponse != null){
+				QuotationContainer quotCont = ResponseHandler.decodeQuotations(jsonResponse);
 			
-			Log.d(getPackageName(), "post data fatta. stampo la response: "+jsonResponse);
 			
 			for (Quotation_Bond qb : quotCont.getBondList()) {
 				db.addNewBondByQuotationObject(qb, getTodaysDate());
@@ -144,7 +154,7 @@ public class AddNewShareActivity extends Activity
 			for (Quotation_Fund qf : quotCont.getFundList()) {
 				db.addNewFundByQuotationObject(qf, getTodaysDate());
 			}
-	    				
+			}			
 		}
 		else
 		{

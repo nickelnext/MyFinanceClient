@@ -388,7 +388,7 @@ public class MyFinanceDatabase
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(BondMetaData.ID, 1);
-		cv.put(BondMetaData.BOND_ISIN, newBond.getISIN());
+		cv.put(BondMetaData.BOND_ISIN, ((Quotes.Quotation)newBond).getISIN());
 		cv.put(BondMetaData.BOND_NAME_KEY, newBond.getName());
 		cv.put(BondMetaData.BOND_CURRENCY_KEY, newBond.getValuta());
 		cv.put(BondMetaData.BOND_MARKET_KEY, newBond.getMercato());
@@ -410,8 +410,9 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno().toGMTString());
 		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno().toGMTString());
 		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, newBond.getAperturaChiusuraPrecedente());
-		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toGMTString());
+		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toGMTString());		
 		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola().toGMTString());
+		System.out.println("cedola: "+newBond.getDataStaccoCedola());
 		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
@@ -447,7 +448,7 @@ public class MyFinanceDatabase
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(FundMetaData.ID, 1);
-		cv.put(FundMetaData.FUND_ISIN, newFund.getISIN());
+		cv.put(FundMetaData.FUND_ISIN, ((Quotes.Quotation)newFund).getISIN());
 		cv.put(FundMetaData.FUND_NAME_KEY, newFund.getName());
 		cv.put(FundMetaData.FUND_MANAGER_KEY, newFund.getNomeGestore());
 		cv.put(FundMetaData.FUND_CATEGORY_KEY, newFund.getCategoriaAssociati());
@@ -502,7 +503,7 @@ public class MyFinanceDatabase
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.ID, 1);
-		cv.put(ShareMetaData.SHARE_CODE, newShare.getISIN());
+		cv.put(ShareMetaData.SHARE_CODE, ((Quotes.Quotation)newShare).getISIN());
 		cv.put(ShareMetaData.SHARE_NAME_KEY, newShare.getName());
 		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, newShare.getLottoMinimo());
 		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, newShare.getFaseMercato());
