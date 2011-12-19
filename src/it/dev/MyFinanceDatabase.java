@@ -542,7 +542,7 @@ public class MyFinanceDatabase
 		database.insert(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, cv);
 	}
 	
-	public void addNewFoundIntransitionTable(String portfolioName, String fundISIN, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
+	public void addNewFoundInTransitionTable(String portfolioName, String fundISIN, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioFundMetadata.ID, 1);
@@ -556,7 +556,7 @@ public class MyFinanceDatabase
 		database.insert(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, cv);
 	}
 	
-	public void addNewShareIntransitionTable(String portfolioName, String shareCODE, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
+	public void addNewShareInTransitionTable(String portfolioName, String shareCODE, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioShareMetadata.ID, 1);
@@ -587,6 +587,7 @@ public class MyFinanceDatabase
 	//------------------------------------------------------------------------------------------------//
 	//------------------------of the shares in a specific Portfolio-----------------------------------//
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public Cursor getAllBondOverviewInPortfolio(String portfolioName)
 	{
 		return database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+" as P join "+BondMetaData.BOND_TABLE+" as B", 
@@ -614,34 +615,35 @@ public class MyFinanceDatabase
 				null, null, null, null);
 	}
 	
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//------------------------This 3 Methods returns all details -------------------------------------//
-//----------------------of the shares in a specific Portfolio-------------------------------------//
-////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	//------------------------This 3 Methods returns all details -------------------------------------//
+	//------------------------of a shares in a specific Portfolio-------------------------------------//
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public Cursor getBondDetail(String portfolioName, String ISIN)
 	{
 		return database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+" as P join "+BondMetaData.BOND_TABLE+" as S", 
-				null,"P."+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioBondMetadata.BOND_ISIN_KEY+" = S.'"+BondMetaData.BOND_ISIN+"="+ISIN, 
+				null,"P."+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioBondMetadata.BOND_ISIN_KEY+" = S.'"+BondMetaData.BOND_ISIN+"' = '"+ISIN+"'", 
 				null, null, null, null);
 	}
 	
 	public Cursor getFondDetail(String portfolioName, String ISIN)
 	{
 		return database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+" as P join "+FundMetaData.FUND_TABLE+" as S", 
-				null,"P."+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioFundMetadata.FUND_ISIN_KEY+" = S.'"+FundMetaData.FUND_ISIN+"="+ISIN, 
+				null,"P."+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioFundMetadata.FUND_ISIN_KEY+" = S.'"+FundMetaData.FUND_ISIN+"' = '"+ISIN+"'", 
 				null, null, null, null);
 	}
 	
 	public Cursor getShareDetail(String portfolioName, String CODE)
 	{
 		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+" as P join "+ShareMetaData.SHARE_TABLE+" as S", 
-				null,"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"="+CODE, 
+				null,"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"' = '"+CODE+"'", 
 				null, null, null, null);
 	}
 	
 	
 	//--------------------------------UPDATE methods----------------------------//
+	
 	public void updateSelectedPortfolio(String previousName, String newName, String newDescription, String newDate)
 	{
 		ContentValues cv = new ContentValues();
@@ -651,13 +653,230 @@ public class MyFinanceDatabase
 		database.update(PortfolioMetaData.PORTFOLIO_TABLE, cv, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+previousName+"'", null);
 	}
 	
+	public void updateSelectedBond(int _id, String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 
+			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
+			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
+			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
+			int minRoundLot, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(BondMetaData.ID, _id); //posso ometterlo o no?
+		cv.put(BondMetaData.BOND_ISIN, ISIN); //posso ometterlo o no?
+		cv.put(BondMetaData.BOND_NAME_KEY, name); //posso ometterlo o no?
+		cv.put(BondMetaData.BOND_CURRENCY_KEY, currency);
+		cv.put(BondMetaData.BOND_MARKET_KEY, market);
+		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, marketPhase);
+		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, lastContractPrice);
+		cv.put(BondMetaData.BOND_PERCVAR_KEY, percVariation);
+		cv.put(BondMetaData.BOND_VARIATION_KEY, variation);
+		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, lastContractDate);
+		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, lastVolume);
+		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, buyVolume);
+		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, sellVolume);
+		cv.put(BondMetaData.BOND_TOTALVOLUME_KEY, totalVolume);
+		cv.put(BondMetaData.BOND_BUYPRICE_KEY, buyPrice);
+		cv.put(BondMetaData.BOND_SELLPRICE_KEY, sellPrice);
+		cv.put(BondMetaData.BOND_MAXTODAY_KEY, maxToday);
+		cv.put(BondMetaData.BOND_MINTODAY_KEY, minToday);
+		cv.put(BondMetaData.BOND_MAXYEAR_KEY, maxYear);
+		cv.put(BondMetaData.BOND_MINYEAR_KEY, minYear);
+		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, maxYearDate);
+		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, minYearDate);
+		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, lastClose);
+		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, expirationDate);
+		cv.put(BondMetaData.BOND_COUPONDATE_KEY, couponDate);
+		cv.put(BondMetaData.BOND_COUPON_KEY, coupon);
+		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, minRoundLot);
+		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
+		
+		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null);
+	}
+	
+	public void updateSelectedBondByQuotationObject(Quotation_Bond newBond, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(BondMetaData.ID, 1); // ometto?
+		cv.put(BondMetaData.BOND_ISIN, newBond.getISIN()); //ometto?
+		cv.put(BondMetaData.BOND_NAME_KEY, newBond.getName()); //ometto?
+		cv.put(BondMetaData.BOND_CURRENCY_KEY, newBond.getValuta());
+		cv.put(BondMetaData.BOND_MARKET_KEY, newBond.getMercato());
+		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, newBond.getFaseMercato());
+		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, newBond.getPrezzoUltimoContratto());
+		cv.put(BondMetaData.BOND_PERCVAR_KEY, newBond.getVariazionePercentuale());
+		cv.put(BondMetaData.BOND_VARIATION_KEY, newBond.getVariazioneAssoluta());
+		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto().toGMTString());
+		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, newBond.getVolumeUltimo());
+		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, newBond.getVolumeAcquisto());
+		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, newBond.getVolumeVendita());
+		cv.put(BondMetaData.BOND_TOTALVOLUME_KEY, newBond.getVolumeTotale());
+		cv.put(BondMetaData.BOND_BUYPRICE_KEY, newBond.getPrezzoAcquisto());
+		cv.put(BondMetaData.BOND_SELLPRICE_KEY, newBond.getPrezzoVendita());
+		cv.put(BondMetaData.BOND_MAXTODAY_KEY, newBond.getMaxOggi());
+		cv.put(BondMetaData.BOND_MINTODAY_KEY, newBond.getMinOggi());
+		cv.put(BondMetaData.BOND_MAXYEAR_KEY, newBond.getMaxAnno());
+		cv.put(BondMetaData.BOND_MINYEAR_KEY, newBond.getMinAnno());
+		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno().toGMTString());
+		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno().toGMTString());
+		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, newBond.getAperturaChiusuraPrecedente());
+		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toGMTString());
+		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola().toGMTString());
+		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
+		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
+		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
+		
+		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+newBond.getISIN()+"'", null);
+	}
+	
+	public void updateSelectedFund(int _id, String ISIN, String name, String manager, String category, String benchmark, 
+			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
+			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(FundMetaData.ID, _id);// ometto?
+		cv.put(FundMetaData.FUND_ISIN, ISIN);// ometto?
+		cv.put(FundMetaData.FUND_NAME_KEY, name);// ometto?
+		cv.put(FundMetaData.FUND_MANAGER_KEY, manager);
+		cv.put(FundMetaData.FUND_CATEGORY_KEY, category);
+		cv.put(FundMetaData.FUND_BENCHMARK_KEY, benchmark);
+		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, lastPrize);
+		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, lastPrizeDate);
+		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, precPrize);
+		cv.put(FundMetaData.FUND_CURRENCY_KEY, currency);
+		cv.put(FundMetaData.FUND_PERCVAR_KEY, percVariation);
+		cv.put(FundMetaData.FUND_VARIATION_KEY, variation);
+		cv.put(FundMetaData.FUND_PERFORMANCE1MONTH, performance1Month);
+		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, performance3Month);
+		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
+		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
+		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
+		
+		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null);
+
+	}
+	
+	public void updateSelectedFundByQuotationObject(Quotation_Fund newFund, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(FundMetaData.ID, 1); // ometto?
+		cv.put(FundMetaData.FUND_ISIN, newFund.getISIN()); // ometto?
+		cv.put(FundMetaData.FUND_NAME_KEY, newFund.getName()); // ometto?
+		cv.put(FundMetaData.FUND_MANAGER_KEY, newFund.getNomeGestore());
+		cv.put(FundMetaData.FUND_CATEGORY_KEY, newFund.getCategoriaAssociati());
+		cv.put(FundMetaData.FUND_BENCHMARK_KEY, newFund.getBenchmarkDichiarato());
+		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, newFund.getUltimoPrezzo());
+		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, newFund.getDataUltimoPrezzo().toGMTString());
+		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, newFund.getPrezzoPrecedente());
+		cv.put(FundMetaData.FUND_CURRENCY_KEY, newFund.getValuta());
+		cv.put(FundMetaData.FUND_PERCVAR_KEY, newFund.getVariazionePercentuale());
+		cv.put(FundMetaData.FUND_VARIATION_KEY, newFund.getVariazioneAssoluta());
+		cv.put(FundMetaData.FUND_PERFORMANCE1MONTH, newFund.getPerformance1Mese());
+		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, newFund.getPerformance3Mesi());
+		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, newFund.getPerformance1Anno());
+		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, newFund.getPerformance3Anni());
+		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
+		
+		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
+	}
+	
+	public void updateSelectedShare(int _id, String CODE, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
+			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
+			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
+			String maxYearDate, String minYearDate, float lastClose, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(ShareMetaData.ID, _id); //ometto?
+		cv.put(ShareMetaData.SHARE_CODE, CODE); //ometto?
+		cv.put(ShareMetaData.SHARE_NAME_KEY, name); //ometto?
+		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
+		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, lastContractPrice);
+		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, percVariation);
+		cv.put(ShareMetaData.SHARE_VARIATION_KEY, variation);
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, lastContractDate);
+		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, buyPrice);
+		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, sellPrice);
+		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, lastAmount);
+		cv.put(ShareMetaData.SHARE_BUYAMOUNT_KEY, buyAmount);
+		cv.put(ShareMetaData.SHARE_SELLAMOUNT_KEY, sellAmount);
+		cv.put(ShareMetaData.SHARE_TOTALAMOUNT_KEY, totalAmount);
+		cv.put(ShareMetaData.SHARE_MAXTODAY_KEY, maxToday);
+		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, minToday);
+		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, maxYear);
+		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, minYear);
+		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, maxYearDate);
+		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
+		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
+		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
+		
+		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null);
+	}
+	
+	public void updateSelectedShareByQuotationObject(Quotation_Share newShare, String lastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(ShareMetaData.ID, 1);
+		cv.put(ShareMetaData.SHARE_CODE, newShare.getISIN());
+		cv.put(ShareMetaData.SHARE_NAME_KEY, newShare.getName());
+		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, newShare.getLottoMinimo());
+		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, newShare.getFaseMercato());
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, newShare.getPrezzoUltimoContratto());
+		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, newShare.getVariazionePercentuale());
+		cv.put(ShareMetaData.SHARE_VARIATION_KEY, newShare.getVariazioneAssoluta());
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, newShare.getDataOraUltimoAcquisto().toGMTString());
+		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, newShare.getPrezzoAcquisto());
+		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, newShare.getPrezzoVendita());
+		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, newShare.getQuantitaUltimo());
+		cv.put(ShareMetaData.SHARE_BUYAMOUNT_KEY, newShare.getQuantitaAcquisto());
+		cv.put(ShareMetaData.SHARE_SELLAMOUNT_KEY, newShare.getQuantitaVendita());
+		cv.put(ShareMetaData.SHARE_TOTALAMOUNT_KEY, newShare.getQuantitaTotale());
+		cv.put(ShareMetaData.SHARE_MAXTODAY_KEY, newShare.getMaxOggi());
+		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, newShare.getMinOggi());
+		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, newShare.getMaxAnno());
+		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, newShare.getMinAnno());
+		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, newShare.getDataMaxAnno().toGMTString());
+		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno().toGMTString());
+		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
+		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
+		
+		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+newShare.getISIN()+"'", null);
+	}
+	
 	
 	//--------------------------------DELETE methods----------------------------//
+	
 	public void deletePortfolioByName(String name)
 	{
 		database.delete(PortfolioMetaData.PORTFOLIO_TABLE, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+name+"'", null);
 	}
 	
+	public void deleteBond(String ISIN)
+	{
+		database.delete(BondMetaData.BOND_TABLE, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null);
+	}
 	
+	public void deleteFund(String ISIN)
+	{
+		database.delete(FundMetaData.FUND_TABLE, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null);
+	}
+	
+	public void deleteShare(String CODE)
+	{
+		database.delete(ShareMetaData.SHARE_TABLE, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null);
+	}
+	
+	public void deleteBondInTransitionTable(String portfolioName, String ISIN) 
+	{
+		database.delete(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"' AND '"+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+	}
+	
+	public void deleteFundInTransitionTable(String portfolioName, String ISIN) 
+	{
+		database.delete(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+ISIN+"' AND '"+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+	}
+	
+	public void deleteShareInTransitionTable(String portfolioName, String CODE) 
+	{
+		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+CODE+"' AND '"+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+	}
 	
 }
