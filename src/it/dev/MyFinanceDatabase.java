@@ -542,6 +542,34 @@ public class MyFinanceDatabase
 		database.insert(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, cv);
 	}
 	
+	public void addNewFoundIntransitionTable(String portfolioName, String fundISIN, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(PortfolioFundMetadata.ID, 1);
+		cv.put(PortfolioFundMetadata.PORTFOLIO_NAME_KEY, portfolioName);
+		cv.put(PortfolioFundMetadata.FUND_ISIN_KEY, fundISIN);
+		cv.put(PortfolioFundMetadata.FUND_BUYDATE_KEY, buyDate);
+		cv.put(PortfolioFundMetadata.FUND_BUYPRICE_KEY, buyPrice);
+		cv.put(PortfolioFundMetadata.FUND_ROUNDLOT_KEY, roundLot);
+		cv.put(PortfolioFundMetadata.FUND_CAPITALGAINTAX_KEY, capitalGainTax);
+		cv.put(PortfolioFundMetadata.FUND_COUPONTAX_KEY, couponTax);
+		database.insert(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, cv);
+	}
+	
+	public void addNewShareIntransitionTable(String portfolioName, String shareCODE, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(PortfolioShareMetadata.ID, 1);
+		cv.put(PortfolioShareMetadata.PORTFOLIO_NAME_KEY, portfolioName);
+		cv.put(PortfolioShareMetadata.SHARE_CODE_KEY, shareCODE);
+		cv.put(PortfolioShareMetadata.SHARE_BUYDATE_KEY, buyDate);
+		cv.put(PortfolioShareMetadata.SHARE_BUYPRICE_KEY, buyPrice);
+		cv.put(PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, roundLot);
+		cv.put(PortfolioShareMetadata.SHARE_CAPITALGAINTAX_KEY, capitalGainTax);
+		cv.put(PortfolioShareMetadata.SHARE_COUPONTAX_KEY, couponTax);
+		database.insert(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, cv);
+	}
+	
 	//.........
 	
 	
@@ -583,6 +611,32 @@ public class MyFinanceDatabase
 				new String[] {"P."+PortfolioShareMetadata.ID, "P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY, "P."+PortfolioShareMetadata.SHARE_CODE_KEY+" as 'isin'", 
 				"S."+ShareMetaData.SHARE_VARIATION_KEY, "S."+ShareMetaData.SHARE_PERCVAR_KEY, "S."+ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY+" as 'prezzo'"}, 
 				"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"'", 
+				null, null, null, null);
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//------------------------This 3 Methods returns all details -------------------------------------//
+//----------------------of the shares in a specific Portfolio-------------------------------------//
+////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	public Cursor getBondDetail(String portfolioName, String ISIN)
+	{
+		return database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+" as P join "+BondMetaData.BOND_TABLE+" as S", 
+				null,"P."+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioBondMetadata.BOND_ISIN_KEY+" = S.'"+BondMetaData.BOND_ISIN+"="+ISIN, 
+				null, null, null, null);
+	}
+	
+	public Cursor getFondDetail(String portfolioName, String ISIN)
+	{
+		return database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+" as P join "+FundMetaData.FUND_TABLE+" as S", 
+				null,"P."+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioFundMetadata.FUND_ISIN_KEY+" = S.'"+FundMetaData.FUND_ISIN+"="+ISIN, 
+				null, null, null, null);
+	}
+	
+	public Cursor getShareDetail(String portfolioName, String CODE)
+	{
+		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+" as P join "+ShareMetaData.SHARE_TABLE+" as S", 
+				null,"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"="+CODE, 
 				null, null, null, null);
 	}
 	
