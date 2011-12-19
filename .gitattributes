@@ -1,7 +1,7 @@
 * text=auto !eol
 .settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 /AndroidManifest.xml -text svneol=unset#text/plain
-res/AddNewPortfolioActivity.java -text svneol=unset#text/plain
+/project.properties -text
 res/drawable-hdpi/ic_launcher.png -text
 res/drawable-hdpi/ic_menu_refresh.png -text
 res/drawable-ldpi/ic_launcher.png -text
