@@ -45,8 +45,4 @@ src/it/dev/ShareListActivity.java -text svneol=unset#text/plain
 src/it/dev/UpdateOptionActivity.java -text svneol=unset#text/plain
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
-src/it/util/QuotationType.java -text svneol=unset#text/plain
-src/it/util/Request.java -text svneol=unset#text/plain
-src/it/util/RequestContainer.java -text svneol=unset#text/plain
-src/it/util/RequestType.java -text svneol=unset#text/plain
 src/it/util/ResponseHandler.java -text
