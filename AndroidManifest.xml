@@ -19,9 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddNewPortfolioActivity"></activity>
         <activity android:name=".UpdateOptionActivity"></activity>
-        <activity android:name=".EditPortfolioActivity"></activity>
         <activity android:name=".ShareListActivity"></activity>
         <activity android:name=".AddNewShareActivity"></activity>
         <activity android:name=".BondDetailsActivity"></activity>

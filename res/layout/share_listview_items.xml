@@ -5,47 +5,49 @@
         android:layout_height="fill_parent"
         android:orientation="vertical">
         
-        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <TableLayout
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
-    		android:layout_marginTop="10px"
-    		android:stretchColumns="0">
+    		android:layout_marginTop="2dp"
+    		android:weightSum="10">
     	    <TableRow>
 
     	        <TextView
     	            android:id="@+id/isinTextView"
     	            android:layout_width="wrap_content"
     	            android:layout_height="wrap_content"
-    	            android:paddingLeft="5px"
+    	            android:paddingLeft="5dp"
     	            android:textColor="#FFFFFF"
     	            android:textSize="12dp"
-    	            android:text=""/>
+    	            android:layout_weight="4"
+    	            android:text="isin"/>
 				<TextView               
                 	android:id="@+id/variationTextView"
                 	android:layout_width="wrap_content"
                 	android:layout_height="wrap_content"                
                 	android:textSize="12dp"
                 	android:textColor="#FFFFFF"
-                	android:text=""
-                	android:paddingLeft="5px">
-        		</TextView>
+                	android:gravity="center_horizontal"
+                	android:layout_weight="2"
+    	            android:text="variation"/>
         		<TextView               
                 	android:id="@+id/percVarTextView"
                 	android:layout_width="wrap_content"
                 	android:layout_height="wrap_content"
                 	android:textSize="12dp"
                 	android:textColor="#FFFFFF"
-                	android:text=""
-                	android:paddingLeft="5px">
-        		</TextView>
+                	android:gravity="center_horizontal"
+                	android:layout_weight="2"
+    	            android:text="var %"/>
         		<TextView 
         		    android:id="@+id/lastPrizeTextView"
                 	android:layout_width="wrap_content"
                 	android:layout_height="wrap_content"
                 	android:textSize="12dp"
                 	android:textColor="#FFFFFF"
-                	android:text=""
-                	android:paddingLeft="5px"/>
+                	android:gravity="center_horizontal"
+                	android:layout_weight="2"
+    	            android:text="last prize"/>
     		</TableRow>
 		</TableLayout>
 </LinearLayout>

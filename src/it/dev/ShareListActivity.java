@@ -50,7 +50,7 @@ public class ShareListActivity extends Activity
         percVarCol.setVisibility(View.INVISIBLE);
         prizeCol.setVisibility(View.INVISIBLE);
         
-        Intent intent = getIntent(); // l'intent di questa activity
+        Intent intent = getIntent();
         String pkg = getPackageName();
         
         portfolioName = (String) intent.getStringExtra(pkg+".portfolioName");

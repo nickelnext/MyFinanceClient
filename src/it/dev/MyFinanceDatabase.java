@@ -396,7 +396,7 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, newBond.getPrezzoUltimoContratto());
 		cv.put(BondMetaData.BOND_PERCVAR_KEY, newBond.getVariazionePercentuale());
 		cv.put(BondMetaData.BOND_VARIATION_KEY, newBond.getVariazioneAssoluta());
-		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto().toGMTString());
+		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto().toString());
 		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, newBond.getVolumeUltimo());
 		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, newBond.getVolumeAcquisto());
 		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, newBond.getVolumeVendita());
@@ -407,11 +407,11 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_MINTODAY_KEY, newBond.getMinOggi());
 		cv.put(BondMetaData.BOND_MAXYEAR_KEY, newBond.getMaxAnno());
 		cv.put(BondMetaData.BOND_MINYEAR_KEY, newBond.getMinAnno());
-		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno().toGMTString());
-		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno().toGMTString());
+		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno().toString());
+		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno().toString());
 		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, newBond.getAperturaChiusuraPrecedente());
-		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toGMTString());		
-		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola().toGMTString());
+		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toString());		
+		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola().toString());
 		System.out.println("cedola: "+newBond.getDataStaccoCedola());
 		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());

@@ -24,7 +24,7 @@ import org.apache.http.message.BasicNameValuePair;
 public class ConnectionUtils {
 	
 //	private static String URL = "http://localhost:8083/Pinellas/MainServlet";
-	private static String URL = "http://bbcentrale.dyndns-server.com:8083/Pinellas/MainServlet";
+	private static String URL = "http://192.168.0.2:8080/Pinellas/MainServlet";
 	private static String JSONREQ = "[{\"idCode\":\"IT0004572910\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"__NONE__\"}]";
 
 	public static void main(String[] args) {
