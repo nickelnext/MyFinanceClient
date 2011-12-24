@@ -4,6 +4,8 @@ package it.util;
 
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,14 +25,16 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class ConnectionUtils {
 	
-//	private static String URL = "http://localhost:8083/Pinellas/MainServlet";
-	private static String URL = "http://192.168.0.2:8080/Pinellas/MainServlet";
+//	private static String URL = "http://192.168.0.2:8083/Pinellas/MainServlet";
+//	private static String URL = "http://bbcentrale.dyndns-server.com:8083/Pinellas/MainServlet";
 	private static String JSONREQ = "[{\"idCode\":\"IT0004572910\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"__NONE__\"}]";
 
+	//only for testing purpose
 	public static void main(String[] args) {
 		//System.out.println(getInputStreamFromUrl(JSONREQ));
 		postData(JSONREQ);
-		System.out.println("DONE");
+		readFile();
+	
 	}
 	
 	
@@ -45,7 +49,7 @@ public class ConnectionUtils {
 	public static String postData(String jsonReq) {
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost(URL);
+	    HttpPost httppost = new HttpPost(readFile());
 	    try {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -92,5 +96,25 @@ public class ConnectionUtils {
 		return sb.toString();
 
 	}
+
+
+	public static String readFile() {
+//	    String path = "C:/Users/El Pine/Documents/UNIPINE/oliveto-giani-client/myFinance/url.txt";
+	  String path = "/data/app/url.txt";
+	  
+	    String res = null;
+	    try {
+	      File file = new File(path);
+	      FileReader fr = new FileReader(file);
+	      BufferedReader br = new BufferedReader(fr);
+	      res = br.readLine();
+	      br.close();
+	      System.out.println(res);
+	    }
+	    catch(IOException e) { 
+	      e.printStackTrace();
+	    }
+	    return res;
+	  }
 }
 
