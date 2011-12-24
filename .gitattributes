@@ -8,12 +8,12 @@ res/drawable-ldpi/ic_launcher.png -text
 res/drawable-ldpi/ic_menu_refresh.png -text
 res/drawable-mdpi/ic_launcher.png -text
 res/drawable-mdpi/ic_menu_refresh.png -text
-res/layout/add_new_portfolio.xml -text svneol=unset#text/plain
 res/layout/add_new_share.xml -text svneol=unset#text/plain
 res/layout/bond_details.xml -text svneol=unset#text/plain
+res/layout/custom_add_new_portfolio_dialog.xml -text
+res/layout/custom_edit_portfolio_dialog.xml -text
 res/layout/fund_details.xml -text svneol=unset#text/plain
 res/layout/main.xml -text svneol=unset#text/plain
-res/layout/modify_portfolio.xml -text svneol=unset#text/plain
 res/layout/portfolio_listview_items.xml -text svneol=unset#text/plain
 res/layout/share_details.xml -text svneol=unset#text/plain
 res/layout/share_list.xml -text svneol=unset#text/plain
@@ -33,10 +33,8 @@ serverside/Requests/Request.java -text
 serverside/Requests/RequestContainer.java -text
 serverside/Requests/RequestType.java -text
 serverside/myUtils/UtilFuncs.java -text
-src/it/dev/AddNewPortfolioActivity.java -text svneol=unset#text/plain
 src/it/dev/AddNewShareActivity.java -text svneol=unset#text/plain
 src/it/dev/BondDetailsActivity.java -text svneol=unset#text/plain
-src/it/dev/EditPortfolioActivity.java -text svneol=unset#text/plain
 src/it/dev/FundDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
