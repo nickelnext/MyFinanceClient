@@ -8,16 +8,16 @@ res/drawable-ldpi/ic_launcher.png -text
 res/drawable-ldpi/ic_menu_refresh.png -text
 res/drawable-mdpi/ic_launcher.png -text
 res/drawable-mdpi/ic_menu_refresh.png -text
-res/layout/add_new_share.xml -text svneol=unset#text/plain
 res/layout/bond_details.xml -text svneol=unset#text/plain
 res/layout/custom_add_new_portfolio_dialog.xml -text
+res/layout/custom_add_new_tool.xml -text
 res/layout/custom_edit_portfolio_dialog.xml -text
 res/layout/fund_details.xml -text svneol=unset#text/plain
 res/layout/main.xml -text svneol=unset#text/plain
 res/layout/portfolio_listview_items.xml -text svneol=unset#text/plain
 res/layout/share_details.xml -text svneol=unset#text/plain
-res/layout/share_list.xml -text svneol=unset#text/plain
-res/layout/share_listview_items.xml -text svneol=unset#text/plain
+res/layout/tool_list_activity.xml -text
+res/layout/tool_listview_items.xml -text
 res/layout/update_option.xml -text svneol=unset#text/plain
 res/menu/add_portfolio_menu.xml -text svneol=unset#text/plain
 res/menu/add_share_menu.xml -text svneol=unset#text/plain
@@ -33,14 +33,14 @@ serverside/Requests/Request.java -text
 serverside/Requests/RequestContainer.java -text
 serverside/Requests/RequestType.java -text
 serverside/myUtils/UtilFuncs.java -text
-src/it/dev/AddNewShareActivity.java -text svneol=unset#text/plain
 src/it/dev/BondDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/FundDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
 src/it/dev/ShareDetailsActivity.java -text svneol=unset#text/plain
-src/it/dev/ShareListActivity.java -text svneol=unset#text/plain
+src/it/dev/ToolListActivity.java -text
 src/it/dev/UpdateOptionActivity.java -text svneol=unset#text/plain
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
 src/it/util/ResponseHandler.java -text
+src/mainpackage/RequestHandler.java -text

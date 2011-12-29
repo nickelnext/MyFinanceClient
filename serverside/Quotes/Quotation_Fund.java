@@ -1,9 +1,6 @@
 package Quotes;
 
-import java.util.Date;
-
 import myUtils.UtilFuncs;
-
 
 public class Quotation_Fund extends Quotation{
 	
@@ -14,7 +11,7 @@ public class Quotation_Fund extends Quotation{
 	protected String categoriaAssociati;
 	protected String benchmarkDichiarato;
 	protected float ultimoPrezzo;
-	protected Date dataUltimoPrezzo;
+	protected String dataUltimoPrezzo;
 	protected float prezzoPrecedente;
 	protected String valuta;
 	protected float variazionePercentuale;
@@ -54,11 +51,11 @@ public class Quotation_Fund extends Quotation{
 	public void setUltimoPrezzo(String ultimoPrezzo) {
 		this.ultimoPrezzo = UtilFuncs.repFloat(ultimoPrezzo, getCountry());
 	}
-	public Date getDataUltimoPrezzo() {
+	public String getDataUltimoPrezzo() {
 		return dataUltimoPrezzo;
 	}
 	public void setDataUltimoPrezzo(String dataUltimoPrezzo) {
-		this.dataUltimoPrezzo = UtilFuncs.formatDate(dataUltimoPrezzo, getCountry());
+		this.dataUltimoPrezzo = dataUltimoPrezzo;
 	}
 	public float getPrezzoPrecedente() {
 		return prezzoPrecedente;

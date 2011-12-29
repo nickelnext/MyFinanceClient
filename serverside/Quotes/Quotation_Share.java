@@ -1,9 +1,6 @@
 package Quotes;
 
-import java.util.Date;
-
 import myUtils.UtilFuncs;
-
 
 public class Quotation_Share extends Quotation{
 
@@ -13,7 +10,7 @@ public class Quotation_Share extends Quotation{
 	protected float prezzoUltimoContratto;
 	protected float variazionePercentuale;
 	protected float variazioneAssoluta;
-	protected Date dataOraUltimoAcquisto;
+	protected String dataOraUltimoAcquisto;
 	protected float prezzoAcquisto;
 	protected float prezzoVendita;
 	protected int quantitaUltimo;
@@ -24,8 +21,8 @@ public class Quotation_Share extends Quotation{
 	protected float minOggi;
 	protected float maxAnno;
 	protected float minAnno;
-	protected Date dataMaxAnno;
-	protected Date dataMinAnno;
+	protected String dataMaxAnno;
+	protected String dataMinAnno;
 	protected float chiusuraPrecedente;
 	
 	public Quotation_Share() {
@@ -64,12 +61,111 @@ public class Quotation_Share extends Quotation{
 	public void setVariazioneAssoluta(String string) {
 		this.variazioneAssoluta = UtilFuncs.repFloat(string, getCountry());
 	}
-	public Date getDataOraUltimoAcquisto() {
+	public String getDataOraUltimoAcquisto() {
 		return dataOraUltimoAcquisto;
 	}
-	public void setDataOraUltimoAcquisto(String string) {
-		this.dataOraUltimoAcquisto = UtilFuncs.formatDate(string, getCountry());
+
+
+	public void setDataOraUltimoAcquisto(String dataOraUltimoAcquisto) {
+		this.dataOraUltimoAcquisto = dataOraUltimoAcquisto;
 	}
+
+
+	public String getDataMaxAnno() {
+		return dataMaxAnno;
+	}
+
+
+	public void setDataMaxAnno(String dataMaxAnno) {
+		this.dataMaxAnno = dataMaxAnno;
+	}
+
+
+	public String getDataMinAnno() {
+		return dataMinAnno;
+	}
+
+
+	public void setDataMinAnno(String dataMinAnno) {
+		this.dataMinAnno = dataMinAnno;
+	}
+
+
+	public void setLottoMinimo(int lottoMinimo) {
+		this.lottoMinimo = lottoMinimo;
+	}
+
+
+	public void setPrezzoUltimoContratto(float prezzoUltimoContratto) {
+		this.prezzoUltimoContratto = prezzoUltimoContratto;
+	}
+
+
+	public void setVariazionePercentuale(float variazionePercentuale) {
+		this.variazionePercentuale = variazionePercentuale;
+	}
+
+
+	public void setVariazioneAssoluta(float variazioneAssoluta) {
+		this.variazioneAssoluta = variazioneAssoluta;
+	}
+
+
+	public void setPrezzoAcquisto(float prezzoAcquisto) {
+		this.prezzoAcquisto = prezzoAcquisto;
+	}
+
+
+	public void setPrezzoVendita(float prezzoVendita) {
+		this.prezzoVendita = prezzoVendita;
+	}
+
+
+	public void setQuantitaUltimo(int quantitaUltimo) {
+		this.quantitaUltimo = quantitaUltimo;
+	}
+
+
+	public void setQuantitaAcquisto(int quantitaAcquisto) {
+		this.quantitaAcquisto = quantitaAcquisto;
+	}
+
+
+	public void setQuantitaVendita(int quantitaVendita) {
+		this.quantitaVendita = quantitaVendita;
+	}
+
+
+	public void setQuantitaTotale(int quantitaTotale) {
+		this.quantitaTotale = quantitaTotale;
+	}
+
+
+	public void setMaxOggi(float maxOggi) {
+		this.maxOggi = maxOggi;
+	}
+
+
+	public void setMinOggi(float minOggi) {
+		this.minOggi = minOggi;
+	}
+
+
+	public void setMaxAnno(float maxAnno) {
+		this.maxAnno = maxAnno;
+	}
+
+
+	public void setMinAnno(float minAnno) {
+		this.minAnno = minAnno;
+	}
+
+
+	public void setChiusuraPrecedente(float chiusuraPrecedente) {
+		this.chiusuraPrecedente = chiusuraPrecedente;
+	}
+
+
 	public float getPrezzoAcquisto() {
 		return prezzoAcquisto;
 	}
@@ -129,18 +225,6 @@ public class Quotation_Share extends Quotation{
 	}
 	public void setMinAnno(String minAnno) {
 		this.minAnno = UtilFuncs.repFloat(minAnno, getCountry());
-	}
-	public Date getDataMaxAnno() {
-		return dataMaxAnno;
-	}
-	public void setDataMaxAnno(String dataMaxAnno) {
-		this.dataMaxAnno = UtilFuncs.formatDate(dataMaxAnno, getCountry());
-	}
-	public Date getDataMinAnno() {
-		return dataMinAnno;
-	}
-	public void setDataMinAnno(String dataMinAnno) {
-		this.dataMinAnno = UtilFuncs.formatDate(dataMinAnno, getCountry());
 	}
 	public float getChiusuraPrecedente() {
 		return chiusuraPrecedente;

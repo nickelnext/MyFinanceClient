@@ -179,32 +179,32 @@ public class MyFinanceDatabase
 	private static final String TABLE_BOND_CREATE = "CREATE TABLE "+BondMetaData.BOND_TABLE+" (" +
 			BondMetaData.ID +" INTEGER NOT NULL, " +
 			BondMetaData.BOND_ISIN +" TEXT PRIMARY KEY, " +
-			BondMetaData.BOND_NAME_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_CURRENCY_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_MARKET_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_MARKETPHASE_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_LASTCONTRACTPRICE_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_PERCVAR_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_VARIATION_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_LASTCONTRACTDATE_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_LASTVOLUME_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_BUYVOLUME_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_SELLVOLUME_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_TOTALVOLUME_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_BUYPRICE_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_SELLPRICE_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_MAXTODAY_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_MINTODAY_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_MAXYEAR_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_MINYEAR_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_MAXYEARDATE_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_MINYEARDATE_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_LASTCLOSE_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_EXPIRATIONDATE_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_COUPONDATE_KEY +" TEXT NOT NULL, " +
-			BondMetaData.BOND_COUPON_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_MINROUNDLOT_KEY +" INTEGER NOT NULL, " +
-			BondMetaData.BOND_LASTUPDATE_KEY +" TEXT NOT NULL);";
+			BondMetaData.BOND_NAME_KEY +" TEXT, " +
+			BondMetaData.BOND_CURRENCY_KEY +" TEXT, " +
+			BondMetaData.BOND_MARKET_KEY +" TEXT, " +
+			BondMetaData.BOND_MARKETPHASE_KEY +" TEXT, " +
+			BondMetaData.BOND_LASTCONTRACTPRICE_KEY +" REAL, " +
+			BondMetaData.BOND_PERCVAR_KEY +" REAL, " +
+			BondMetaData.BOND_VARIATION_KEY +" REAL, " +
+			BondMetaData.BOND_LASTCONTRACTDATE_KEY +" TEXT, " +
+			BondMetaData.BOND_LASTVOLUME_KEY +" INTEGER, " +
+			BondMetaData.BOND_BUYVOLUME_KEY +" INTEGER, " +
+			BondMetaData.BOND_SELLVOLUME_KEY +" INTEGER, " +
+			BondMetaData.BOND_TOTALVOLUME_KEY +" INTEGER, " +
+			BondMetaData.BOND_BUYPRICE_KEY +" REAL, " +
+			BondMetaData.BOND_SELLPRICE_KEY +" REAL, " +
+			BondMetaData.BOND_MAXTODAY_KEY +" REAL, " +
+			BondMetaData.BOND_MINTODAY_KEY +" REAL, " +
+			BondMetaData.BOND_MAXYEAR_KEY +" REAL, " +
+			BondMetaData.BOND_MINYEAR_KEY +" REAL, " +
+			BondMetaData.BOND_MAXYEARDATE_KEY +" TEXT, " +
+			BondMetaData.BOND_MINYEARDATE_KEY +" TEXT, " +
+			BondMetaData.BOND_LASTCLOSE_KEY +" REAL, " +
+			BondMetaData.BOND_EXPIRATIONDATE_KEY +" TEXT, " +
+			BondMetaData.BOND_COUPONDATE_KEY +" TEXT, " +
+			BondMetaData.BOND_COUPON_KEY +" REAL, " +
+			BondMetaData.BOND_MINROUNDLOT_KEY +" INTEGER, " +
+			BondMetaData.BOND_LASTUPDATE_KEY +" TEXT);";
 	
 	private static final String TABLE_FUND_CREATE = "CREATE TABLE "+FundMetaData.FUND_TABLE+" (" +
 			FundMetaData.ID +" INTEGER NOT NULL, " +
@@ -255,11 +255,9 @@ public class MyFinanceDatabase
 			PortfolioBondMetadata.ID +" INTEGER NOT NULL, " +
 			PortfolioBondMetadata.PORTFOLIO_NAME_KEY +" TEXT NOT NULL, " +
 			PortfolioBondMetadata.BOND_ISIN_KEY +" TEXT NOT NULL, " +
-			PortfolioBondMetadata.BOND_BUYDATE_KEY +" TEXT NOT NULL, " +
-			PortfolioBondMetadata.BOND_BUYPRICE_KEY +" INTEGER NOT NULL, " +
-			PortfolioBondMetadata.BOND_ROUNDLOT_KEY +" INTEGER NOT NULL, " +
-			PortfolioBondMetadata.BOND_CAPITALGAINTAX_KEY +" INTEGER NOT NULL, " +
-			PortfolioBondMetadata.BOND_COUPONTAX_KEY +" INTEGER NOT NULL, " +
+			PortfolioBondMetadata.BOND_BUYDATE_KEY +" TEXT, " +
+			PortfolioBondMetadata.BOND_BUYPRICE_KEY +" REAL, " +
+			PortfolioBondMetadata.BOND_ROUNDLOT_KEY +" INTEGER, " +
 			"PRIMARY KEY (" +PortfolioBondMetadata.PORTFOLIO_NAME_KEY+", " +PortfolioBondMetadata.BOND_ISIN_KEY+", " +PortfolioBondMetadata.BOND_BUYDATE_KEY+"), " +
 			"FOREIGN KEY (" +PortfolioBondMetadata.PORTFOLIO_NAME_KEY+") REFERENCES "+PortfolioMetaData.PORTFOLIO_TABLE+"("+PortfolioMetaData.PORTFOLIO_NAME_KEY+")" +
 			"FOREIGN KEY (" +PortfolioBondMetadata.BOND_ISIN_KEY+") REFERENCES "+BondMetaData.BOND_TABLE+"("+BondMetaData.BOND_ISIN+"));";
@@ -271,8 +269,6 @@ public class MyFinanceDatabase
 			PortfolioFundMetadata.FUND_BUYDATE_KEY +" TEXT NOT NULL, " +
 			PortfolioFundMetadata.FUND_BUYPRICE_KEY +" INTEGER NOT NULL, " +
 			PortfolioFundMetadata.FUND_ROUNDLOT_KEY +" INTEGER NOT NULL, " +
-			PortfolioFundMetadata.FUND_CAPITALGAINTAX_KEY +" INTEGER NOT NULL, " +
-			PortfolioFundMetadata.FUND_COUPONTAX_KEY +" INTEGER NOT NULL, " +
 			"PRIMARY KEY (" +PortfolioFundMetadata.PORTFOLIO_NAME_KEY+", " +PortfolioFundMetadata.FUND_ISIN_KEY+", " +PortfolioFundMetadata.FUND_BUYDATE_KEY+"), " +
 			"FOREIGN KEY (" +PortfolioFundMetadata.PORTFOLIO_NAME_KEY+") REFERENCES "+PortfolioMetaData.PORTFOLIO_TABLE+"("+PortfolioMetaData.PORTFOLIO_NAME_KEY+")" +
 			"FOREIGN KEY (" +PortfolioFundMetadata.FUND_ISIN_KEY+") REFERENCES "+FundMetaData.FUND_TABLE+"("+FundMetaData.FUND_ISIN+"));";
@@ -284,8 +280,6 @@ public class MyFinanceDatabase
 			PortfolioShareMetadata.SHARE_BUYDATE_KEY +" TEXT NOT NULL, " +
 			PortfolioShareMetadata.SHARE_BUYPRICE_KEY +" INTEGER NOT NULL, " +
 			PortfolioShareMetadata.SHARE_ROUNDLOT_KEY +" INTEGER NOT NULL, " +
-			PortfolioShareMetadata.SHARE_CAPITALGAINTAX_KEY +" INTEGER NOT NULL, " +
-			PortfolioShareMetadata.SHARE_COUPONTAX_KEY +" INTEGER NOT NULL, " +
 			"PRIMARY KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+", " +PortfolioShareMetadata.SHARE_CODE_KEY+", " +PortfolioShareMetadata.SHARE_BUYDATE_KEY+"), " +
 			"FOREIGN KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+") REFERENCES "+PortfolioMetaData.PORTFOLIO_TABLE+"("+PortfolioMetaData.PORTFOLIO_NAME_KEY+")" +
 			"FOREIGN KEY (" +PortfolioShareMetadata.SHARE_CODE_KEY+") REFERENCES "+ShareMetaData.SHARE_TABLE+"("+ShareMetaData.SHARE_CODE+"));";
@@ -396,7 +390,7 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, newBond.getPrezzoUltimoContratto());
 		cv.put(BondMetaData.BOND_PERCVAR_KEY, newBond.getVariazionePercentuale());
 		cv.put(BondMetaData.BOND_VARIATION_KEY, newBond.getVariazioneAssoluta());
-		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto().toString());
+		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto());
 		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, newBond.getVolumeUltimo());
 		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, newBond.getVolumeAcquisto());
 		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, newBond.getVolumeVendita());
@@ -407,12 +401,11 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_MINTODAY_KEY, newBond.getMinOggi());
 		cv.put(BondMetaData.BOND_MAXYEAR_KEY, newBond.getMaxAnno());
 		cv.put(BondMetaData.BOND_MINYEAR_KEY, newBond.getMinAnno());
-		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno().toString());
-		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno().toString());
+		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno());
+		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno());
 		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, newBond.getAperturaChiusuraPrecedente());
-		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toString());		
-		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola().toString());
-		System.out.println("cedola: "+newBond.getDataStaccoCedola());
+		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza());		
+		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola());
 		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
@@ -454,7 +447,7 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_CATEGORY_KEY, newFund.getCategoriaAssociati());
 		cv.put(FundMetaData.FUND_BENCHMARK_KEY, newFund.getBenchmarkDichiarato());
 		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, newFund.getUltimoPrezzo());
-		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, newFund.getDataUltimoPrezzo().toGMTString());
+		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, newFund.getDataUltimoPrezzo());
 		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, newFund.getPrezzoPrecedente());
 		cv.put(FundMetaData.FUND_CURRENCY_KEY, newFund.getValuta());
 		cv.put(FundMetaData.FUND_PERCVAR_KEY, newFund.getVariazionePercentuale());
@@ -510,7 +503,7 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, newShare.getPrezzoUltimoContratto());
 		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, newShare.getVariazionePercentuale());
 		cv.put(ShareMetaData.SHARE_VARIATION_KEY, newShare.getVariazioneAssoluta());
-		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, newShare.getDataOraUltimoAcquisto().toGMTString());
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, newShare.getDataOraUltimoAcquisto());
 		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, newShare.getPrezzoAcquisto());
 		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, newShare.getPrezzoVendita());
 		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, newShare.getQuantitaUltimo());
@@ -521,15 +514,14 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, newShare.getMinOggi());
 		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, newShare.getMaxAnno());
 		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, newShare.getMinAnno());
-		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, newShare.getDataMaxAnno().toGMTString());
-		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno().toGMTString());
+		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, newShare.getDataMaxAnno());
+		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno());
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
 	}
 	
-	public void addNewBondInTransitionTable(String portfolioName, String bondISIN, String buyDate, float buyPrice, 
-			int roundLot, float capitalGainTax, float couponTax)
+	public void addNewBondInTransitionTable(String portfolioName, String bondISIN, String buyDate, float buyPrice, int roundLot)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioBondMetadata.ID, 1);
@@ -538,12 +530,10 @@ public class MyFinanceDatabase
 		cv.put(PortfolioBondMetadata.BOND_BUYDATE_KEY, buyDate);
 		cv.put(PortfolioBondMetadata.BOND_BUYPRICE_KEY, buyPrice);
 		cv.put(PortfolioBondMetadata.BOND_ROUNDLOT_KEY, roundLot);
-		cv.put(PortfolioBondMetadata.BOND_CAPITALGAINTAX_KEY, capitalGainTax);
-		cv.put(PortfolioBondMetadata.BOND_COUPONTAX_KEY, couponTax);
 		database.insert(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, cv);
 	}
 	
-	public void addNewFoundInTransitionTable(String portfolioName, String fundISIN, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
+	public void addNewFoundInTransitionTable(String portfolioName, String fundISIN, String buyDate, float buyPrice, int roundLot)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioFundMetadata.ID, 1);
@@ -552,12 +542,10 @@ public class MyFinanceDatabase
 		cv.put(PortfolioFundMetadata.FUND_BUYDATE_KEY, buyDate);
 		cv.put(PortfolioFundMetadata.FUND_BUYPRICE_KEY, buyPrice);
 		cv.put(PortfolioFundMetadata.FUND_ROUNDLOT_KEY, roundLot);
-		cv.put(PortfolioFundMetadata.FUND_CAPITALGAINTAX_KEY, capitalGainTax);
-		cv.put(PortfolioFundMetadata.FUND_COUPONTAX_KEY, couponTax);
 		database.insert(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, cv);
 	}
 	
-	public void addNewShareInTransitionTable(String portfolioName, String shareCODE, String buyDate, float buyPrice, int roundLot, float capitalGainTax, float couponTax)
+	public void addNewShareInTransitionTable(String portfolioName, String shareCODE, String buyDate, float buyPrice, int roundLot)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioShareMetadata.ID, 1);
@@ -566,8 +554,6 @@ public class MyFinanceDatabase
 		cv.put(PortfolioShareMetadata.SHARE_BUYDATE_KEY, buyDate);
 		cv.put(PortfolioShareMetadata.SHARE_BUYPRICE_KEY, buyPrice);
 		cv.put(PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, roundLot);
-		cv.put(PortfolioShareMetadata.SHARE_CAPITALGAINTAX_KEY, capitalGainTax);
-		cv.put(PortfolioShareMetadata.SHARE_COUPONTAX_KEY, couponTax);
 		database.insert(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, cv);
 	}
 	
@@ -705,7 +691,7 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, newBond.getPrezzoUltimoContratto());
 		cv.put(BondMetaData.BOND_PERCVAR_KEY, newBond.getVariazionePercentuale());
 		cv.put(BondMetaData.BOND_VARIATION_KEY, newBond.getVariazioneAssoluta());
-		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto().toGMTString());
+		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, newBond.getDataUltimoContratto());
 		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, newBond.getVolumeUltimo());
 		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, newBond.getVolumeAcquisto());
 		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, newBond.getVolumeVendita());
@@ -716,11 +702,11 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_MINTODAY_KEY, newBond.getMinOggi());
 		cv.put(BondMetaData.BOND_MAXYEAR_KEY, newBond.getMaxAnno());
 		cv.put(BondMetaData.BOND_MINYEAR_KEY, newBond.getMinAnno());
-		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno().toGMTString());
-		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno().toGMTString());
+		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, newBond.getDataMaxAnno());
+		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, newBond.getDataMinAnno());
 		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, newBond.getAperturaChiusuraPrecedente());
-		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza().toGMTString());
-		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola().toGMTString());
+		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, newBond.getScadenza());
+		cv.put(BondMetaData.BOND_COUPONDATE_KEY, newBond.getDataStaccoCedola());
 		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
@@ -765,7 +751,7 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_CATEGORY_KEY, newFund.getCategoriaAssociati());
 		cv.put(FundMetaData.FUND_BENCHMARK_KEY, newFund.getBenchmarkDichiarato());
 		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, newFund.getUltimoPrezzo());
-		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, newFund.getDataUltimoPrezzo().toGMTString());
+		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, newFund.getDataUltimoPrezzo());
 		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, newFund.getPrezzoPrecedente());
 		cv.put(FundMetaData.FUND_CURRENCY_KEY, newFund.getValuta());
 		cv.put(FundMetaData.FUND_PERCVAR_KEY, newFund.getVariazionePercentuale());
@@ -823,7 +809,7 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, newShare.getPrezzoUltimoContratto());
 		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, newShare.getVariazionePercentuale());
 		cv.put(ShareMetaData.SHARE_VARIATION_KEY, newShare.getVariazioneAssoluta());
-		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, newShare.getDataOraUltimoAcquisto().toGMTString());
+		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, newShare.getDataOraUltimoAcquisto());
 		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, newShare.getPrezzoAcquisto());
 		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, newShare.getPrezzoVendita());
 		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, newShare.getQuantitaUltimo());
@@ -834,8 +820,8 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, newShare.getMinOggi());
 		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, newShare.getMaxAnno());
 		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, newShare.getMinAnno());
-		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, newShare.getDataMaxAnno().toGMTString());
-		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno().toGMTString());
+		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, newShare.getDataMaxAnno());
+		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno());
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		

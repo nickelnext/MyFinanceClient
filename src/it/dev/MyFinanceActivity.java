@@ -209,9 +209,9 @@ public class MyFinanceActivity extends Activity
     	startActivity(i);
     }
     
-    private void goToShareListActivity(String portfolioName)
+    private void goToToolListActivity(String portfolioName)
     {
-    	Intent i = new Intent(this, ShareListActivity.class);
+    	Intent i = new Intent(this, ToolListActivity.class);
 		String pkg = getPackageName();
 		i.putExtra(pkg+".portfolioName", portfolioName);		
 		startActivity(i);
@@ -255,7 +255,7 @@ public class MyFinanceActivity extends Activity
             {
             	public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
             	{                    
-                    goToShareListActivity(portfolioNameArrayList.get(position));
+                    goToToolListActivity(portfolioNameArrayList.get(position));
                 }
             });
     	}

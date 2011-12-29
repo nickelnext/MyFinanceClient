@@ -20,8 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UpdateOptionActivity"></activity>
-        <activity android:name=".ShareListActivity"></activity>
-        <activity android:name=".AddNewShareActivity"></activity>
+        <activity android:name=".ToolListActivity"></activity>
         <activity android:name=".BondDetailsActivity"></activity>
         <activity android:name=".FundDetailsActivity"></activity>
         <activity android:name=".ShareDetailsActivity"></activity>

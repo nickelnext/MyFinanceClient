@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:minWidth="300dp" >
+	<TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Insert Isin or Code" />
+    <EditText
+        android:id="@+id/shareISINEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:hint="ISIN or Code"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="Tool purchase date" />
+    
+    <DatePicker
+        android:id="@+id/purchaseDateDatePicker"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content" 
+    		android:layout_marginLeft="5dp"
+        	android:layout_marginTop="5dp"
+    		android:weightSum="2">
+    	    <TableRow>
+        		<TextView
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:layout_weight="1"
+        		    android:text="Purchase Price"/>
+        		<EditText
+        		    android:id="@+id/buyPriceEditText"
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:inputType="number|numberDecimal" 
+        		    android:layout_weight="1"
+        		    android:hint="price"/>
+    		</TableRow>
+    		<TableRow>
+        		<TextView
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:layout_weight="1"
+        		    android:text="Round Lot"/>
+        		<EditText
+        		    android:id="@+id/roundLotEditText"
+        		    android:layout_width="wrap_content"
+        		    android:layout_height="wrap_content"
+        		    android:inputType="number" 
+        		    android:layout_weight="1"
+        		    android:hint="round lot"/>
+    		</TableRow>
+	</TableLayout>
+	
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="5dp"
+			android:weightSum="2">
+        	
+    	    <TableRow>
+        		<Button
+        		    android:id="@+id/undoNewToolButton"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:layout_weight="1"
+        		    android:text="Back"/>
+        		<Button
+        		    android:id="@+id/saveNewToolButton"
+        		    android:layout_width="fill_parent"
+        		    android:layout_height="fill_parent"
+        		    android:layout_weight="1"
+        		    android:text="Add Tool"/>
+    		</TableRow>
+	</TableLayout>
+</LinearLayout>

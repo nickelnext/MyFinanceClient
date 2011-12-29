@@ -10,6 +10,6 @@
         <item>240\'</item>
         <item>360\'</item>        
     </string-array>
-	<string name="add_share">Add a new Share</string>
-	<string name="manual_update">Update Shares</string>
+	<string name="add_share">Add a new Tool</string>
+	<string name="manual_update">Update Tools</string>
 </resources>
