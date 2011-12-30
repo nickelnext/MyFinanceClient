@@ -31,8 +31,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 
-import com.github.neilprosser.cjson.CJSON;
+//import com.github.neilprosser.cjson.CJSON;
 import com.google.gson.Gson;
 
 public class ToolListActivity extends Activity 
@@ -81,6 +82,19 @@ public class ToolListActivity extends Activity
     {
 		super.onResume();
 		updateView();
+    }
+	
+	public boolean onContextItemSelected(MenuItem item) {
+        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+        case R.id.edit_item:
+        	
+        	return true;            
+        case R.id.remove_item:        	
+        	deleteSelectedTool(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position));        	
+        	return true;        
+        }
+        return false;
     }
 	
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -309,4 +323,24 @@ public class ToolListActivity extends Activity
 	            .append(c.get(Calendar.MINUTE)).append(":")
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
 	}
-}
+	
+	private void deleteSelectedTool(String ISIN, String type)
+	{
+		db.open();
+		if(type.equals("bond")){
+			db.deleteBondInTransitionTable(portfolioName, ISIN);			
+		}
+		else if (type.equals("fund")){
+			db.deleteFundInTransitionTable(portfolioName, ISIN);
+		}
+		else if (type.equals("share")){
+			db.deleteShareInTransitionTable(portfolioName, ISIN);
+		}
+		else{
+			//error
+		}
+		db.close();
+		return;
+	}
+	}
+

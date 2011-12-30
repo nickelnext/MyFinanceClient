@@ -28,10 +28,38 @@ public class MyFinanceDatabase
 	public void open()
 	{
 		database = databaseHelper.getWritableDatabase();
+		database.execSQL("CREATE TRIGGER deleteBond"+ 
+							" AFTER DELETE ON"+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
+							" FOR EACH ROW"+
+							" WHEN NOT EXIST (SELECT "+PortfolioBondMetadata.BOND_ISIN_KEY+" FROM "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
+												" WHERE "+PortfolioBondMetadata.BOND_ISIN_KEY+" = OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+")"+
+							" BEGIN"+
+							" DELETE FROM "+BondMetaData.BOND_TABLE+" WHERE "+PortfolioBondMetadata.BOND_ISIN_KEY+" = OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+";"+
+                			" END");
+		database.execSQL("CREATE TRIGGER deleteFund"+ 
+							" AFTER DELETE ON"+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+
+							" FOR EACH ROW"+
+							" WHEN NOT EXIST (SELECT "+PortfolioFundMetadata.FUND_ISIN_KEY+" FROM "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+
+												" WHERE "+PortfolioFundMetadata.FUND_ISIN_KEY+" = OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+")"+
+							" BEGIN"+
+							" DELETE FROM "+FundMetaData.FUND_TABLE+" WHERE "+PortfolioFundMetadata.FUND_ISIN_KEY+" = OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+";"+
+    						" END");
+		database.execSQL("CREATE TRIGGER deleteShare"+ 
+							" AFTER DELETE ON"+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+
+							" FRO EACH ROW"+
+							" WHEN NOT EXIST (SELECT "+PortfolioShareMetadata.SHARE_CODE_KEY+" FROM "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+
+												" WHERE "+PortfolioShareMetadata.SHARE_CODE_KEY+" = OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+")"+
+							" BEGIN"+
+							" DELETE FROM "+ShareMetaData.SHARE_TABLE+" WHERE "+PortfolioShareMetadata.SHARE_CODE_KEY+" = OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+";"+
+    						" END");
+
 	}
 	
 	public void close()
 	{
+		database.execSQL("DROP TRIGGER deleteBond");
+		database.execSQL("DROP TRIGGER deleteFund");
+		database.execSQL("DROP TRIGGER deleteShare");
 		database.close();
 	}
 	
@@ -106,6 +134,7 @@ public class MyFinanceDatabase
 		static final String SHARE_TABLE = "Quotation_Share";
 		static final String ID = "_id";
 		static final String SHARE_CODE = "codice";
+		static final String SHARE_ISIN = "isin";
 		static final String SHARE_NAME_KEY = "nome";
 		static final String SHARE_MINROUNDLOT_KEY = "lottoMinimo";
 		static final String SHARE_MARKETPHASE_KEY = "faseMercato";
@@ -460,7 +489,7 @@ public class MyFinanceDatabase
 		database.insert(FundMetaData.FUND_TABLE, null, cv);
 	}
 	
-	public void addNewShare(int _id, String code, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
+	public void addNewShare(int _id, String code, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
 			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
 			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
 			String maxYearDate, String minYearDate, float lastClose, String lastUpdate)
@@ -468,6 +497,7 @@ public class MyFinanceDatabase
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.ID, _id);
 		cv.put(ShareMetaData.SHARE_CODE, code);
+		cv.put(ShareMetaData.SHARE_ISIN, isin);
 		cv.put(ShareMetaData.SHARE_NAME_KEY, name);
 		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
 		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
@@ -497,6 +527,7 @@ public class MyFinanceDatabase
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.ID, 1);
 		cv.put(ShareMetaData.SHARE_CODE, ((Quotes.Quotation)newShare).getISIN());
+		cv.put(ShareMetaData.SHARE_ISIN, newShare.getISIN());
 		cv.put(ShareMetaData.SHARE_NAME_KEY, newShare.getName());
 		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, newShare.getLottoMinimo());
 		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, newShare.getFaseMercato());
@@ -765,7 +796,7 @@ public class MyFinanceDatabase
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
 	}
 	
-	public void updateSelectedShare(int _id, String CODE, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
+	public void updateSelectedShare(int _id, String CODE, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
 			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
 			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
 			String maxYearDate, String minYearDate, float lastClose, String lastUpdate)
@@ -773,6 +804,7 @@ public class MyFinanceDatabase
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.ID, _id); //ometto?
 		cv.put(ShareMetaData.SHARE_CODE, CODE); //ometto?
+		cv.put(ShareMetaData.SHARE_ISIN, isin); //ometto?
 		cv.put(ShareMetaData.SHARE_NAME_KEY, name); //ometto?
 		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
 		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
@@ -803,6 +835,7 @@ public class MyFinanceDatabase
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.ID, 1);
 		cv.put(ShareMetaData.SHARE_CODE, newShare.getISIN());
+		cv.put(ShareMetaData.SHARE_ISIN, newShare.getISIN());
 		cv.put(ShareMetaData.SHARE_NAME_KEY, newShare.getName());
 		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, newShare.getLottoMinimo());
 		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, newShare.getFaseMercato());
@@ -853,6 +886,7 @@ public class MyFinanceDatabase
 	
 	public void deleteBondInTransitionTable(String portfolioName, String ISIN) 
 	{
+		
 		database.delete(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"' AND '"+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
 	}
 	
