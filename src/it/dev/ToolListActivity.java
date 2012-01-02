@@ -52,6 +52,8 @@ public class ToolListActivity extends Activity
 	private TextView prizeCol;
 	private ListView toolListView;
 	
+	private ArrayList<String> listaIsinTmp = new ArrayList<String>();
+	
 	public void onCreate(Bundle savedInstanceState) 
     {
 		super.onCreate(savedInstanceState);
@@ -120,6 +122,7 @@ public class ToolListActivity extends Activity
 	//Open the custom alert dialog where it is possible to add a new tool.
 	private void showAddNewToolDialog()
 	{
+		listaIsinTmp.clear();
 		final Dialog addToolDialog = new Dialog(ToolListActivity.this);
 		addToolDialog.setContentView(R.layout.custom_add_new_tool);
 		addToolDialog.setTitle("Add a new Tool");
@@ -129,7 +132,8 @@ public class ToolListActivity extends Activity
 		final EditText buyPriceEditText = (EditText) addToolDialog.findViewById(R.id.buyPriceEditText);
 		final EditText roundLotEditText = (EditText) addToolDialog.findViewById(R.id.roundLotEditText);
 		Button undoNewShareButton = (Button) addToolDialog.findViewById(R.id.undoNewToolButton);
-		Button saveNewToolButton = (Button) addToolDialog.findViewById(R.id.saveNewToolButton); 
+		Button saveNewToolButton = (Button) addToolDialog.findViewById(R.id.saveNewToolButton);
+		Button finishAddToolsButton = (Button) addToolDialog.findViewById(R.id.finishAddToolsButton);
 		
 		undoNewShareButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -141,48 +145,136 @@ public class ToolListActivity extends Activity
 			public void onClick(View v) {
 				if(shareISINEditText.getText().length()!=0 && buyPriceEditText.getText().length()!=0 && roundLotEditText.getText().length()!=0)
 				{
+					//save temporary data....(e.g. using arrayList<Object>)
+					listaIsinTmp.add(shareISINEditText.getText().toString());
+					
+					//initialize view...
+					final Calendar c = Calendar.getInstance();
+					shareISINEditText.setText("");
+					purchaseDateDatePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), null);
+					buyPriceEditText.setText("");
+					roundLotEditText.setText("");
+				}
+				else
+				{
+					showMessage("Error", "Control that you have insert all the data.");
+				}			
+			}
+		});
+		
+		finishAddToolsButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if(shareISINEditText.getText().length()!=0 && buyPriceEditText.getText().length()!=0 && roundLotEditText.getText().length()!=0)
+				{
 					db.open();
 					
-					String buyDate = String.valueOf(purchaseDateDatePicker.getMonth())+"/"+String.valueOf(purchaseDateDatePicker.getDayOfMonth())+"/"+String.valueOf(purchaseDateDatePicker.getYear());
-					ArrayList<Request> array = new ArrayList<Request>();
-					array.add(new Request(shareISINEditText.getText().toString()));
 					
-					Gson converter = new Gson();
-					String jsonReq = converter.toJson(array);
-					Log.d(getPackageName(), "postData: "+jsonReq);
-					String jsonResponse = ConnectionUtils.postData(jsonReq);
-					Log.d(getPackageName(), "jsonResponse: "+jsonResponse);
-					if(jsonResponse != null)
+					//0. add last tool in ArrayList<String>...
+					listaIsinTmp.add(shareISINEditText.getText().toString());
+					
+					//1. send request to server for tools data....
+					QuotationContainer myQuotationContainer = connectToServerForTools(listaIsinTmp);
+					
+					if(myQuotationContainer!=null)
 					{
-						
-						QuotationContainer quotCont = ResponseHandler.decodeQuotations(jsonResponse);
-						
-						System.out.println(quotCont.getBondList().get(0).toString());
-						
-						
-						
-						for (Quotation_Bond qb : quotCont.getBondList()) 
+						//2. control number of isin returned equals number of isin requested....
+						int totalQuotationReturned = myQuotationContainer.getBondList().size() + myQuotationContainer.getFundList().size() + myQuotationContainer.getShareList().size();
+						if(totalQuotationReturned == listaIsinTmp.size())
 						{
-							db.addNewBondByQuotationObject(qb, getTodaysDate());
-							db.addNewBondInTransitionTable(portfolioName, shareISINEditText.getText().toString(), buyDate, 
-								Integer.parseInt(buyPriceEditText.getText().toString()), Integer.parseInt(roundLotEditText.getText().toString()));
-						}			
-						for (Quotation_Share qs : quotCont.getShareList()) 
-						{
-							db.addNewShareByQuotationObject(qs, getTodaysDate());
+							//2.1 control that all isin requested are returned....
+							if(allIsinRequestedAreReturned(listaIsinTmp, myQuotationContainer))
+							{
+								//3. for all BOND returned...
+								for(Quotation_Bond qb : myQuotationContainer.getBondList())
+								{
+									//3.1 control if bond already exist in database --> UPDATE
+									if(db.bondAlreadyInDatabase(qb.getISIN()))
+									{
+										//UPDATE
+									}
+									else
+									{
+										//INSERT
+									}
+									
+									//3.2 INSERT bond in transition table
+								}
+								
+								//4. for all FUND returned...
+								for(Quotation_Fund qf : myQuotationContainer.getFundList())
+								{
+									//4.1 control if fund already exist in database --> UPDATE
+									if(db.fundAlreadyInDatabase(qf.getISIN()))
+									{
+										//UPDATE
+									}
+									else
+									{
+										//INSERT
+									}
+									
+									//4.2 INSERT fund in transition table
+								}
+								
+								//5. for all SHARE returned...
+								for(Quotation_Share qs : myQuotationContainer.getShareList())
+								{
+									//5.1 control if share already exist in database --> UPDATE
+									if(db.shareAlreadyInDatabase(qs.getISIN()))
+									{
+										//UPDATE
+									}
+									else
+									{
+										//INSERT
+									}
+									
+									//5.2 INSERT share in transition table
+								}
+							}
+							else
+							{
+								//error: all requested !are returned
+								showMessage("Error", "Some tool requested is not returned.");
+							}
 						}
-						for (Quotation_Fund qf : quotCont.getFundList()) 
+						else
 						{
-							db.addNewFundByQuotationObject(qf, getTodaysDate());
+							//error: #returned != #requested
+							showMessage("Error", "The number of tools returned is different from the ones requested.");
 						}
+					}
+					else
+					{
+						//connection error!
+						showMessage("Error", "There were errors during connection with server. Please try again.");
 					}
 					
 					db.close();
 					addToolDialog.dismiss();
+					
+					
+					//insert......example......
+//					String buyDate = getTodaysDate();
+//					
+//					for (Quotation_Bond qb : myQuotationContainer.getBondList()) 
+//					{
+//						db.addNewBondByQuotationObject(qb, getTodaysDate());
+//						db.addNewBondInTransitionTable(portfolioName, shareISINEditText.getText().toString(), buyDate, 
+//							Integer.parseInt(buyPriceEditText.getText().toString()), Integer.parseInt(roundLotEditText.getText().toString()));
+//					}			
+//					for (Quotation_Share qs : myQuotationContainer.getShareList()) 
+//					{
+//						db.addNewShareByQuotationObject(qs, getTodaysDate());
+//					}
+//					for (Quotation_Fund qf : myQuotationContainer.getFundList()) 
+//					{
+//						db.addNewFundByQuotationObject(qf, getTodaysDate());
+//					}
 				}
 				else
 				{
-					showErrorMessage();
+					showMessage("Error", "Control that you have insert all the data.");
 				}
 			}
 		});
@@ -260,6 +352,71 @@ public class ToolListActivity extends Activity
     	db.close();
     }
 	
+	//function that connect to server and return all the data of all the tools added by user...
+	private QuotationContainer connectToServerForTools(ArrayList<String> toolsList)
+	{
+		QuotationContainer quotCont = new QuotationContainer();
+		
+		ArrayList<Request> array = new ArrayList<Request>();
+		for (int i = 0; i < listaIsinTmp.size(); i++) 
+		{
+			array.add(new Request(listaIsinTmp.get(i)));
+		}
+		
+		Gson converter = new Gson();
+		String jsonReq = converter.toJson(array);
+		Log.d(getPackageName(), "postData: "+jsonReq);
+		String jsonResponse = ConnectionUtils.postData(jsonReq);
+		Log.d(getPackageName(), "jsonResponse: "+jsonResponse);
+		if(jsonResponse != null)
+		{
+			quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+			return quotCont;
+		}
+		else
+		{
+			return null;
+		}
+		
+	}
+	
+	//function that control if all the isin requested are returned...
+	private boolean allIsinRequestedAreReturned(ArrayList<String> isinList, QuotationContainer container)
+	{
+		boolean result = false;
+		
+		ArrayList<String> support = new ArrayList<String>();
+		for(Quotation_Bond qb : container.getBondList())
+		{
+			support.add(qb.getISIN());
+		}
+		for(Quotation_Fund qf : container.getFundList())
+		{
+			support.add(qf.getISIN());
+		}
+		for(Quotation_Share qs : container.getShareList())
+		{
+			support.add(qs.getISIN());
+		}
+		
+		for (int i = 0; i < isinList.size(); i++) 
+		{
+			if(support.contains(isinList.get(i)))
+			{
+				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	private void goToBondDetailsActivity(String bondIsin)
     {
     	Intent i = new Intent(this, BondDetailsActivity.class);
@@ -296,10 +453,10 @@ public class ToolListActivity extends Activity
 		}
 	}
 	
-	private void showErrorMessage()
+	private void showMessage(String type, String message)
 	{
 		AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
-    	alert_builder.setTitle("Error");
+    	alert_builder.setTitle(type);
     	alert_builder.setMessage("Control that you have insert all the data.");
     	alert_builder.setCancelable(false);
     	alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {

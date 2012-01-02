@@ -28,35 +28,14 @@ public class MyFinanceDatabase
 	public void open()
 	{
 		database = databaseHelper.getWritableDatabase();
-		database.execSQL("CREATE TRIGGER deleteBond"+ 
-							" AFTER DELETE ON "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
-							" FOR EACH ROW"+
-							" WHEN OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+" NOT IN (SELECT "+PortfolioBondMetadata.BOND_ISIN_KEY+" FROM "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+")"+
-							" BEGIN"+
-							" DELETE FROM "+BondMetaData.BOND_TABLE+" WHERE "+PortfolioBondMetadata.BOND_ISIN_KEY+" = OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+";"+
-                			" END");
-		database.execSQL("CREATE TRIGGER deleteFund"+ 
-							" AFTER DELETE ON "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+
-							" FOR EACH ROW"+
-							" WHEN OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+" NOT IN (SELECT "+PortfolioFundMetadata.FUND_ISIN_KEY+" FROM "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+")"+
-							" BEGIN"+
-							" DELETE FROM "+FundMetaData.FUND_TABLE+" WHERE "+PortfolioFundMetadata.FUND_ISIN_KEY+" = OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+";"+
-    						" END");
-		database.execSQL("CREATE TRIGGER deleteShare"+ 
-							" AFTER DELETE ON "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+
-							" FOR EACH ROW"+
-							" WHEN OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+" NOT IN (SELECT "+PortfolioShareMetadata.SHARE_CODE_KEY+" FROM "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+")"+
-							" BEGIN"+
-							" DELETE FROM "+ShareMetaData.SHARE_TABLE+" WHERE "+PortfolioShareMetadata.SHARE_CODE_KEY+" = OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+";"+
-    						" END");
-
+		
 	}
 	
 	public void close()
 	{
-		database.execSQL("DROP TRIGGER deleteBond");
-		database.execSQL("DROP TRIGGER deleteFund");
-		database.execSQL("DROP TRIGGER deleteShare");
+//		database.execSQL("DROP TRIGGER deleteBond");
+//		database.execSQL("DROP TRIGGER deleteFund");
+//		database.execSQL("DROP TRIGGER deleteShare");
 		database.close();
 	}
 	
@@ -329,6 +308,29 @@ public class MyFinanceDatabase
             _db.execSQL(TABLE_PORTFOLIO_BOND_CREATE);
             _db.execSQL(TABLE_PORTFOLIO_FUND_CREATE);
             _db.execSQL(TABLE_PORTFOLIO_SHARE_CREATE);
+            
+            _db.execSQL("CREATE TRIGGER deleteBond"+ 
+					" AFTER DELETE ON "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
+					" FOR EACH ROW"+
+					" WHEN OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+" NOT IN (SELECT "+PortfolioBondMetadata.BOND_ISIN_KEY+" FROM "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+")"+
+					" BEGIN"+
+					" DELETE FROM "+BondMetaData.BOND_TABLE+" WHERE "+PortfolioBondMetadata.BOND_ISIN_KEY+" = OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+";"+
+        			" END");
+            _db.execSQL("CREATE TRIGGER deleteFund"+ 
+					" AFTER DELETE ON "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+
+					" FOR EACH ROW"+
+					" WHEN OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+" NOT IN (SELECT "+PortfolioFundMetadata.FUND_ISIN_KEY+" FROM "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+")"+
+					" BEGIN"+
+					" DELETE FROM "+FundMetaData.FUND_TABLE+" WHERE "+PortfolioFundMetadata.FUND_ISIN_KEY+" = OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+";"+
+					" END");
+            _db.execSQL("CREATE TRIGGER deleteShare"+ 
+					" AFTER DELETE ON "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+
+					" FOR EACH ROW"+
+					" WHEN OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+" NOT IN (SELECT "+PortfolioShareMetadata.SHARE_CODE_KEY+" FROM "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+")"+
+					" BEGIN"+
+					" DELETE FROM "+ShareMetaData.SHARE_TABLE+" WHERE "+PortfolioShareMetadata.SHARE_CODE_KEY+" = OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+";"+
+					" END");
+
             
             //debug
             Log.d(DB_NAME, TABLE_PORTFOLIO_CREATE); 
@@ -628,6 +630,43 @@ public class MyFinanceDatabase
 				"S."+ShareMetaData.SHARE_VARIATION_KEY, "S."+ShareMetaData.SHARE_PERCVAR_KEY, "S."+ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY+" as 'prezzo'"}, 
 				"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"'", 
 				null, null, null, null);
+	}
+	
+	//--------------------------------boolean control methods----------------------------//
+	public boolean bondAlreadyInDatabase(String bondIsin)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(BondMetaData.BOND_TABLE, null, BondMetaData.BOND_ISIN+" = '"+bondIsin+"'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			result = true;
+		}
+		return result;
+	}
+	
+	public boolean fundAlreadyInDatabase(String fundIsin)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(FundMetaData.FUND_TABLE, null, FundMetaData.FUND_ISIN+" = '"+fundIsin+"'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			result = true;
+		}
+		return result;
+	}
+	
+	public boolean shareAlreadyInDatabase(String shareIsin)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(ShareMetaData.SHARE_TABLE, null, ShareMetaData.SHARE_CODE+" = '"+shareIsin+"'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			result = true;
+		}
+		return result;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
