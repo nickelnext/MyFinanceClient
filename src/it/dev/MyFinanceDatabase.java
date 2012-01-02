@@ -213,47 +213,47 @@ public class MyFinanceDatabase
 	
 	private static final String TABLE_FUND_CREATE = "CREATE TABLE "+FundMetaData.FUND_TABLE+" (" +
 			FundMetaData.ID +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_ISIN +" TEXT PRIMARY KEY, " +
-			FundMetaData.FUND_NAME_KEY +" TEXT NOT NULL, " +
-			FundMetaData.FUND_MANAGER_KEY +" TEXT NOT NULL, " +
-			FundMetaData.FUND_CATEGORY_KEY +" TEXT NOT NULL, " +
-			FundMetaData.FUND_BENCHMARK_KEY +" TEXT NOT NULL, " +
-			FundMetaData.FUND_LASTPRIZE_KEY +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_LASTPRIZEDATE_KEY +" TEXT NOT NULL, " +
-			FundMetaData.FUND_PRECPRIZE_KEY +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_CURRENCY_KEY +" TEXT NOT NULL, " +
-			FundMetaData.FUND_PERCVAR_KEY +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_VARIATION_KEY +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_PERFORMANCE1MONTH +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_PERFORMANCE3MONTH +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_PERFORMANCE1YEAR +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_PERFORMANCE3YEAR +" INTEGER NOT NULL, " +
-			FundMetaData.FUND_LASTUPDATE_KEY +" TEXT NOT NULL);";
+			FundMetaData.FUND_ISIN +" TEXT, " +
+			FundMetaData.FUND_NAME_KEY +" TEXT, " +
+			FundMetaData.FUND_MANAGER_KEY +" TEXT, " +
+			FundMetaData.FUND_CATEGORY_KEY +" TEXT, " +
+			FundMetaData.FUND_BENCHMARK_KEY +" TEXT, " +
+			FundMetaData.FUND_LASTPRIZE_KEY +" INTEGER, " +
+			FundMetaData.FUND_LASTPRIZEDATE_KEY +" TEXT, " +
+			FundMetaData.FUND_PRECPRIZE_KEY +" INTEGER, " +
+			FundMetaData.FUND_CURRENCY_KEY +" TEXT, " +
+			FundMetaData.FUND_PERCVAR_KEY +" INTEGER, " +
+			FundMetaData.FUND_VARIATION_KEY +" INTEGER, " +
+			FundMetaData.FUND_PERFORMANCE1MONTH +" INTEGER, " +
+			FundMetaData.FUND_PERFORMANCE3MONTH +" INTEGER, " +
+			FundMetaData.FUND_PERFORMANCE1YEAR +" INTEGER, " +
+			FundMetaData.FUND_PERFORMANCE3YEAR +" INTEGER, " +
+			FundMetaData.FUND_LASTUPDATE_KEY +" TEXT);";
 	
 	private static final String TABLE_SHARE_CREATE = "CREATE TABLE "+ShareMetaData.SHARE_TABLE+" (" +
 			ShareMetaData.ID +" INTEGER NOT NULL, " +
 			ShareMetaData.SHARE_CODE +" TEXT PRIMARY KEY, " +
-			ShareMetaData.SHARE_NAME_KEY +" TEXT NOT NULL, " +
-			ShareMetaData.SHARE_MINROUNDLOT_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_MARKETPHASE_KEY +" TEXT NOT NULL, " +
-			ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_PERCVAR_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_VARIATION_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_LASTCONTRACTDATE_KEY +" TEXT NOT NULL, " +
-			ShareMetaData.SHARE_BUYPRICE_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_SELLPRICE_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_LASTAMOUNT_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_BUYAMOUNT_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_SELLAMOUNT_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_TOTALAMOUNT_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_MAXTODAY_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_MINTODAY_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_MAXYEAR_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_MINYEAR_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_MAXYEARDATE_KEY +" TEXT NOT NULL, " +
-			ShareMetaData.SHARE_MINYEARDATE_KEY +" TEXT NOT NULL, " +
-			ShareMetaData.SHARE_LASTCLOSE_KEY +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_LASTUPDATE_KEY +" TEXT NOT NULL);";
+			ShareMetaData.SHARE_NAME_KEY +" TEXT, " +
+			ShareMetaData.SHARE_MINROUNDLOT_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_MARKETPHASE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_PERCVAR_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_VARIATION_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_LASTCONTRACTDATE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_BUYPRICE_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_SELLPRICE_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_LASTAMOUNT_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_BUYAMOUNT_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_SELLAMOUNT_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_TOTALAMOUNT_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_MAXTODAY_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_MINTODAY_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_MAXYEAR_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_MINYEAR_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_MAXYEARDATE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_MINYEARDATE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_LASTCLOSE_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_LASTUPDATE_KEY +" TEXT);";
 	
 	//-------------------------------------STRING per creazione tabelle di transizione-------------------//
 	private static final String TABLE_PORTFOLIO_BOND_CREATE = "CREATE TABLE "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+" (" +
@@ -674,25 +674,19 @@ public class MyFinanceDatabase
 	//------------------------of a shares in a specific Portfolio-------------------------------------//
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public Cursor getBondDetail(String portfolioName, String ISIN)
+		public Cursor getBondDetails(String ISIN)
 	{
-		return database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+" as P join "+BondMetaData.BOND_TABLE+" as S", 
-				null,"P."+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioBondMetadata.BOND_ISIN_KEY+" = S.'"+BondMetaData.BOND_ISIN+"' = '"+ISIN+"'", 
-				null, null, null, null);
+		return database.query(BondMetaData.BOND_TABLE, null, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null, null, null, null);
 	}
 	
-	public Cursor getFondDetail(String portfolioName, String ISIN)
+	public Cursor getFondDetails(String ISIN)
 	{
-		return database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+" as P join "+FundMetaData.FUND_TABLE+" as S", 
-				null,"P."+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioFundMetadata.FUND_ISIN_KEY+" = S.'"+FundMetaData.FUND_ISIN+"' = '"+ISIN+"'", 
-				null, null, null, null);
+		return database.query(FundMetaData.FUND_TABLE, null, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null, null, null, null);
 	}
 	
-	public Cursor getShareDetail(String portfolioName, String CODE)
+	public Cursor getShareDetails(String CODE)
 	{
-		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+" as P join "+ShareMetaData.SHARE_TABLE+" as S", 
-				null,"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"' = '"+CODE+"'", 
-				null, null, null, null);
+		return database.query(ShareMetaData.SHARE_TABLE, null, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null, null, null, null);
 	}
 	
 	

@@ -3,6 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+    
     <TextView
         android:id="@+id/bondReferenceTextView"
         android:layout_width="wrap_content"
@@ -14,155 +15,418 @@
        	android:layout_width="fill_parent"
        	android:background="#FF909090" />
 
-
-    <TextView
-		android:id="@+id/center"
-		android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:id="@+id/isinTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_toLeftOf="@+id/center"
-        android:text="ISIN:" />
-
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/center"
-        android:text="Name:" />
-    <TextView
-        android:id="@+id/currencyTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Currency:" />
-    <TextView
-        android:id="@+id/marketTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Market:" />
-    <TextView
-        android:id="@+id/marketPhaseTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Market phase:" />
-    <TextView
-        android:id="@+id/lastContractPrizeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last contract prize:" />
-    <TextView
-        android:id="@+id/percVarTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Percent variation:" />
-    <TextView
-        android:id="@+id/lastContractDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last contract date:" />
-    <TextView
-        android:id="@+id/lastVolumeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last volume:" />
-    <TextView
-        android:id="@+id/buyVolumeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Buy volume:" />
-    <TextView
-        android:id="@+id/sellVolumeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sell volume:" />
-    <TextView
-        android:id="@+id/totalVolumeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total volume:" />
-    <TextView
-        android:id="@+id/buyPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Buy price:" />
-    <TextView
-        android:id="@+id/sellPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sell price:" />
-    <TextView
-        android:id="@+id/maxTodayTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="max today:" />
-    <TextView
-        android:id="@+id/minTodayTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min today:" />
-    <TextView
-        android:id="@+id/maxYearTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Max year:" />
-    <TextView
-        android:id="@+id/minYearTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min year:" />
-    <TextView
-        android:id="@+id/maxYearDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Max year date:" />
-    <TextView
-        android:id="@+id/minYearDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="min year date:" />
-    <TextView
-        android:id="@+id/lastCloseTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last close:" />
-    <TextView
-        android:id="@+id/expirationDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Expiration date:" />
-    <TextView
-        android:id="@+id/couponDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coupon date:" />
-    <TextView
-        android:id="@+id/couponTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coupon:" />
-    <TextView
-        android:id="@+id/minRoundLotTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min round lot:" />
-    <TextView
-        android:id="@+id/lastUpDateDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/center"
-        android:text="Last update date:" />
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="5dp"
+    		android:layout_marginLeft="5dp"
+    		android:weightSum="2">
+    		
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="ISIN:" />
+            <TextView
+        		android:id="@+id/bondIsinTextView"
+       			android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+          
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Name:" />        
+            <TextView
+        		android:id="@+id/bondNameTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Currency:" />
+            <TextView
+       			android:id="@+id/bondCurrencyTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Market:" />
+            <TextView
+        		android:id="@+id/bondMarketTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+       			android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Market phase:" />
+            <TextView
+        		android:id="@+id/bondMarketPhaseTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Last contract prize:" />
+            <TextView
+        		android:id="@+id/bondLastContractPrizeTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Percent variation:" />
+            <TextView
+        		android:id="@+id/bondPercVarTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Variation:" />
+            <TextView
+        		android:id="@+id/bondVariationTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Last contract date:" />
+            <TextView
+        		android:id="@+id/bondLastContractDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Last volume:" />
+            <TextView
+        		android:id="@+id/bondLastVolumeTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Buy volume:" />
+            <TextView
+        		android:id="@+id/bondBuyVolumeTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Sell volume:" />
+            <TextView
+        		android:id="@+id/bondSellVolumeTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Total volume:" />
+            <TextView
+        		android:id="@+id/bondTotalVolumeTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Buy Price:" />
+            <TextView
+        		android:id="@+id/bondBuyPriceTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Sell price:" />
+            <TextView
+        		android:id="@+id/bondSellPriceTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Max Today:" />
+            <TextView
+        		android:id="@+id/bondMaxTodayTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Min Today:" />
+            <TextView
+        		android:id="@+id/bondMinTodayTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Max year:" />
+            <TextView
+        		android:id="@+id/bondMaxYearTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="MinYear:" />
+            <TextView
+        		android:id="@+id/bondMinYearTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Max year date:" />
+            <TextView
+        		android:id="@+id/bondMaxYearDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Min year date:" />
+            <TextView
+        		android:id="@+id/bondMinYearDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Last close:" />
+            <TextView
+        		android:id="@+id/bondLastCloseTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Expiration date:" />
+            <TextView
+        		android:id="@+id/bondExpirationDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Coupon date:" />
+            <TextView
+        		android:id="@+id/bondCouponDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Coupon:" />
+            <TextView
+        		android:id="@+id/bondCouponTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Min round lot:" />
+            <TextView
+        		android:id="@+id/bondMinRoundLotTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+        <TableRow >
+            
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Last update date:" />
+            <TextView
+        		android:id="@+id/bondLastUpDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="" />
+            
+        </TableRow>
+    </TableLayout>
     
-    <ListView
-        android:id="@+id/portfolioListView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/center" />
-    
-    
-
 </LinearLayout>
