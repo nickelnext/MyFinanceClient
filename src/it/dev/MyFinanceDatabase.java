@@ -29,26 +29,23 @@ public class MyFinanceDatabase
 	{
 		database = databaseHelper.getWritableDatabase();
 		database.execSQL("CREATE TRIGGER deleteBond"+ 
-							" AFTER DELETE ON"+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
+							" AFTER DELETE ON "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
 							" FOR EACH ROW"+
-							" WHEN NOT EXIST (SELECT "+PortfolioBondMetadata.BOND_ISIN_KEY+" FROM "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
-												" WHERE "+PortfolioBondMetadata.BOND_ISIN_KEY+" = OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+")"+
+							" WHEN OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+" NOT IN (SELECT "+PortfolioBondMetadata.BOND_ISIN_KEY+" FROM "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+")"+
 							" BEGIN"+
 							" DELETE FROM "+BondMetaData.BOND_TABLE+" WHERE "+PortfolioBondMetadata.BOND_ISIN_KEY+" = OLD."+PortfolioBondMetadata.BOND_ISIN_KEY+";"+
                 			" END");
 		database.execSQL("CREATE TRIGGER deleteFund"+ 
-							" AFTER DELETE ON"+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+
+							" AFTER DELETE ON "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+
 							" FOR EACH ROW"+
-							" WHEN NOT EXIST (SELECT "+PortfolioFundMetadata.FUND_ISIN_KEY+" FROM "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+
-												" WHERE "+PortfolioFundMetadata.FUND_ISIN_KEY+" = OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+")"+
+							" WHEN OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+" NOT IN (SELECT "+PortfolioFundMetadata.FUND_ISIN_KEY+" FROM "+PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+")"+
 							" BEGIN"+
 							" DELETE FROM "+FundMetaData.FUND_TABLE+" WHERE "+PortfolioFundMetadata.FUND_ISIN_KEY+" = OLD."+PortfolioFundMetadata.FUND_ISIN_KEY+";"+
     						" END");
 		database.execSQL("CREATE TRIGGER deleteShare"+ 
-							" AFTER DELETE ON"+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+
-							" FRO EACH ROW"+
-							" WHEN NOT EXIST (SELECT "+PortfolioShareMetadata.SHARE_CODE_KEY+" FROM "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+
-												" WHERE "+PortfolioShareMetadata.SHARE_CODE_KEY+" = OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+")"+
+							" AFTER DELETE ON "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+
+							" FOR EACH ROW"+
+							" WHEN OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+" NOT IN (SELECT "+PortfolioShareMetadata.SHARE_CODE_KEY+" FROM "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+")"+
 							" BEGIN"+
 							" DELETE FROM "+ShareMetaData.SHARE_TABLE+" WHERE "+PortfolioShareMetadata.SHARE_CODE_KEY+" = OLD."+PortfolioShareMetadata.SHARE_CODE_KEY+";"+
     						" END");

@@ -13,4 +13,85 @@
         android:layout_height="2dip"
        	android:layout_width="fill_parent"
        	android:background="#FF909090" />
+    <TextView
+        android:id="@+id/isinTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ISIN:" />
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:" />
+    <TextView
+        android:id="@+id/managerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manager:" />
+    <TextView
+        android:id="@+id/categoryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Category:" />
+    <TextView
+        android:id="@+id/benchmarkTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Benchmark:" />
+    <TextView
+        android:id="@+id/lastPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last price:" />
+    <TextView
+        android:id="@+id/lastPriceDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last price date:" />
+    <TextView
+        android:id="@+id/precPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Precedent price:" />
+    <TextView
+        android:id="@+id/currencyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Currency:" />
+    <TextView
+        android:id="@+id/percVarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Percentual variation:" />
+    <TextView
+        android:id="@+id/variationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Variation:" />
+    <TextView
+        android:id="@+id/performance1MonthTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Performance 1 month:" />
+    <TextView
+        android:id="@+id/performance3MonthTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Performance 3 month:" />
+    <TextView
+        android:id="@+id/performance1YearTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Performance 1 year:" />
+    <TextView
+        android:id="@+id/performance3YearTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Performance 3 year:" />
+    <TextView
+        android:id="@+id/lastUpDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last update date:" />
+
 </LinearLayout>

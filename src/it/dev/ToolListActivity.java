@@ -88,7 +88,7 @@ public class ToolListActivity extends Activity
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.edit_item:
-        	
+        	//fare
         	return true;            
         case R.id.remove_item:        	
         	deleteSelectedTool(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position));        	
@@ -342,5 +342,6 @@ public class ToolListActivity extends Activity
 		db.close();
 		return;
 	}
+	
 	}
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
     <TextView
@@ -13,4 +13,156 @@
         android:layout_height="2dip"
        	android:layout_width="fill_parent"
        	android:background="#FF909090" />
+
+
+    <TextView
+		android:id="@+id/center"
+		android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/isinTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_toLeftOf="@+id/center"
+        android:text="ISIN:" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/center"
+        android:text="Name:" />
+    <TextView
+        android:id="@+id/currencyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Currency:" />
+    <TextView
+        android:id="@+id/marketTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Market:" />
+    <TextView
+        android:id="@+id/marketPhaseTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Market phase:" />
+    <TextView
+        android:id="@+id/lastContractPrizeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last contract prize:" />
+    <TextView
+        android:id="@+id/percVarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Percent variation:" />
+    <TextView
+        android:id="@+id/lastContractDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last contract date:" />
+    <TextView
+        android:id="@+id/lastVolumeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last volume:" />
+    <TextView
+        android:id="@+id/buyVolumeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buy volume:" />
+    <TextView
+        android:id="@+id/sellVolumeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sell volume:" />
+    <TextView
+        android:id="@+id/totalVolumeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total volume:" />
+    <TextView
+        android:id="@+id/buyPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Buy price:" />
+    <TextView
+        android:id="@+id/sellPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sell price:" />
+    <TextView
+        android:id="@+id/maxTodayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="max today:" />
+    <TextView
+        android:id="@+id/minTodayTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min today:" />
+    <TextView
+        android:id="@+id/maxYearTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Max year:" />
+    <TextView
+        android:id="@+id/minYearTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min year:" />
+    <TextView
+        android:id="@+id/maxYearDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Max year date:" />
+    <TextView
+        android:id="@+id/minYearDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="min year date:" />
+    <TextView
+        android:id="@+id/lastCloseTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last close:" />
+    <TextView
+        android:id="@+id/expirationDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Expiration date:" />
+    <TextView
+        android:id="@+id/couponDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coupon date:" />
+    <TextView
+        android:id="@+id/couponTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Coupon:" />
+    <TextView
+        android:id="@+id/minRoundLotTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min round lot:" />
+    <TextView
+        android:id="@+id/lastUpDateDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/center"
+        android:text="Last update date:" />
+    
+    <ListView
+        android:id="@+id/portfolioListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/center" />
+    
+    
+
 </LinearLayout>
