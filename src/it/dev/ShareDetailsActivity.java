@@ -90,33 +90,33 @@ public class ShareDetailsActivity extends Activity
 	
 	private void updateView()
 	{
-db.open();
+		db.open();
     	
     	Cursor details = db.getShareDetails(shareIsin);
     	startManagingCursor(details);
     	
     	code.setText(details.getString(1));
     	isin.setText(details.getString(2));
-    	minRoundLot.setText(details.getString(3));
-		marketPhase.setText(details.getString(4));
-		lastContractPrice.setText(String.valueOf(details.getString(5)));
-		percentualVariation.setText(String.valueOf(details.getString(6)));
-		variation.setText(String.valueOf(details.getString(7)));
-		lastContractDate.setText(details.getString(8));
-		buyPrice.setText(String.valueOf(details.getString(9)));
-		sellPrice.setText(String.valueOf(details.getString(10)));
-		lastAmount.setText(details.getString(11));
-		buyAmount.setText(details.getString(12));
-		sellAmount.setText(details.getString(13));
-		totalAmount.setText(details.getString(14));
-		maxToday.setText(String.valueOf(details.getString(15)));
-		minToday.setText(String.valueOf(details.getString(16)));
-		maxYear.setText(String.valueOf(details.getString(17)));
-		minYear.setText(String.valueOf(details.getString(18)));
-		maxYearDate.setText(details.getString(19));
-		minYearDate.setText(details.getString(20));
-		lastClose.setText(String.valueOf(details.getString(21)));
-		lastClose.setText(details.getString(22));
+    	name.setText(details.getString(3));
+    	minRoundLot.setText(String.valueOf(details.getString(4)));
+		marketPhase.setText(details.getString(5));
+		lastContractPrice.setText(String.valueOf(details.getString(6)));
+		percentualVariation.setText(String.valueOf(details.getString(7)));
+		variation.setText(String.valueOf(details.getString(8)));
+		lastContractDate.setText(details.getString(9));
+		buyPrice.setText(String.valueOf(details.getString(10)));
+		sellPrice.setText(String.valueOf(details.getString(11)));
+		lastAmount.setText(String.valueOf(details.getString(12)));
+		buyAmount.setText(String.valueOf(details.getString(13)));
+		sellAmount.setText(String.valueOf(details.getString(14)));
+		totalAmount.setText(String.valueOf(details.getString(15)));
+		maxToday.setText(String.valueOf(details.getString(16)));
+		minToday.setText(String.valueOf(details.getString(17)));
+		maxYear.setText(String.valueOf(details.getString(18)));
+		minYear.setText(String.valueOf(details.getString(19)));
+		maxYearDate.setText(details.getString(20));
+		minYearDate.setText(details.getString(21));
+		lastClose.setText(String.valueOf(details.getString(22)));
 		lastUpdateDate.setText(details.getString(23));
     		
     	db.close();

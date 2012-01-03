@@ -2,6 +2,7 @@ package it.dev;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,22 +13,22 @@ public class FundDetailsActivity extends Activity
 	private TextView fundReferenceTextView;
 	private String fundIsin;
 	
-	private TextView fundisinTextView;
-	private TextView fundnameTextView;
-	private TextView fundmanagerTextView;
-	private TextView fundcategoryTextView;
-	private TextView fundbenchmarkTextView;
-	private TextView fundlastPrizeTextView;
-	private TextView fundlastPriceDateTextView;
-	private TextView fundprecPrizeTextView;
-	private TextView fundcurrencyTextView;
-	private TextView fundpercVariationTextView;
-	private TextView fundvariationTextView;
-	private TextView fundperformance1MonthTextView;
-	private TextView fundperformance3MonthTextView;
-	private TextView fundperformance1YearTextView;
-	private TextView fundperformance3YearTextView;
-	private TextView fundlastUpdateTextView;
+	private TextView isin;
+	private TextView name;
+	private TextView manager;
+	private TextView category;
+	private TextView benchmark;
+	private TextView lastPrize;
+	private TextView lastPriceDate;
+	private TextView precPrize;
+	private TextView currency;
+	private TextView percentualVariation;
+	private TextView variation;
+	private TextView performance1Month;
+	private TextView performance3Month;
+	private TextView performance1Year;
+	private TextView performance3Year;
+	private TextView lastUpdateDate;
 	
 	private MyFinanceDatabase db;
 	
@@ -74,44 +75,47 @@ public class FundDetailsActivity extends Activity
 	
 	private void getViews()
 	{
-		fundisinTextView = (TextView) findViewById(R.id.fundisinTextView);
-		fundnameTextView = (TextView) findViewById(R.id.fundnameTextView);
-		fundmanagerTextView = (TextView) findViewById(R.id.fundmanagerTextView);
-		fundcategoryTextView = (TextView) findViewById(R.id.fundcategoryTextView);
-		fundbenchmarkTextView = (TextView) findViewById(R.id.fundbenchmarkTextView);
-		fundlastPrizeTextView = (TextView) findViewById(R.id.fundlastPrizeTextView);
-		fundlastPriceDateTextView = (TextView) findViewById(R.id.fundlastPriceDateTextView);
-		fundprecPrizeTextView = (TextView) findViewById(R.id.fundprecPrizeTextView);
-		fundcurrencyTextView = (TextView) findViewById(R.id.fundcurrencyTextView);
-		fundpercVariationTextView = (TextView) findViewById(R.id.fundpercVariationTextView);
-		fundvariationTextView = (TextView) findViewById(R.id.fundvariationTextView);
-		fundperformance1MonthTextView = (TextView) findViewById(R.id.fundperformance1MonthTextView);
-		fundperformance3MonthTextView = (TextView) findViewById(R.id.fundperformance3MonthTextView);
-		fundperformance1YearTextView = (TextView) findViewById(R.id.fundperformance1YearTextView);
-		fundperformance3YearTextView = (TextView) findViewById(R.id.fundperformance3YearTextView);
-		fundlastUpdateTextView = (TextView) findViewById(R.id.fundlastUpdateTextView);
-	}
-	
+		isin = (TextView) findViewById(R.id.fundisinTextView);
+		name = (TextView) findViewById(R.id.fundnameTextView);
+		manager = (TextView) findViewById(R.id.fundmanagerTextView);
+		category = (TextView) findViewById(R.id.fundcategoryTextView);
+		benchmark = (TextView) findViewById(R.id.fundbenchmarkTextView);
+		lastPrize = (TextView) findViewById(R.id.fundlastPrizeTextView);
+		lastPriceDate = (TextView) findViewById(R.id.fundlastPriceDateTextView);
+		precPrize = (TextView) findViewById(R.id.fundprecPrizeTextView);
+		currency = (TextView) findViewById(R.id.fundcurrencyTextView);
+		percentualVariation = (TextView) findViewById(R.id.fundpercVariationTextView);
+		variation = (TextView) findViewById(R.id.fundvariationTextView);
+		performance1Month = (TextView) findViewById(R.id.fundperformance1MonthTextView);
+		performance3Month = (TextView) findViewById(R.id.fundperformance3MonthTextView);
+		performance1Year = (TextView) findViewById(R.id.fundperformance1YearTextView);
+		performance3Year = (TextView) findViewById(R.id.fundperformance3YearTextView);
+		lastUpdateDate = (TextView) findViewById(R.id.fundlastUpdateTextView);
+	}	
 	private void updateView()
     {
 		db.open();
 		
-		/*
-		 * Cursor fundDetails = db.getDetailsOfFund(fundISIN);
-		 * startManagingCursor(fundDetails);
-		 * 
-		 * if(fundDetails.getCount()==1)
-		 * {
-		 * 		fundDetails.moveToFirst();
-		 * 		fundisinTextView.setText(fundDetails.getString(1));
-		 * 		...
-		 * 		...
-		 * 		fundlastUpdateTextView.setText(fundDetails.getString(...));
-		 * }
-		 * 
-		 * */ 
-		
-		
+    	Cursor details = db.getFondDetails(fundIsin);
+    	startManagingCursor(details);
+    	
+    	isin.setText(details.getString(1));
+    	name.setText(details.getString(2));
+		manager.setText(details.getString(3));
+		category.setText(details.getString(4));
+		benchmark.setText(details.getString(5));
+		lastPrize.setText(String.valueOf(details.getString(6)));
+		lastPriceDate.setText(details.getString(7));
+		precPrize.setText(String.valueOf(details.getString(8)));
+		currency.setText(details.getString(9));
+		percentualVariation.setText(String.valueOf(details.getString(10)));
+		variation.setText(String.valueOf(details.getString(11)));
+		performance1Month.setText(String.valueOf(details.getString(12)));
+		performance3Month.setText(String.valueOf(details.getString(13)));
+		performance1Year.setText(String.valueOf(details.getString(14)));
+		performance3Year.setText(String.valueOf(details.getString(15)));
+		lastUpdateDate.setText(details.getString(16));
+    				
 		db.close();
     }
 }
