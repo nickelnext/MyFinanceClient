@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< .mine
+
 <ScrollView 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-=======
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
->>>>>>> .r39
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -41,12 +36,8 @@
        			android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />        
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >         
             <TextView
@@ -59,13 +50,9 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
         		android:textColor="#0066FF"
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >            
             <TextView
@@ -78,12 +65,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >            
             <TextView
@@ -96,12 +79,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />            
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >            
             <TextView
@@ -114,12 +93,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />            
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >          
             <TextView
@@ -132,12 +107,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -150,12 +121,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >          
             <TextView
@@ -168,12 +135,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />            
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -186,12 +149,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >          
             <TextView
@@ -204,12 +163,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >         
             <TextView
@@ -222,12 +177,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />            
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -240,12 +191,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >            
             <TextView
@@ -258,12 +205,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >          
             <TextView
@@ -276,12 +219,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >            
             <TextView
@@ -294,12 +233,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >            
             <TextView
@@ -312,12 +247,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >            
             <TextView
@@ -330,12 +261,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -348,12 +275,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >         
             <TextView
@@ -366,12 +289,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -384,12 +303,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >          
             <TextView
@@ -402,12 +317,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -420,12 +331,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >          
             <TextView
@@ -438,12 +345,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -456,12 +359,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />            
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -474,12 +373,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >           
             <TextView
@@ -492,12 +387,8 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />           
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
         <TableRow >          
             <TextView
@@ -510,18 +401,9 @@
         		android:layout_width="wrap_content"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
-<<<<<<< .mine
-        		android:text="" />          
-=======
+        		android:text=""
         		android:gravity="center_horizontal"/>
-            
->>>>>>> .r39
         </TableRow>
-<<<<<<< .mine
-    </TableLayout>  
-</LinearLayout>
-</ScrollView>=======
     </TableLayout>
-    
 </LinearLayout>
-</ScrollView>>>>>>>> .r39
+</ScrollView>
