@@ -14,7 +14,7 @@
 
     	        <TextView
     	            android:id="@+id/isinTextView"
-    	            android:layout_width="wrap_content"
+    	            android:layout_width="fill_parent"
     	            android:layout_height="wrap_content"
     	            android:paddingLeft="5dp"
     	            android:textColor="#FFFFFF"
@@ -23,7 +23,7 @@
     	            android:text="isin"/>
 				<TextView               
                 	android:id="@+id/variationTextView"
-                	android:layout_width="wrap_content"
+                	android:layout_width="fill_parent"
                 	android:layout_height="wrap_content"                
                 	android:textSize="12dp"
                 	android:textColor="#FFFFFF"
@@ -32,7 +32,7 @@
     	            android:text="variation"/>
         		<TextView               
                 	android:id="@+id/percVarTextView"
-                	android:layout_width="wrap_content"
+                	android:layout_width="fill_parent"
                 	android:layout_height="wrap_content"
                 	android:textSize="12dp"
                 	android:textColor="#FFFFFF"
@@ -41,7 +41,7 @@
     	            android:text="var %"/>
         		<TextView 
         		    android:id="@+id/lastPrizeTextView"
-                	android:layout_width="wrap_content"
+                	android:layout_width="fill_parent"
                 	android:layout_height="wrap_content"
                 	android:textSize="12dp"
                 	android:textColor="#FFFFFF"

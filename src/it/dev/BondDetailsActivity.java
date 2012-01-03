@@ -1,16 +1,11 @@
 package it.dev;
 
-import it.dev.MyFinanceDatabase.BondMetaData;
-import it.dev.MyFinanceDatabase.ShareMetaData;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MergeCursor;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 public class BondDetailsActivity extends Activity 
@@ -20,6 +15,7 @@ public class BondDetailsActivity extends Activity
 	private TextView bondReferenceTextView;
 	private String bondIsin;
 	
+	private TextView isin;
 	private TextView name;
 	private TextView currency;
 	private TextView market;
@@ -47,8 +43,6 @@ public class BondDetailsActivity extends Activity
 	private TextView minRoundLot;
 	private TextView lastUpdateDate;
 	
-	
-	
 	public void onCreate(Bundle savedInstanceState) 
     {
 		super.onCreate(savedInstanceState);
@@ -56,7 +50,7 @@ public class BondDetailsActivity extends Activity
 		
 		bondReferenceTextView = (TextView) findViewById(R.id.bondReferenceTextView);
 		
-		Intent intent = getIntent(); // l'intent di questa activity
+		Intent intent = getIntent();
         String pkg = getPackageName();
         
         bondIsin = (String) intent.getStringExtra(pkg+".bondIsin");        
@@ -73,6 +67,23 @@ public class BondDetailsActivity extends Activity
 		updateView();
 	}
 	
+	public boolean onCreateOptionsMenu(Menu menu)
+    {
+    	getMenuInflater().inflate(R.menu.tool_detail_menu, menu);
+    	return true;
+    }
+    
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+    	switch(item.getItemId())
+    	{
+    	case R.id.menu_forced_update:
+    		//do forced update...
+    		break;
+    	}
+    	return super.onOptionsItemSelected(item);
+    }
+	
 	private void updateView()
     {    	    	
     	db.open();
@@ -80,38 +91,45 @@ public class BondDetailsActivity extends Activity
     	Cursor details = db.getBondDetails(bondIsin);
     	startManagingCursor(details);
     	
-    	name.setText(details.getString(2));
-		currency.setText(details.getString(3));
-		market.setText(details.getString(4));
-		marketPhase.setText(details.getString(5));
-		lastContractPrice.setText(String.valueOf(details.getString(6)));
-		percentualVariation.setText(String.valueOf(details.getString(7)));
-		variation.setText(String.valueOf(details.getString(8)));
-		lastContractDate.setText(details.getString(9));
-		lastVolume.setText(String.valueOf(details.getString(10)));
-		buyVolume.setText(String.valueOf(details.getString(11)));		
-		sellVolume.setText(String.valueOf(details.getString(12)));
-		totalVolume.setText(String.valueOf(details.getString(13)));
-		buyPrice.setText(String.valueOf(details.getString(14)));
-		sellPrice.setText(String.valueOf(details.getString(15)));
-		maxToday.setText(String.valueOf(details.getString(16)));
-		minToday.setText(String.valueOf(details.getString(17)));
-		maxYear.setText(String.valueOf(details.getString(18)));
-		minYear.setText(String.valueOf(details.getString(19)));
-		maxYearDate.setText(details.getString(20));
-		minYearDate.setText(details.getString(21));
-		lastClose.setText(String.valueOf(details.getString(22)));
-		expirationDate.setText(details.getString(23));
-		couponDate.setText(details.getString(24));
-		coupon.setText(String.valueOf(details.getString(25)));
-		minRoundLot.setText(String.valueOf(details.getString(26)));
-		lastUpdateDate.setText(details.getString(27));
+    	if(details.getCount()==1)
+    	{
+    		details.moveToFirst();
+        	
+        	isin.setText(details.getString(1));
+        	name.setText(details.getString(2));
+    		currency.setText(details.getString(3));
+    		market.setText(details.getString(4));
+    		marketPhase.setText(details.getString(5));
+    		lastContractPrice.setText(String.valueOf(details.getString(6)));
+    		percentualVariation.setText(String.valueOf(details.getString(7)));
+    		variation.setText(String.valueOf(details.getString(8)));
+    		lastContractDate.setText(details.getString(9));
+    		lastVolume.setText(String.valueOf(details.getString(10)));
+    		buyVolume.setText(String.valueOf(details.getString(11)));		
+    		sellVolume.setText(String.valueOf(details.getString(12)));
+    		totalVolume.setText(String.valueOf(details.getString(13)));
+    		buyPrice.setText(String.valueOf(details.getString(14)));
+    		sellPrice.setText(String.valueOf(details.getString(15)));
+    		maxToday.setText(String.valueOf(details.getString(16)));
+    		minToday.setText(String.valueOf(details.getString(17)));
+    		maxYear.setText(String.valueOf(details.getString(18)));
+    		minYear.setText(String.valueOf(details.getString(19)));
+    		maxYearDate.setText(details.getString(20));
+    		minYearDate.setText(details.getString(21));
+    		lastClose.setText(String.valueOf(details.getString(22)));
+    		expirationDate.setText(details.getString(23));
+    		couponDate.setText(details.getString(24));
+    		coupon.setText(String.valueOf(details.getString(25)));
+    		minRoundLot.setText(String.valueOf(details.getString(26)));
+    		lastUpdateDate.setText(details.getString(27));
+    	}
     		
     	db.close();
     }
 	
 	private void getViews()
 	{
+		isin = (TextView) findViewById(R.id.bondIsinTextView);
 		name = (TextView) findViewById(R.id.bondNameTextView);
 		currency = (TextView) findViewById(R.id.bondCurrencyTextView);
 		market = (TextView) findViewById(R.id.bondMarketTextView);

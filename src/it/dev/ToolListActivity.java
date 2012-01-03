@@ -52,7 +52,11 @@ public class ToolListActivity extends Activity
 	private TextView prizeCol;
 	private ListView toolListView;
 	
+	//liste di supporto per salvare i dati temporanei prima di scriverli nel database
 	private ArrayList<String> listaIsinTmp = new ArrayList<String>();
+	private ArrayList<String> listaDataAcqTmp = new ArrayList<String>();
+	private ArrayList<String> listaPrezzoAcqTmp = new ArrayList<String>();
+	private ArrayList<String> listaLottoTmp = new ArrayList<String>();
 	
 	public void onCreate(Bundle savedInstanceState) 
     {
@@ -122,7 +126,12 @@ public class ToolListActivity extends Activity
 	//Open the custom alert dialog where it is possible to add a new tool.
 	private void showAddNewToolDialog()
 	{
+		//initilize arraylists...
 		listaIsinTmp.clear();
+		listaDataAcqTmp.clear();
+		listaPrezzoAcqTmp.clear();
+		listaLottoTmp.clear();
+		
 		final Dialog addToolDialog = new Dialog(ToolListActivity.this);
 		addToolDialog.setContentView(R.layout.custom_add_new_tool);
 		addToolDialog.setTitle("Add a new Tool");
@@ -146,7 +155,11 @@ public class ToolListActivity extends Activity
 				if(shareISINEditText.getText().length()!=0 && buyPriceEditText.getText().length()!=0 && roundLotEditText.getText().length()!=0)
 				{
 					//save temporary data....(e.g. using arrayList<Object>)
+					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
 					listaIsinTmp.add(shareISINEditText.getText().toString());
+					listaDataAcqTmp.add(purchaseDate);
+					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
+					listaLottoTmp.add(roundLotEditText.getText().toString());
 					
 					//initialize view...
 					final Calendar c = Calendar.getInstance();
@@ -170,7 +183,11 @@ public class ToolListActivity extends Activity
 					
 					
 					//0. add last tool in ArrayList<String>...
+					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
 					listaIsinTmp.add(shareISINEditText.getText().toString());
+					listaDataAcqTmp.add(purchaseDate);
+					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
+					listaLottoTmp.add(roundLotEditText.getText().toString());
 					
 					//1. send request to server for tools data....
 					QuotationContainer myQuotationContainer = connectToServerForTools(listaIsinTmp);
@@ -191,13 +208,35 @@ public class ToolListActivity extends Activity
 									if(db.bondAlreadyInDatabase(qb.getISIN()))
 									{
 										//UPDATE
+										
+										try {
+											db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
+										} catch (Exception e) {
+											System.out.println("Database update error");
+										}
 									}
 									else
 									{
 										//INSERT
+										
+										try {
+											db.addNewBondByQuotationObject(qb, getTodaysDate());
+										} catch (Exception e) {
+											System.out.println("Database insert error");
+										}
+										
+										
+										
 									}
 									
 									//3.2 INSERT bond in transition table
+									int index = listaIsinTmp.indexOf(qb.getISIN());
+									try {
+										db.addNewBondInTransitionTable(portfolioName, listaIsinTmp.get(index), 
+												listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
+									} catch (Exception e) {
+										System.out.println("Database insert error [transition table]");
+									}
 								}
 								
 								//4. for all FUND returned...

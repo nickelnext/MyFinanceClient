@@ -218,16 +218,16 @@ public class MyFinanceDatabase
 			FundMetaData.FUND_MANAGER_KEY +" TEXT, " +
 			FundMetaData.FUND_CATEGORY_KEY +" TEXT, " +
 			FundMetaData.FUND_BENCHMARK_KEY +" TEXT, " +
-			FundMetaData.FUND_LASTPRIZE_KEY +" INTEGER, " +
+			FundMetaData.FUND_LASTPRIZE_KEY +" REAL, " +
 			FundMetaData.FUND_LASTPRIZEDATE_KEY +" TEXT, " +
-			FundMetaData.FUND_PRECPRIZE_KEY +" INTEGER, " +
+			FundMetaData.FUND_PRECPRIZE_KEY +" REAL, " +
 			FundMetaData.FUND_CURRENCY_KEY +" TEXT, " +
-			FundMetaData.FUND_PERCVAR_KEY +" INTEGER, " +
-			FundMetaData.FUND_VARIATION_KEY +" INTEGER, " +
-			FundMetaData.FUND_PERFORMANCE1MONTH +" INTEGER, " +
-			FundMetaData.FUND_PERFORMANCE3MONTH +" INTEGER, " +
-			FundMetaData.FUND_PERFORMANCE1YEAR +" INTEGER, " +
-			FundMetaData.FUND_PERFORMANCE3YEAR +" INTEGER, " +
+			FundMetaData.FUND_PERCVAR_KEY +" REAL, " +
+			FundMetaData.FUND_VARIATION_KEY +" REAL, " +
+			FundMetaData.FUND_PERFORMANCE1MONTH +" REAL, " +
+			FundMetaData.FUND_PERFORMANCE3MONTH +" REAL, " +
+			FundMetaData.FUND_PERFORMANCE1YEAR +" REAL, " +
+			FundMetaData.FUND_PERFORMANCE3YEAR +" REAL, " +
 			FundMetaData.FUND_LASTUPDATE_KEY +" TEXT);";
 	
 	private static final String TABLE_SHARE_CREATE = "CREATE TABLE "+ShareMetaData.SHARE_TABLE+" (" +
@@ -236,23 +236,23 @@ public class MyFinanceDatabase
 			ShareMetaData.SHARE_NAME_KEY +" TEXT, " +
 			ShareMetaData.SHARE_MINROUNDLOT_KEY +" INTEGER, " +
 			ShareMetaData.SHARE_MARKETPHASE_KEY +" TEXT, " +
-			ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY +" INTEGER, " +
-			ShareMetaData.SHARE_PERCVAR_KEY +" INTEGER, " +
-			ShareMetaData.SHARE_VARIATION_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY +" REAL, " +
+			ShareMetaData.SHARE_PERCVAR_KEY +" REAL, " +
+			ShareMetaData.SHARE_VARIATION_KEY +" REAL, " +
 			ShareMetaData.SHARE_LASTCONTRACTDATE_KEY +" TEXT, " +
-			ShareMetaData.SHARE_BUYPRICE_KEY +" INTEGER, " +
-			ShareMetaData.SHARE_SELLPRICE_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_BUYPRICE_KEY +" REAL, " +
+			ShareMetaData.SHARE_SELLPRICE_KEY +" REAL, " +
 			ShareMetaData.SHARE_LASTAMOUNT_KEY +" INTEGER, " +
 			ShareMetaData.SHARE_BUYAMOUNT_KEY +" INTEGER, " +
 			ShareMetaData.SHARE_SELLAMOUNT_KEY +" INTEGER, " +
 			ShareMetaData.SHARE_TOTALAMOUNT_KEY +" INTEGER, " +
-			ShareMetaData.SHARE_MAXTODAY_KEY +" INTEGER, " +
-			ShareMetaData.SHARE_MINTODAY_KEY +" INTEGER, " +
-			ShareMetaData.SHARE_MAXYEAR_KEY +" INTEGER, " +
-			ShareMetaData.SHARE_MINYEAR_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_MAXTODAY_KEY +" REAL, " +
+			ShareMetaData.SHARE_MINTODAY_KEY +" REAL, " +
+			ShareMetaData.SHARE_MAXYEAR_KEY +" REAL, " +
+			ShareMetaData.SHARE_MINYEAR_KEY +" REAL, " +
 			ShareMetaData.SHARE_MAXYEARDATE_KEY +" TEXT, " +
 			ShareMetaData.SHARE_MINYEARDATE_KEY +" TEXT, " +
-			ShareMetaData.SHARE_LASTCLOSE_KEY +" INTEGER, " +
+			ShareMetaData.SHARE_LASTCLOSE_KEY +" REAL, " +
 			ShareMetaData.SHARE_LASTUPDATE_KEY +" TEXT);";
 	
 	//-------------------------------------STRING per creazione tabelle di transizione-------------------//
@@ -271,9 +271,9 @@ public class MyFinanceDatabase
 			PortfolioFundMetadata.ID +" INTEGER NOT NULL, " +
 			PortfolioFundMetadata.PORTFOLIO_NAME_KEY +" TEXT NOT NULL, " +
 			PortfolioFundMetadata.FUND_ISIN_KEY +" TEXT NOT NULL, " +
-			PortfolioFundMetadata.FUND_BUYDATE_KEY +" TEXT NOT NULL, " +
-			PortfolioFundMetadata.FUND_BUYPRICE_KEY +" INTEGER NOT NULL, " +
-			PortfolioFundMetadata.FUND_ROUNDLOT_KEY +" INTEGER NOT NULL, " +
+			PortfolioFundMetadata.FUND_BUYDATE_KEY +" TEXT, " +
+			PortfolioFundMetadata.FUND_BUYPRICE_KEY +" REAL, " +
+			PortfolioFundMetadata.FUND_ROUNDLOT_KEY +" INTEGER, " +
 			"PRIMARY KEY (" +PortfolioFundMetadata.PORTFOLIO_NAME_KEY+", " +PortfolioFundMetadata.FUND_ISIN_KEY+", " +PortfolioFundMetadata.FUND_BUYDATE_KEY+"), " +
 			"FOREIGN KEY (" +PortfolioFundMetadata.PORTFOLIO_NAME_KEY+") REFERENCES "+PortfolioMetaData.PORTFOLIO_TABLE+"("+PortfolioMetaData.PORTFOLIO_NAME_KEY+")" +
 			"FOREIGN KEY (" +PortfolioFundMetadata.FUND_ISIN_KEY+") REFERENCES "+FundMetaData.FUND_TABLE+"("+FundMetaData.FUND_ISIN+"));";
@@ -282,9 +282,9 @@ public class MyFinanceDatabase
 			PortfolioShareMetadata.ID +" INTEGER NOT NULL, " +
 			PortfolioShareMetadata.PORTFOLIO_NAME_KEY +" TEXT NOT NULL, " +
 			PortfolioShareMetadata.SHARE_CODE_KEY +" TEXT NOT NULL, " +
-			PortfolioShareMetadata.SHARE_BUYDATE_KEY +" TEXT NOT NULL, " +
-			PortfolioShareMetadata.SHARE_BUYPRICE_KEY +" INTEGER NOT NULL, " +
-			PortfolioShareMetadata.SHARE_ROUNDLOT_KEY +" INTEGER NOT NULL, " +
+			PortfolioShareMetadata.SHARE_BUYDATE_KEY +" TEXT, " +
+			PortfolioShareMetadata.SHARE_BUYPRICE_KEY +" REAL, " +
+			PortfolioShareMetadata.SHARE_ROUNDLOT_KEY +" INTEGER, " +
 			"PRIMARY KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+", " +PortfolioShareMetadata.SHARE_CODE_KEY+", " +PortfolioShareMetadata.SHARE_BUYDATE_KEY+"), " +
 			"FOREIGN KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+") REFERENCES "+PortfolioMetaData.PORTFOLIO_TABLE+"("+PortfolioMetaData.PORTFOLIO_NAME_KEY+")" +
 			"FOREIGN KEY (" +PortfolioShareMetadata.SHARE_CODE_KEY+") REFERENCES "+ShareMetaData.SHARE_TABLE+"("+ShareMetaData.SHARE_CODE+"));";
@@ -410,7 +410,7 @@ public class MyFinanceDatabase
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(BondMetaData.ID, 1);
-		cv.put(BondMetaData.BOND_ISIN, ((Quotes.Quotation)newBond).getISIN());
+		cv.put(BondMetaData.BOND_ISIN, newBond.getISIN());
 		cv.put(BondMetaData.BOND_NAME_KEY, newBond.getName());
 		cv.put(BondMetaData.BOND_CURRENCY_KEY, newBond.getValuta());
 		cv.put(BondMetaData.BOND_MARKET_KEY, newBond.getMercato());
@@ -469,7 +469,7 @@ public class MyFinanceDatabase
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(FundMetaData.ID, 1);
-		cv.put(FundMetaData.FUND_ISIN, ((Quotes.Quotation)newFund).getISIN());
+		cv.put(FundMetaData.FUND_ISIN, newFund.getISIN());
 		cv.put(FundMetaData.FUND_NAME_KEY, newFund.getName());
 		cv.put(FundMetaData.FUND_MANAGER_KEY, newFund.getNomeGestore());
 		cv.put(FundMetaData.FUND_CATEGORY_KEY, newFund.getCategoriaAssociati());
@@ -525,7 +525,7 @@ public class MyFinanceDatabase
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.ID, 1);
-		cv.put(ShareMetaData.SHARE_CODE, ((Quotes.Quotation)newShare).getISIN());
+		cv.put(ShareMetaData.SHARE_CODE, newShare.getISIN());
 		cv.put(ShareMetaData.SHARE_ISIN, newShare.getISIN());
 		cv.put(ShareMetaData.SHARE_NAME_KEY, newShare.getName());
 		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, newShare.getLottoMinimo());
@@ -638,10 +638,13 @@ public class MyFinanceDatabase
 		boolean result = false;
 		
 		Cursor c = database.query(BondMetaData.BOND_TABLE, null, BondMetaData.BOND_ISIN+" = '"+bondIsin+"'", null, null, null, null);
+		
 		if(c.getCount()>0)
 		{
 			result = true;
 		}
+		
+		c.close();
 		return result;
 	}
 	
@@ -743,9 +746,9 @@ public class MyFinanceDatabase
 	public void updateSelectedBondByQuotationObject(Quotation_Bond newBond, String lastUpdate)
 	{
 		ContentValues cv = new ContentValues();
-		cv.put(BondMetaData.ID, 1); // ometto?
-		cv.put(BondMetaData.BOND_ISIN, newBond.getISIN()); //ometto?
-		cv.put(BondMetaData.BOND_NAME_KEY, newBond.getName()); //ometto?
+//		cv.put(BondMetaData.ID, 1); 
+//		cv.put(BondMetaData.BOND_ISIN, newBond.getISIN()); 
+		cv.put(BondMetaData.BOND_NAME_KEY, newBond.getName()); //il nome potrebbe cambiare, l'ISIN no!
 		cv.put(BondMetaData.BOND_CURRENCY_KEY, newBond.getValuta());
 		cv.put(BondMetaData.BOND_MARKET_KEY, newBond.getMercato());
 		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, newBond.getFaseMercato());
