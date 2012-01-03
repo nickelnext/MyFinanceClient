@@ -62,7 +62,7 @@ public class BondDetailsActivity extends Activity
         bondIsin = (String) intent.getStringExtra(pkg+".bondIsin");        
     	bondReferenceTextView.setText(bondIsin);
     	
-    	getTextView();
+    	getViews();
     	
     	db = new MyFinanceDatabase(this);
     }
@@ -110,7 +110,7 @@ public class BondDetailsActivity extends Activity
     	db.close();
     }
 	
-	private void getTextView()
+	private void getViews()
 	{
 		name = (TextView) findViewById(R.id.bondNameTextView);
 		currency = (TextView) findViewById(R.id.bondCurrencyTextView);

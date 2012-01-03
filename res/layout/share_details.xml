@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -13,119 +16,313 @@
         android:layout_height="2dip"
        	android:layout_width="fill_parent"
        	android:background="#FF909090" />
-    <TextView
-        android:id="@+id/codeTextView"
-        android:layout_width="wrap_content"
+    <TableLayout 
         android:layout_height="wrap_content"
-        android:text="CODE:" />
-    <TextView
-        android:id="@+id/isinTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ISIN:" />
-    <TextView
-        android:id="@+id/nameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Name:" />
-    <TextView
-        android:id="@+id/minRoundLotTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min round lot:" />
-    <TextView
-        android:id="@+id/marketPhaseTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Market phase:" />
-    <TextView
-        android:id="@+id/lastContractPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last contract price:" />
-    <TextView
-        android:id="@+id/percVarTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Percentual variation:" />
-    <TextView
-        android:id="@+id/variationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Variation:" />
-    <TextView
-        android:id="@+id/lastContractDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last contract date:" />
-    <TextView
-        android:id="@+id/buyPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Buy price:" />
-    <TextView
-        android:id="@+id/sellPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sell price:" />
-    <TextView
-        android:id="@+id/lastAmountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last amount:" />
-    <TextView
-        android:id="@+id/buyAmountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Buy amount:" />
-    <TextView
-        android:id="@+id/sellAmountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sell amount:" />
-    <TextView
-        android:id="@+id/totalAmountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total amount:" />
-    <TextView
-        android:id="@+id/maxTodayTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Max today:" />
-    <TextView
-        android:id="@+id/minTodayTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min today:" />
-    <TextView
-        android:id="@+id/maxYearTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Max year:" />
-    <TextView
-        android:id="@+id/minYearTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min year:" />
-    <TextView
-        android:id="@+id/maxYearDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Max year date:" />
-    <TextView
-        android:id="@+id/minYearDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min year date:" />
-    <TextView
-        android:id="@+id/lastCloseTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last close:" />
-    <TextView
-        android:id="@+id/lastUpDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last update date:" />
+       	android:layout_width="fill_parent"
+       	android:layout_marginTop="5dp"
+       	android:layout_marginLeft="5dp"
+       	android:weightSum="2">
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="ISIN:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareCodeTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Isin:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareIsinTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Name:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareNameTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Min round lot:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMinRoundLotTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Market Phase:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMarketPhaseTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Last contract price:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareLastContractPriceTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Percentual variation:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/sharePercVarTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Variation:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareVariationTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Last conctract date:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareLastContractDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Buy price:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareBuyPriceTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Sell price:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareSellPriceView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Last amount:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareLastAmountTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Buy amount:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareBuyAmountTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Sell amount:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareSellAmountTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Total amount:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareTotalAmountTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Max today:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMaxTodayTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Min today:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMinTodayTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Max year:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMaxYearTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Min year:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMinYearTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Max year date:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMaxYearDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Min year date:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareMinYearDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Last close:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareLastCloseTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+        <TableRow >
+            <TextView 
+            	android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:text="Last update date:"
+        		android:layout_weight="1"/>
+            <TextView
+        		android:id="@+id/shareLastUpDateTextView"
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:gravity="center_horizontal"/>
+        </TableRow>
+	</TableLayout>    
+
+    
 </LinearLayout>
+</ScrollView>
