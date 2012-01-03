@@ -1,5 +1,6 @@
 package it.dev;
 
+import it.dev.MyFinanceDatabase.PortfolioBondMetadata;
 import it.dev.MyFinanceDatabase.ShareMetaData;
 import it.util.ConnectionUtils;
 import it.util.ResponseHandler;
@@ -44,12 +45,11 @@ public class ToolListActivity extends Activity
 	
 	private ArrayList<String> shareIsinArrayList = new ArrayList<String>();
 	private ArrayList<String> shareTypeArrayList = new ArrayList<String>();
+	private ArrayList<String> sharePurchaseDateArrayList = new ArrayList<String>();
+	private ArrayList<String> sharePurchasePrizeArrayList = new ArrayList<String>();
+	private ArrayList<String> shareRoundLotArrayList = new ArrayList<String>();
 	
 	private TextView portfolioReferenceTextView;
-	private TextView nameCol;
-	private TextView variationCol;
-	private TextView percVarCol;
-	private TextView prizeCol;
 	private ListView toolListView;
 	
 	//liste di supporto per salvare i dati temporanei prima di scriverli nel database
@@ -64,16 +64,7 @@ public class ToolListActivity extends Activity
         setContentView(R.layout.tool_list_activity);
         
         portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
-        nameCol = (TextView) findViewById(R.id.nameCol);
-        variationCol = (TextView) findViewById(R.id.variationCol);
-        percVarCol = (TextView) findViewById(R.id.percVarCol);
-        prizeCol = (TextView) findViewById(R.id.prizeCol);
         toolListView = (ListView) findViewById(R.id.toolListView);
-        
-//        nameCol.setVisibility(View.INVISIBLE);
-//        variationCol.setVisibility(View.INVISIBLE);
-//        percVarCol.setVisibility(View.INVISIBLE);
-//        prizeCol.setVisibility(View.INVISIBLE);
         
         Intent intent = getIntent();
         String pkg = getPackageName();
@@ -183,7 +174,7 @@ public class ToolListActivity extends Activity
 					
 					
 					//0. add last tool in ArrayList<String>...
-					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
+					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()+1) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
 					listaIsinTmp.add(shareISINEditText.getText().toString());
 					listaDataAcqTmp.add(purchaseDate);
 					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
@@ -223,10 +214,7 @@ public class ToolListActivity extends Activity
 											db.addNewBondByQuotationObject(qb, getTodaysDate());
 										} catch (Exception e) {
 											System.out.println("Database insert error");
-										}
-										
-										
-										
+										}	
 									}
 									
 									//3.2 INSERT bond in transition table
@@ -291,25 +279,6 @@ public class ToolListActivity extends Activity
 					
 					db.close();
 					addToolDialog.dismiss();
-					
-					
-					//insert......example......
-//					String buyDate = getTodaysDate();
-//					
-//					for (Quotation_Bond qb : myQuotationContainer.getBondList()) 
-//					{
-//						db.addNewBondByQuotationObject(qb, getTodaysDate());
-//						db.addNewBondInTransitionTable(portfolioName, shareISINEditText.getText().toString(), buyDate, 
-//							Integer.parseInt(buyPriceEditText.getText().toString()), Integer.parseInt(roundLotEditText.getText().toString()));
-//					}			
-//					for (Quotation_Share qs : myQuotationContainer.getShareList()) 
-//					{
-//						db.addNewShareByQuotationObject(qs, getTodaysDate());
-//					}
-//					for (Quotation_Fund qf : myQuotationContainer.getFundList()) 
-//					{
-//						db.addNewFundByQuotationObject(qf, getTodaysDate());
-//					}
 				}
 				else
 				{
@@ -339,6 +308,9 @@ public class ToolListActivity extends Activity
 		toolListView.setAdapter(null);
     	shareIsinArrayList.clear();
     	shareTypeArrayList.clear();
+    	sharePurchaseDateArrayList.clear();
+    	sharePurchasePrizeArrayList.clear();
+    	shareRoundLotArrayList.clear();
     	
     	db.open();
     	
@@ -366,8 +338,8 @@ public class ToolListActivity extends Activity
     	if(c_merged.getCount()!=0)
     	{
     		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tool_listview_items, c_merged, 
-    				new String[] {"isin", ShareMetaData.SHARE_VARIATION_KEY, ShareMetaData.SHARE_PERCVAR_KEY, "prezzo"}, 
-    				new int[] {R.id.isinTextView, R.id.variationTextView, R.id.percVarTextView, R.id.lastPrizeTextView});
+    				new String[] {"isin", PortfolioBondMetadata.BOND_BUYDATE_KEY, ShareMetaData.SHARE_VARIATION_KEY, ShareMetaData.SHARE_PERCVAR_KEY, "prezzo"}, 
+    				new int[] {R.id.isinTextView, R.id.dateTextView, R.id.variationTextView, R.id.percVarTextView, R.id.lastPrizeTextView});
     		toolListView.setAdapter(adapter);
     		toolListView.setOnItemClickListener(new AdapterView.OnItemClickListener() 
     		{
@@ -375,15 +347,15 @@ public class ToolListActivity extends Activity
     			{
     				if(shareTypeArrayList.get(position).equals("bond"))
     				{
-    					goToBondDetailsActivity(shareIsinArrayList.get(position));
+    					goToBondDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
     				}
     				else if(shareTypeArrayList.get(position).equals("fund"))
     				{
-    					goToFundDetailsActivity(shareIsinArrayList.get(position));
+    					goToFundDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
     				}
     				else if(shareTypeArrayList.get(position).equals("share"))
     				{
-    					goToShareDetailsActivity(shareIsinArrayList.get(position));
+    					goToShareDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
     				}
     			}
     		});
@@ -456,27 +428,36 @@ public class ToolListActivity extends Activity
 	
 	
 	
-	private void goToBondDetailsActivity(String bondIsin)
+	private void goToBondDetailsActivity(String bondIsin, String bondPurchaseDate, String bondPurchasePrize, String bondRoundLot)
     {
     	Intent i = new Intent(this, BondDetailsActivity.class);
 		String pkg = getPackageName();
-		i.putExtra(pkg+".bondIsin", bondIsin);		
+		i.putExtra(pkg+".bondIsin", bondIsin);
+		i.putExtra(pkg+".bondPurchaseDate", bondPurchaseDate);
+		i.putExtra(pkg+".bondPurchasePrize", bondPurchasePrize);
+		i.putExtra(pkg+".bondRoundLot", bondRoundLot);
 		startActivity(i);
     }
 	
-	private void goToFundDetailsActivity(String fundIsin)
+	private void goToFundDetailsActivity(String fundIsin, String fundPurchaseDate, String fundPurchasePrize, String fundRoundLot)
     {
     	Intent i = new Intent(this, FundDetailsActivity.class);
 		String pkg = getPackageName();
-		i.putExtra(pkg+".fundIsin", fundIsin);		
+		i.putExtra(pkg+".fundIsin", fundIsin);
+		i.putExtra(pkg+".fundPurchaseDate", fundPurchaseDate);
+		i.putExtra(pkg+".fundPurchasePrize", fundPurchasePrize);
+		i.putExtra(pkg+".fundRoundLot", fundRoundLot);
 		startActivity(i);
     }
 	
-	private void goToShareDetailsActivity(String shareIsin)
+	private void goToShareDetailsActivity(String shareIsin, String sharePurchaseDate, String sharePurchasePrize, String shareRoundLot)
     {
     	Intent i = new Intent(this, ShareDetailsActivity.class);
 		String pkg = getPackageName();
-		i.putExtra(pkg+".shareIsin", shareIsin);		
+		i.putExtra(pkg+".shareIsin", shareIsin);
+		i.putExtra(pkg+".sharePurchaseDate", sharePurchaseDate);
+		i.putExtra(pkg+".sharePurchasePrize", sharePurchasePrize);
+		i.putExtra(pkg+".shareRoundLot", shareRoundLot);
 		startActivity(i);
     }
 	
@@ -488,6 +469,10 @@ public class ToolListActivity extends Activity
 			do {
 				shareIsinArrayList.add(c.getString(2));
 				shareTypeArrayList.add(type);
+				sharePurchaseDateArrayList.add(c.getString(3));
+				sharePurchasePrizeArrayList.add(String.valueOf(c.getFloat(4)));
+				shareRoundLotArrayList.add(String.valueOf(c.getInt(5)));
+				System.out.println("halo: "+String.valueOf(c.getInt(5)));
 			} while (c.moveToNext());
 		}
 	}

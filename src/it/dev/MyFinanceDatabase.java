@@ -233,6 +233,7 @@ public class MyFinanceDatabase
 	private static final String TABLE_SHARE_CREATE = "CREATE TABLE "+ShareMetaData.SHARE_TABLE+" (" +
 			ShareMetaData.ID +" INTEGER NOT NULL, " +
 			ShareMetaData.SHARE_CODE +" TEXT PRIMARY KEY, " +
+			ShareMetaData.SHARE_ISIN +" TEXT, " +
 			ShareMetaData.SHARE_NAME_KEY +" TEXT, " +
 			ShareMetaData.SHARE_MINROUNDLOT_KEY +" INTEGER, " +
 			ShareMetaData.SHARE_MARKETPHASE_KEY +" TEXT, " +
@@ -563,7 +564,7 @@ public class MyFinanceDatabase
 		database.insert(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, cv);
 	}
 	
-	public void addNewFoundInTransitionTable(String portfolioName, String fundISIN, String buyDate, float buyPrice, int roundLot)
+	public void addNewFundInTransitionTable(String portfolioName, String fundISIN, String buyDate, float buyPrice, int roundLot)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioFundMetadata.ID, 1);
@@ -609,6 +610,7 @@ public class MyFinanceDatabase
 	{
 		return database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+" as P join "+BondMetaData.BOND_TABLE+" as B", 
 				new String[] {"P."+PortfolioBondMetadata.ID, "P."+PortfolioBondMetadata.PORTFOLIO_NAME_KEY, "P."+PortfolioBondMetadata.BOND_ISIN_KEY+" as 'isin'", 
+				"P."+PortfolioBondMetadata.BOND_BUYDATE_KEY, "P."+PortfolioBondMetadata.BOND_BUYPRICE_KEY, "P."+PortfolioBondMetadata.BOND_ROUNDLOT_KEY, 
 				"B."+BondMetaData.BOND_VARIATION_KEY, "B."+BondMetaData.BOND_PERCVAR_KEY, "B."+BondMetaData.BOND_LASTCONTRACTPRICE_KEY+" as 'prezzo'"}, 
 				"P."+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioBondMetadata.BOND_ISIN_KEY+" = B.'"+BondMetaData.BOND_ISIN+"'", 
 				null, null, null, null);
@@ -618,6 +620,7 @@ public class MyFinanceDatabase
 	{
 		return database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE+" as P join "+FundMetaData.FUND_TABLE+" as F", 
 				new String[] {"P."+PortfolioFundMetadata.ID, "P."+PortfolioFundMetadata.PORTFOLIO_NAME_KEY, "P."+PortfolioFundMetadata.FUND_ISIN_KEY+" as 'isin'", 
+				"P."+PortfolioFundMetadata.FUND_BUYDATE_KEY, "P."+PortfolioFundMetadata.FUND_BUYPRICE_KEY, "P."+PortfolioFundMetadata.FUND_ROUNDLOT_KEY, 
 				"F."+FundMetaData.FUND_VARIATION_KEY, "F."+FundMetaData.FUND_PERCVAR_KEY, "F."+FundMetaData.FUND_LASTPRIZE_KEY+" as 'prezzo'"}, 
 				"P."+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioFundMetadata.FUND_ISIN_KEY+" = F.'"+FundMetaData.FUND_ISIN+"'", 
 				null, null, null, null);
@@ -627,6 +630,7 @@ public class MyFinanceDatabase
 	{
 		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+" as P join "+ShareMetaData.SHARE_TABLE+" as S", 
 				new String[] {"P."+PortfolioShareMetadata.ID, "P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY, "P."+PortfolioShareMetadata.SHARE_CODE_KEY+" as 'isin'", 
+				"P."+PortfolioShareMetadata.SHARE_BUYDATE_KEY, "P."+PortfolioShareMetadata.SHARE_BUYPRICE_KEY, "P."+PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, 
 				"S."+ShareMetaData.SHARE_VARIATION_KEY, "S."+ShareMetaData.SHARE_PERCVAR_KEY, "S."+ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY+" as 'prezzo'"}, 
 				"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"'", 
 				null, null, null, null);
@@ -657,6 +661,8 @@ public class MyFinanceDatabase
 		{
 			result = true;
 		}
+		
+		c.close();
 		return result;
 	}
 	
@@ -669,6 +675,8 @@ public class MyFinanceDatabase
 		{
 			result = true;
 		}
+		
+		c.close();
 		return result;
 	}
 	
@@ -704,16 +712,15 @@ public class MyFinanceDatabase
 		database.update(PortfolioMetaData.PORTFOLIO_TABLE, cv, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+previousName+"'", null);
 	}
 	
-	public void updateSelectedBond(int _id, String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 
+	public void updateSelectedBond(String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 
 			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
 			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
 			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
 			int minRoundLot, String lastUpdate)
 	{
 		ContentValues cv = new ContentValues();
-		cv.put(BondMetaData.ID, _id); //posso ometterlo o no?
-		cv.put(BondMetaData.BOND_ISIN, ISIN); //posso ometterlo o no?
-		cv.put(BondMetaData.BOND_NAME_KEY, name); //posso ometterlo o no?
+		cv.put(BondMetaData.BOND_ISIN, ISIN); //no perché serve per identificare la tupla
+		cv.put(BondMetaData.BOND_NAME_KEY, name); //il nome potrebbe cambiare...
 		cv.put(BondMetaData.BOND_CURRENCY_KEY, currency);
 		cv.put(BondMetaData.BOND_MARKET_KEY, market);
 		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, marketPhase);
@@ -778,14 +785,13 @@ public class MyFinanceDatabase
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+newBond.getISIN()+"'", null);
 	}
 	
-	public void updateSelectedFund(int _id, String ISIN, String name, String manager, String category, String benchmark, 
+	public void updateSelectedFund(String ISIN, String name, String manager, String category, String benchmark, 
 			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
 			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate)
 	{
 		ContentValues cv = new ContentValues();
-		cv.put(FundMetaData.ID, _id);// ometto?
-		cv.put(FundMetaData.FUND_ISIN, ISIN);// ometto?
-		cv.put(FundMetaData.FUND_NAME_KEY, name);// ometto?
+		cv.put(FundMetaData.FUND_ISIN, ISIN);// no serve per la ricerca
+		cv.put(FundMetaData.FUND_NAME_KEY, name);// no potrebbe cambiare
 		cv.put(FundMetaData.FUND_MANAGER_KEY, manager);
 		cv.put(FundMetaData.FUND_CATEGORY_KEY, category);
 		cv.put(FundMetaData.FUND_BENCHMARK_KEY, benchmark);
@@ -808,9 +814,8 @@ public class MyFinanceDatabase
 	public void updateSelectedFundByQuotationObject(Quotation_Fund newFund, String lastUpdate)
 	{
 		ContentValues cv = new ContentValues();
-		cv.put(FundMetaData.ID, 1); // ometto?
-		cv.put(FundMetaData.FUND_ISIN, newFund.getISIN()); // ometto?
-		cv.put(FundMetaData.FUND_NAME_KEY, newFund.getName()); // ometto?
+//		cv.put(FundMetaData.FUND_ISIN, newFund.getISIN()); // ometto?
+		cv.put(FundMetaData.FUND_NAME_KEY, newFund.getName()); // no potrebbe cambiare
 		cv.put(FundMetaData.FUND_MANAGER_KEY, newFund.getNomeGestore());
 		cv.put(FundMetaData.FUND_CATEGORY_KEY, newFund.getCategoriaAssociati());
 		cv.put(FundMetaData.FUND_BENCHMARK_KEY, newFund.getBenchmarkDichiarato());
@@ -829,16 +834,15 @@ public class MyFinanceDatabase
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
 	}
 	
-	public void updateSelectedShare(int _id, String CODE, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
+	public void updateSelectedShare(String CODE, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
 			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
 			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
 			String maxYearDate, String minYearDate, float lastClose, String lastUpdate)
 	{
 		ContentValues cv = new ContentValues();
-		cv.put(ShareMetaData.ID, _id); //ometto?
-		cv.put(ShareMetaData.SHARE_CODE, CODE); //ometto?
-		cv.put(ShareMetaData.SHARE_ISIN, isin); //ometto?
-		cv.put(ShareMetaData.SHARE_NAME_KEY, name); //ometto?
+		cv.put(ShareMetaData.SHARE_CODE, CODE); //no serve per ricerca
+		cv.put(ShareMetaData.SHARE_ISIN, isin); //
+		cv.put(ShareMetaData.SHARE_NAME_KEY, name); //no potrebbe cambiare
 		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
 		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
 		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, lastContractPrice);
@@ -866,7 +870,6 @@ public class MyFinanceDatabase
 	public void updateSelectedShareByQuotationObject(Quotation_Share newShare, String lastUpdate)
 	{
 		ContentValues cv = new ContentValues();
-		cv.put(ShareMetaData.ID, 1);
 		cv.put(ShareMetaData.SHARE_CODE, newShare.getISIN());
 		cv.put(ShareMetaData.SHARE_ISIN, newShare.getISIN());
 		cv.put(ShareMetaData.SHARE_NAME_KEY, newShare.getName());

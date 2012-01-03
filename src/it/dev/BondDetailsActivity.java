@@ -14,6 +14,13 @@ public class BondDetailsActivity extends Activity
 	
 	private TextView bondReferenceTextView;
 	private String bondIsin;
+	private String bondPurchaseDate;
+	private String bondPurchasePrize;
+	private String bondRoundLot;
+	
+	private TextView purchaseDate_TV;
+	private TextView purchasePrize_TV;
+	private TextView roundLot_TV;
 	
 	private TextView isin;
 	private TextView name;
@@ -53,12 +60,19 @@ public class BondDetailsActivity extends Activity
 		Intent intent = getIntent();
         String pkg = getPackageName();
         
-        bondIsin = (String) intent.getStringExtra(pkg+".bondIsin");        
+        bondIsin = (String) intent.getStringExtra(pkg+".bondIsin");
+        bondPurchaseDate = (String) intent.getStringExtra(pkg+".bondPurchaseDate");
+        bondPurchasePrize = (String) intent.getStringExtra(pkg+".bondPurchasePrize");
+        bondRoundLot = (String) intent.getStringExtra(pkg+".bondRoundLot");
     	bondReferenceTextView.setText(bondIsin);
     	
     	getViews();
     	
     	db = new MyFinanceDatabase(this);
+    	
+    	purchaseDate_TV.setText(bondPurchaseDate);
+    	purchasePrize_TV.setText(bondPurchasePrize);
+    	roundLot_TV.setText(bondRoundLot);
     }
 	
 	public void onResume()
@@ -129,6 +143,10 @@ public class BondDetailsActivity extends Activity
 	
 	private void getViews()
 	{
+		purchaseDate_TV = (TextView) findViewById(R.id.purchaseDate_TV);
+		purchasePrize_TV = (TextView) findViewById(R.id.purchasePrize_TV);
+		roundLot_TV = (TextView) findViewById(R.id.roundLot_TV);
+		
 		isin = (TextView) findViewById(R.id.bondIsinTextView);
 		name = (TextView) findViewById(R.id.bondNameTextView);
 		currency = (TextView) findViewById(R.id.bondCurrencyTextView);

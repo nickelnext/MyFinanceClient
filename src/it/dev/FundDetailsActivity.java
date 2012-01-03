@@ -12,6 +12,13 @@ public class FundDetailsActivity extends Activity
 {
 	private TextView fundReferenceTextView;
 	private String fundIsin;
+	private String fundPurchaseDate;
+	private String fundPurchasePrize;
+	private String fundRoundLot;
+	
+	private TextView fund_purchaseDate_TV;
+	private TextView fund_purchasePrize_TV;
+	private TextView fund_roundLot_TV;
 	
 	private TextView isin;
 	private TextView name;
@@ -44,10 +51,17 @@ public class FundDetailsActivity extends Activity
 		Intent intent = getIntent();
         String pkg = getPackageName();
         
-        fundIsin = (String) intent.getStringExtra(pkg+".fundIsin");        
+        fundIsin = (String) intent.getStringExtra(pkg+".fundIsin");
+        fundPurchaseDate = (String) intent.getStringExtra(pkg+".fundPurchaseDate");
+        fundPurchasePrize = (String) intent.getStringExtra(pkg+".fundPurchasePrize");
+        fundRoundLot = (String) intent.getStringExtra(pkg+".fundRoundLot");
     	fundReferenceTextView.setText(fundIsin);
     	
     	db = new MyFinanceDatabase(this);
+    	
+    	fund_purchaseDate_TV.setText(fundPurchaseDate);
+    	fund_purchasePrize_TV.setText(fundPurchasePrize);
+    	fund_roundLot_TV.setText(fundRoundLot);
     }
 	
 	public void onResume()
@@ -75,6 +89,10 @@ public class FundDetailsActivity extends Activity
 	
 	private void getViews()
 	{
+		fund_purchaseDate_TV = (TextView) findViewById(R.id.fund_purchaseDate_TV);
+		fund_purchasePrize_TV = (TextView) findViewById(R.id.fund_purchasePrize_TV);
+		fund_roundLot_TV = (TextView) findViewById(R.id.fund_roundLot_TV);
+		
 		isin = (TextView) findViewById(R.id.fundisinTextView);
 		name = (TextView) findViewById(R.id.fundnameTextView);
 		manager = (TextView) findViewById(R.id.fundmanagerTextView);
@@ -98,6 +116,8 @@ public class FundDetailsActivity extends Activity
 		
     	Cursor details = db.getFondDetails(fundIsin);
     	startManagingCursor(details);
+    	
+    	details.moveToFirst();
     	
     	isin.setText(details.getString(1));
     	name.setText(details.getString(2));

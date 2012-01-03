@@ -95,6 +95,8 @@ public class ShareDetailsActivity extends Activity
     	Cursor details = db.getShareDetails(shareIsin);
     	startManagingCursor(details);
     	
+    	details.moveToFirst();
+    	
     	code.setText(details.getString(1));
     	isin.setText(details.getString(2));
     	name.setText(details.getString(3));
