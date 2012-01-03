@@ -44,7 +44,7 @@ public class ShareDetailsActivity extends Activity
 		
 		shareReferenceTextView = (TextView) findViewById(R.id.shareReferenceTextView);
 		
-        Intent intent = getIntent(); // l'intent di questa activity
+        Intent intent = getIntent();
         String pkg = getPackageName();
         
         shareIsin = (String) intent.getStringExtra(pkg+".shareIsin");        
