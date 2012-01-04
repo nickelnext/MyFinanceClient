@@ -23,22 +23,22 @@ public class UpdateUtils {
 		
 	}
 	
-	public QuotationContainer updateTools(List<String> isinList, List<String> whiteList, String blackList){
+	public QuotationContainer updateTools(List<String> isinList, String preferedSite, String badSite){
 		
-		if(blackList == null){
+		if(badSite == null){
 			
-			if(whiteList.isEmpty()){
+			if(preferedSite == null){
 				
 				//update normale con soli ISIN
 				QuotationContainer quotCont = new QuotationContainer();
 				ArrayList<Request> array = new ArrayList<Request>();
-				Calendar upDate;
+				Calendar upDate = Calendar.getInstance();
 				
 				for (int i = 0; i < isinList.size(); i++){
 					
-					String Date = db.getLastUpDate(isinList.get(i));//da fare
-					String Year
-					String Month
+					String date = null;// = db.getLastUpDate(isinList.get(i));//da fare
+					String[] ud	= date.split("// ::");//da fare espressione regolare
+					upDate.set(Integer.valueOf(ud[2]), Integer.valueOf(ud[0]), Integer.valueOf(ud[1]), Integer.valueOf(ud[3]), Integer.valueOf(ud[4]), Integer.valueOf(ud[5]));
 					today.roll(4, -30);
 					
 					if(today.after(upDate)){
@@ -57,10 +57,7 @@ public class UpdateUtils {
 							return null;
 						}
 					}
-					
-				}
-				
-				
+				}	
 			}
 			else{
 				
@@ -71,6 +68,7 @@ public class UpdateUtils {
 			
 			//update con ISIN, ?lista preferiti? e sito corrotto -> forced update
 		}
+		return null;
 	}
 
 }
