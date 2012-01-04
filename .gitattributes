@@ -44,4 +44,5 @@ src/it/dev/UpdateOptionActivity.java -text svneol=unset#text/plain
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
 src/it/util/ResponseHandler.java -text
+src/it/util/UpdateUtils.java -text
 src/mainpackage/RequestHandler.java -text
