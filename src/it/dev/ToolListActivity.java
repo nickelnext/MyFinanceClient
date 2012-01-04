@@ -16,6 +16,7 @@ import Requests.Request;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,15 +27,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
-//import com.github.neilprosser.cjson.CJSON;
 import com.google.gson.Gson;
 
 public class ToolListActivity extends Activity 
@@ -366,29 +366,38 @@ public class ToolListActivity extends Activity
 	//function that connect to server and return all the data of all the tools added by user...
 	private QuotationContainer connectToServerForTools(ArrayList<String> toolsList)
 	{
-		QuotationContainer quotCont = new QuotationContainer();
+		ProgressDialog dialog = ProgressDialog.show(ToolListActivity.this, "", "Loading. Please wait...", true);
 		
-		ArrayList<Request> array = new ArrayList<Request>();
-		for (int i = 0; i < listaIsinTmp.size(); i++) 
-		{
-			array.add(new Request(listaIsinTmp.get(i)));
+		try {
+			QuotationContainer quotCont = new QuotationContainer();
+			
+			ArrayList<Request> array = new ArrayList<Request>();
+			for (int i = 0; i < listaIsinTmp.size(); i++) 
+			{
+				array.add(new Request(listaIsinTmp.get(i)));
+			}
+			
+			Gson converter = new Gson();
+			String jsonReq = converter.toJson(array);
+			Log.d(getPackageName(), "postData: "+jsonReq);
+			String jsonResponse = ConnectionUtils.postData(jsonReq);
+			Log.d(getPackageName(), "jsonResponse: "+jsonResponse);
+			if(jsonResponse != null)
+			{
+				quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+				dialog.dismiss();
+				return quotCont;
+			}
+			else
+			{
+				dialog.dismiss();
+				return null;
+			}
+		} catch (Exception e) {
+			System.out.println("connection ERROR");
 		}
-		
-		Gson converter = new Gson();
-		String jsonReq = converter.toJson(array);
-		Log.d(getPackageName(), "postData: "+jsonReq);
-		String jsonResponse = ConnectionUtils.postData(jsonReq);
-		Log.d(getPackageName(), "jsonResponse: "+jsonResponse);
-		if(jsonResponse != null)
-		{
-			quotCont = ResponseHandler.decodeQuotations(jsonResponse);
-			return quotCont;
-		}
-		else
-		{
-			return null;
-		}
-		
+		dialog.dismiss();
+		return null;
 	}
 	
 	//function that control if all the isin requested are returned...
@@ -481,7 +490,7 @@ public class ToolListActivity extends Activity
 	{
 		AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
     	alert_builder.setTitle(type);
-    	alert_builder.setMessage("Control that you have insert all the data.");
+    	alert_builder.setMessage(message);
     	alert_builder.setCancelable(false);
     	alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 			
