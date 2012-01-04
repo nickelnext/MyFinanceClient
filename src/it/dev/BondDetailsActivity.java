@@ -143,9 +143,9 @@ public class BondDetailsActivity extends Activity
 	
 	private void getViews()
 	{
-		purchaseDate_TV = (TextView) findViewById(R.id.purchaseDate_TV);
-		purchasePrize_TV = (TextView) findViewById(R.id.purchasePrize_TV);
-		roundLot_TV = (TextView) findViewById(R.id.roundLot_TV);
+		purchaseDate_TV = (TextView) findViewById(R.id.bond_purchaseDate_TV);
+		purchasePrize_TV = (TextView) findViewById(R.id.bond_purchasePrize_TV);
+		roundLot_TV = (TextView) findViewById(R.id.bond_roundLot_TV);
 		
 		isin = (TextView) findViewById(R.id.bondIsinTextView);
 		name = (TextView) findViewById(R.id.bondNameTextView);

@@ -10,6 +10,13 @@ public class ShareDetailsActivity extends Activity
 {
 	private TextView shareReferenceTextView;
 	private String shareIsin;
+	private String sharePurchaseDate;
+	private String sharePurchasePrize;
+	private String shareRoundLot;
+	
+	private TextView share_purchaseDate_TV;
+	private TextView share_purchasePrize_TV;
+	private TextView share_roundLot_TV;
 	
 	private TextView code;
 	private TextView isin;
@@ -48,11 +55,18 @@ public class ShareDetailsActivity extends Activity
         String pkg = getPackageName();
         
         shareIsin = (String) intent.getStringExtra(pkg+".shareIsin");        
-    	shareReferenceTextView.setText(shareIsin);
+        sharePurchaseDate = (String) intent.getStringExtra(pkg+".sharePurchaseDate");
+        sharePurchasePrize = (String) intent.getStringExtra(pkg+".sharePurchasePrize");
+        shareRoundLot = (String) intent.getStringExtra(pkg+".shareRoundLot");
+        shareReferenceTextView.setText(shareIsin);
     	
     	getViews();
     	
     	db = new MyFinanceDatabase(this);
+    	
+    	share_purchaseDate_TV.setText(sharePurchaseDate);
+    	share_purchasePrize_TV.setText(sharePurchasePrize);
+    	share_roundLot_TV.setText(shareRoundLot);
     }
 	
 	public void onResume()
@@ -63,6 +77,10 @@ public class ShareDetailsActivity extends Activity
 	
 	private void getViews()
 	{
+		share_purchaseDate_TV = (TextView) findViewById(R.id.share_purchaseDate_TV);
+		share_purchasePrize_TV = (TextView) findViewById(R.id.share_purchasePrize_TV);
+		share_roundLot_TV = (TextView) findViewById(R.id.share_roundLot_TV);
+		
 		code = (TextView) findViewById(R.id.shareCodeTextView);
 		isin = (TextView) findViewById(R.id.shareIsinTextView);
 		name = (TextView) findViewById(R.id.shareNameTextView);

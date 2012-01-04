@@ -16,6 +16,58 @@
         android:layout_height="2dip"
        	android:layout_width="fill_parent"
        	android:background="#FF909090" />
+    
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+        <TextView
+			android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Purchase Date: " />
+        <TextView
+            android:id="@+id/share_purchaseDate_TV"
+			android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:textColor="#33FF00"
+        	android:text="" />
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+			android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Purchase Prize: " />
+        <TextView
+            android:id="@+id/share_purchasePrize_TV"
+			android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:textColor="#33FF00"
+        	android:text="" />
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+			android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Round Lot: " />
+        <TextView
+            android:id="@+id/share_roundLot_TV"
+			android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:textColor="#33FF00"
+        	android:text="" />
+    </LinearLayout>
+    <View
+        android:layout_height="2dip"
+        android:layout_marginTop="5dp"
+       	android:layout_width="fill_parent"
+       	android:background="#FF909090" />
     <TableLayout 
         android:layout_height="wrap_content"
        	android:layout_width="fill_parent"

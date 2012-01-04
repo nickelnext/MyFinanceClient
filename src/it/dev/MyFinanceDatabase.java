@@ -685,7 +685,7 @@ public class MyFinanceDatabase
 	//------------------------of a shares in a specific Portfolio-------------------------------------//
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-		public Cursor getBondDetails(String ISIN)
+	public Cursor getBondDetails(String ISIN)
 	{
 		return database.query(BondMetaData.BOND_TABLE, null, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null, null, null, null);
 	}
