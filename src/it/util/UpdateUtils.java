@@ -5,6 +5,8 @@ import it.dev.MyFinanceDatabase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
@@ -116,4 +118,5 @@ public class UpdateUtils {
 		}
 		else return null;
 	}
+	
 }
