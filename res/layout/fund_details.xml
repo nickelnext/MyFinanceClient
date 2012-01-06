@@ -76,6 +76,20 @@
        	android:layout_marginTop="5dp"
        	android:layout_marginLeft="5dp"
        	android:weightSum="2">
+        <TableRow >           
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Source Site:" />
+            <TextView
+        		android:id="@+id/fundsourceSiteTextView"
+       			android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text=""
+        		android:gravity="center_horizontal"/>
+        </TableRow>
         <TableRow >
             <TextView 
             	android:layout_width="wrap_content"

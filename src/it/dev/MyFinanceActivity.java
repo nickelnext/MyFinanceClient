@@ -181,7 +181,7 @@ public class MyFinanceActivity extends Activity
 					{
 						db.open();
 						String creationDate = getTodaysDate();
-						db.addNewPortfolio(1, portfolioName_ET.getText().toString(), portfolioDescription_ET.getText().toString(), creationDate);
+						db.addNewPortfolio(1, portfolioName_ET.getText().toString(), portfolioDescription_ET.getText().toString(), creationDate, creationDate);
 						db.close();
 						addPortfolioDialog.dismiss();
 					}

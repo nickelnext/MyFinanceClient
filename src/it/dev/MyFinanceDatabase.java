@@ -48,6 +48,7 @@ public class MyFinanceDatabase
 		static final String PORTFOLIO_NAME_KEY = "nome";
 		static final String PORTFOLIO_DESCRIPTION_KEY ="descrizione";
 		static final String PORTFOLIO_CREATION_DATE_KEY = "dataCreazione";
+		static final String PORTFOLIO_LASTUPDATE_KEY = "ultimoAggiornamento";
 	}
 	
 	static class BondMetaData
@@ -188,7 +189,8 @@ public class MyFinanceDatabase
 			PortfolioMetaData.ID +" INTEGER NOT NULL, " +
 			PortfolioMetaData.PORTFOLIO_NAME_KEY +" TEXT PRIMARY KEY, " +
 			PortfolioMetaData.PORTFOLIO_DESCRIPTION_KEY +" TEXT NOT NULL, " +
-			PortfolioMetaData.PORTFOLIO_CREATION_DATE_KEY +" TEXT NOT NULL);";
+			PortfolioMetaData.PORTFOLIO_CREATION_DATE_KEY +" TEXT NOT NULL, " +
+			PortfolioMetaData.PORTFOLIO_LASTUPDATE_KEY +" TEXT NOT NULL);";
 	
 	private static final String TABLE_BOND_CREATE = "CREATE TABLE "+BondMetaData.BOND_TABLE+" (" +
 			BondMetaData.ID +" INTEGER NOT NULL, " +
@@ -377,13 +379,14 @@ public class MyFinanceDatabase
 	//////////////////////////////////////////////////////////////////////////////
 	
 	//--------------------------------INSERT methods----------------------------//
-	public void addNewPortfolio(int _id, String name, String description, String creationDate)
+	public void addNewPortfolio(int _id, String name, String description, String creationDate, String lastUpdate)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioMetaData.ID, _id);
 		cv.put(PortfolioMetaData.PORTFOLIO_NAME_KEY, name);
 		cv.put(PortfolioMetaData.PORTFOLIO_DESCRIPTION_KEY, description);
 		cv.put(PortfolioMetaData.PORTFOLIO_CREATION_DATE_KEY, creationDate);
+		cv.put(PortfolioMetaData.PORTFOLIO_LASTUPDATE_KEY, lastUpdate);
 		database.insert(PortfolioMetaData.PORTFOLIO_TABLE, null, cv);
 	}
 	
@@ -634,6 +637,11 @@ public class MyFinanceDatabase
 	public Cursor getAllSavedPortfolio()
 	{
 		return database.query(PortfolioMetaData.PORTFOLIO_TABLE, null, null, null, null, null, null);
+	}
+	
+	public Cursor getDetailsOfPortfolio(String portfolioName)
+	{
+		return database.query(PortfolioMetaData.PORTFOLIO_TABLE, null, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null, null, null, null);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////

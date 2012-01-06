@@ -4,7 +4,7 @@
     android:layout_height="fill_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
     <TextView
         android:id="@+id/shareReferenceTextView"
@@ -74,6 +74,20 @@
        	android:layout_marginTop="5dp"
        	android:layout_marginLeft="5dp"
        	android:weightSum="2">
+        <TableRow >           
+            <TextView
+        		android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text="Source Site:" />
+            <TextView
+        		android:id="@+id/sharesourceSiteTextView"
+       			android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_weight="1"
+        		android:text=""
+        		android:gravity="center_horizontal"/>
+        </TableRow>
         <TableRow >
             <TextView 
             	android:layout_width="wrap_content"

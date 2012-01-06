@@ -20,6 +20,7 @@ public class FundDetailsActivity extends Activity
 	private TextView fund_purchasePrize_TV;
 	private TextView fund_roundLot_TV;
 	
+	private TextView sourceSite;
 	private TextView isin;
 	private TextView name;
 	private TextView manager;
@@ -93,6 +94,7 @@ public class FundDetailsActivity extends Activity
 		fund_purchasePrize_TV = (TextView) findViewById(R.id.fund_purchasePrize_TV);
 		fund_roundLot_TV = (TextView) findViewById(R.id.fund_roundLot_TV);
 		
+		sourceSite = (TextView) findViewById(R.id.fundsourceSiteTextView);
 		isin = (TextView) findViewById(R.id.fundisinTextView);
 		name = (TextView) findViewById(R.id.fundnameTextView);
 		manager = (TextView) findViewById(R.id.fundmanagerTextView);
@@ -119,6 +121,7 @@ public class FundDetailsActivity extends Activity
     	
     	details.moveToFirst();
     	
+    	sourceSite.setText(details.getString(17));
     	isin.setText(details.getString(1));
     	name.setText(details.getString(2));
 		manager.setText(details.getString(3));

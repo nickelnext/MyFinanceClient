@@ -54,6 +54,7 @@ public class ToolListActivity extends Activity
 	private ArrayList<String> shareRoundLotArrayList = new ArrayList<String>();
 	
 	private TextView portfolioReferenceTextView;
+	private TextView portfolioLastUpdate_TV;
 	private ListView toolListView;
 	
 	//liste di supporto per salvare i dati temporanei prima di scriverli nel database
@@ -68,6 +69,7 @@ public class ToolListActivity extends Activity
         setContentView(R.layout.tool_list_activity);
         
         portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
+        portfolioLastUpdate_TV = (TextView) findViewById(R.id.portfolioLastUpdate_TV);
         toolListView = (ListView) findViewById(R.id.toolListView);
         registerForContextMenu(toolListView);
         
@@ -79,8 +81,27 @@ public class ToolListActivity extends Activity
         
         db = new MyFinanceDatabase(this);
         
+        setPortfolioLastUpdate();
+        
         //CALL ASYNCTASK FOR UPDATE REQUEST...
     }
+	
+	private void setPortfolioLastUpdate()
+	{
+		db.open();
+		
+		Cursor portfolio = db.getDetailsOfPortfolio(portfolioName);
+		startManagingCursor(portfolio);
+		
+		if(portfolio.getCount()==1)
+		{
+			portfolio.moveToFirst();
+			portfolioLastUpdate_TV.setText(portfolio.getString(4));
+		}
+		
+		
+		db.close();
+	}
 	
 	public void onResume()
     {
@@ -454,7 +475,7 @@ public class ToolListActivity extends Activity
 		{
 			//load progress dialog....
 			dialog = new ProgressDialog(this.context);
-			dialog.setMessage("Loading, please wait...");
+			dialog.setMessage("Loading, contacting server for data...");
 			dialog.show();
 		}
 		
@@ -571,6 +592,61 @@ public class ToolListActivity extends Activity
 			
 			
 			db.close();
+		}
+	}
+	
+	
+	
+	
+	//IP. chiamata asincrona per effettuare una request UPDATE! 
+	private class UpdateRequestAsyncTask extends AsyncTask<ArrayList<Request>, Void, QuotationContainer>
+	{
+		private ProgressDialog dialog;
+		private Context context;
+		
+		public UpdateRequestAsyncTask(Context ctx)
+		{
+			this.context = ctx;
+		}
+		
+		@Override
+		protected QuotationContainer doInBackground(ArrayList<Request>... params) 
+		{
+//			try {
+//				QuotationContainer quotCont = new QuotationContainer();
+//				
+//				Gson converter = new Gson();
+//				String jsonReq = converter.toJson(params[0]);
+//				String jsonResponse = ConnectionUtils.postData(jsonReq);
+//				if(jsonResponse != null)
+//				{
+//					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+//					return quotCont;
+//				}
+//				else
+//				{
+//					return null;
+//				}
+//			} catch (Exception e) {
+//				System.out.println("connection ERROR");
+//			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPreExecute()
+		{
+			//load progress dialog....
+			dialog = new ProgressDialog(this.context);
+			dialog.setMessage("Loading, contacting server for data...");
+			dialog.show();
+		}
+		
+		@Override
+		protected void onPostExecute(QuotationContainer container)
+		{
+			
 		}
 	}
 	

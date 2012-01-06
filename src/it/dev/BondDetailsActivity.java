@@ -22,6 +22,7 @@ public class BondDetailsActivity extends Activity
 	private TextView purchasePrize_TV;
 	private TextView roundLot_TV;
 	
+	private TextView sourceSite;
 	private TextView isin;
 	private TextView name;
 	private TextView currency;
@@ -109,6 +110,7 @@ public class BondDetailsActivity extends Activity
     	{
     		details.moveToFirst();
         	
+    		sourceSite.setText(details.getString(28));
         	isin.setText(details.getString(1));
         	name.setText(details.getString(2));
     		currency.setText(details.getString(3));
@@ -147,6 +149,7 @@ public class BondDetailsActivity extends Activity
 		purchasePrize_TV = (TextView) findViewById(R.id.bond_purchasePrize_TV);
 		roundLot_TV = (TextView) findViewById(R.id.bond_roundLot_TV);
 		
+		sourceSite = (TextView) findViewById(R.id.sourceSiteTextView);
 		isin = (TextView) findViewById(R.id.bondIsinTextView);
 		name = (TextView) findViewById(R.id.bondNameTextView);
 		currency = (TextView) findViewById(R.id.bondCurrencyTextView);

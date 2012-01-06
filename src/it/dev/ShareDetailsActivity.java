@@ -18,6 +18,7 @@ public class ShareDetailsActivity extends Activity
 	private TextView share_purchasePrize_TV;
 	private TextView share_roundLot_TV;
 	
+	private TextView sourceSite;
 	private TextView code;
 	private TextView isin;
 	private TextView name;
@@ -81,6 +82,7 @@ public class ShareDetailsActivity extends Activity
 		share_purchasePrize_TV = (TextView) findViewById(R.id.share_purchasePrize_TV);
 		share_roundLot_TV = (TextView) findViewById(R.id.share_roundLot_TV);
 		
+		sourceSite = (TextView) findViewById(R.id.sharesourceSiteTextView);
 		code = (TextView) findViewById(R.id.shareCodeTextView);
 		isin = (TextView) findViewById(R.id.shareIsinTextView);
 		name = (TextView) findViewById(R.id.shareNameTextView);
@@ -115,6 +117,7 @@ public class ShareDetailsActivity extends Activity
     	
     	details.moveToFirst();
     	
+    	sourceSite.setText(details.getString(24));
     	code.setText(details.getString(1));
     	isin.setText(details.getString(2));
     	name.setText(details.getString(3));
