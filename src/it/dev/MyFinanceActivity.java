@@ -20,10 +20,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 
 public class MyFinanceActivity extends Activity 
 {
@@ -90,7 +93,8 @@ public class MyFinanceActivity extends Activity
     		showAddNewPortfolioDialog();
     		break;
     	case R.id.menu_update_option:
-    		goToUpdateOptionActivity();
+    		//goToUpdateOptionActivity();
+    		showUpdateOptionDialog();
     		break;
     	}
     	return super.onOptionsItemSelected(item);
@@ -203,10 +207,64 @@ public class MyFinanceActivity extends Activity
 		addPortfolioDialog.show();
     }
     
-    private void goToUpdateOptionActivity()
+    //Open the custom alert dialog where it is possible to select the automatic update.
+    private void showUpdateOptionDialog()
     {
-    	Intent i = new Intent(this, UpdateOptionActivity.class);
-    	startActivity(i);
+    	final Dialog updateOptionDialog = new Dialog(MyFinanceActivity.this);
+    	updateOptionDialog.setContentView(R.layout.custom_update_option_dialog);
+    	updateOptionDialog.setTitle("Automatic update");
+    	updateOptionDialog.setCancelable(true);
+    	
+    	
+    	final CheckBox enableAutoUpdateCheckBox = (CheckBox) updateOptionDialog.findViewById(R.id.enableAutoUpdateCheckBox);
+    	final Spinner updateTimeSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateTimeSpinner);
+    	final Button undoSavePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.undoSavePreferencesButton);
+    	final Button saveUpdatePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.saveUpdatePreferencesButton);
+    	
+    	enableAutoUpdateCheckBox.setChecked(false);   
+        updateTimeSpinner.setEnabled(false);
+        saveUpdatePreferencesButton.setEnabled(false);
+    	
+        ArrayAdapter<CharSequence> TimeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
+        TimeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        updateTimeSpinner.setAdapter(TimeAdapter);
+        
+        enableAutoUpdateCheckBox.setOnClickListener(new View.OnClickListener() 
+        {
+			public void onClick(View v) 
+			{
+				if (((CheckBox) v).isChecked())
+				{
+					updateTimeSpinner.setEnabled(true);
+					saveUpdatePreferencesButton.setEnabled(true);
+				}
+				else
+				{
+					updateTimeSpinner.setEnabled(false);
+					saveUpdatePreferencesButton.setEnabled(false);
+				}
+			}
+		});
+        
+        View.OnClickListener gestore = new View.OnClickListener() {
+	    	  public void onClick(View view) { 
+	    	    
+	    	    switch(view.getId()){
+	    	    case R.id.undoSavePreferencesButton:
+	    	    	updateOptionDialog.dismiss();   	    	
+	    	        break;
+	    	    case R.id.saveUpdatePreferencesButton:
+	    	    	//save preferences....
+	    	    	updateOptionDialog.dismiss();
+	    	        break;  
+	    	    }	
+	    	  }
+	    };
+	    
+	    undoSavePreferencesButton.setOnClickListener(gestore);
+	    saveUpdatePreferencesButton.setOnClickListener(gestore);
+	    
+	    updateOptionDialog.show();
     }
     
     private void goToToolListActivity(String portfolioName)
