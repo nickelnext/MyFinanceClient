@@ -93,7 +93,6 @@ public class MyFinanceActivity extends Activity
     		showAddNewPortfolioDialog();
     		break;
     	case R.id.menu_update_option:
-    		//goToUpdateOptionActivity();
     		showUpdateOptionDialog();
     		break;
     	}

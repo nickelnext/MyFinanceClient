@@ -24,9 +24,12 @@ import android.database.Cursor;
 import android.database.MergeCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
@@ -66,6 +69,7 @@ public class ToolListActivity extends Activity
         
         portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
         toolListView = (ListView) findViewById(R.id.toolListView);
+        registerForContextMenu(toolListView);
         
         Intent intent = getIntent();
         String pkg = getPackageName();
@@ -74,12 +78,22 @@ public class ToolListActivity extends Activity
         portfolioReferenceTextView.setText(portfolioName);
         
         db = new MyFinanceDatabase(this);
+        
+        //CALL ASYNCTASK FOR UPDATE REQUEST...
     }
 	
 	public void onResume()
     {
 		super.onResume();
 		updateView();
+    }
+	
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+        menu.setHeaderTitle(shareIsinArrayList.get(info.position));
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.select_portfolio_context_menu, menu);
     }
 	
 	public boolean onContextItemSelected(MenuItem item) {
@@ -93,6 +107,11 @@ public class ToolListActivity extends Activity
         	return true;        
         }
         return false;
+    }
+	
+	public void onContextMenuClosed(Menu menu)
+    {    	
+    	updateView();
     }
 	
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -390,10 +409,9 @@ public class ToolListActivity extends Activity
 			db.deleteShareInTransitionTable(portfolioName, ISIN);
 		}
 		else{
-			//error
+			System.out.println("type error");
 		}
 		db.close();
-		return;
 	}
 	
 	private class QuotationRequestAsyncTask extends

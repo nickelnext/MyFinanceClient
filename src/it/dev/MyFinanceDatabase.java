@@ -80,7 +80,10 @@ public class MyFinanceDatabase
 		static final String BOND_COUPONDATE_KEY = "dataStaccoCedola";
 		static final String BOND_COUPON_KEY = "cedola";
 		static final String BOND_MINROUNDLOT_KEY = "lottoMinimo";
-		static final String BOND_LASTUPDATE_KEY = "dataUltimoAggiornamento";		
+		static final String BOND_LASTUPDATE_KEY = "dataUltimoAggiornamento";
+		static final String BOND_SOURCESITE_KEY = "sitoSorgente";
+		static final String BOND_PREFERREDSITE_KEY = "sitoPreferito";
+		static final String BOND_IGNOREDSITES_KEY = "sitiIgnorati";
 	}
 	
 	static class FundMetaData
@@ -103,6 +106,9 @@ public class MyFinanceDatabase
 		static final String FUND_PERFORMANCE1YEAR = "performance1Year";
 		static final String FUND_PERFORMANCE3YEAR = "performance3Year";
 		static final String FUND_LASTUPDATE_KEY = "ultimoAggiornamento";
+		static final String FUND_SOURCESITE_KEY = "sitoSorgente";
+		static final String FUND_PREFERREDSITE_KEY = "sitoPreferito";
+		static final String FUND_IGNOREDSITES_KEY = "sitiIgnorati";
 	}
 	
 	static class ShareMetaData
@@ -132,6 +138,9 @@ public class MyFinanceDatabase
 		static final String SHARE_MINYEARDATE_KEY = "dataMinAnno";
 		static final String SHARE_LASTCLOSE_KEY = "chiusuraPrecedente";
 		static final String SHARE_LASTUPDATE_KEY = "dataUltimoAggiornamento";
+		static final String SHARE_SOURCESITE_KEY = "sitoSorgente";
+		static final String SHARE_PREFERREDSITE_KEY = "sitoPreferito";
+		static final String SHARE_IGNOREDSITES_KEY = "sitiIgnorati";
 	}
 	
 	//-----------------------------------METADATA tabelle di transizione-----------------------------//
@@ -209,7 +218,10 @@ public class MyFinanceDatabase
 			BondMetaData.BOND_COUPONDATE_KEY +" TEXT, " +
 			BondMetaData.BOND_COUPON_KEY +" REAL, " +
 			BondMetaData.BOND_MINROUNDLOT_KEY +" INTEGER, " +
-			BondMetaData.BOND_LASTUPDATE_KEY +" TEXT);";
+			BondMetaData.BOND_LASTUPDATE_KEY +" TEXT, " +
+			BondMetaData.BOND_SOURCESITE_KEY +" TEXT, " +
+			BondMetaData.BOND_PREFERREDSITE_KEY +" TEXT, " +
+			BondMetaData.BOND_IGNOREDSITES_KEY +" TEXT);";
 	
 	private static final String TABLE_FUND_CREATE = "CREATE TABLE "+FundMetaData.FUND_TABLE+" (" +
 			FundMetaData.ID +" INTEGER NOT NULL, " +
@@ -228,7 +240,10 @@ public class MyFinanceDatabase
 			FundMetaData.FUND_PERFORMANCE3MONTH +" REAL, " +
 			FundMetaData.FUND_PERFORMANCE1YEAR +" REAL, " +
 			FundMetaData.FUND_PERFORMANCE3YEAR +" REAL, " +
-			FundMetaData.FUND_LASTUPDATE_KEY +" TEXT);";
+			FundMetaData.FUND_LASTUPDATE_KEY +" TEXT, " +
+			FundMetaData.FUND_SOURCESITE_KEY +" TEXT, " +
+			FundMetaData.FUND_PREFERREDSITE_KEY +" TEXT, " +
+			FundMetaData.FUND_IGNOREDSITES_KEY +" TEXT);";
 	
 	private static final String TABLE_SHARE_CREATE = "CREATE TABLE "+ShareMetaData.SHARE_TABLE+" (" +
 			ShareMetaData.ID +" INTEGER NOT NULL, " +
@@ -254,7 +269,10 @@ public class MyFinanceDatabase
 			ShareMetaData.SHARE_MAXYEARDATE_KEY +" TEXT, " +
 			ShareMetaData.SHARE_MINYEARDATE_KEY +" TEXT, " +
 			ShareMetaData.SHARE_LASTCLOSE_KEY +" REAL, " +
-			ShareMetaData.SHARE_LASTUPDATE_KEY +" TEXT);";
+			ShareMetaData.SHARE_LASTUPDATE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_SOURCESITE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_PREFERREDSITE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_IGNOREDSITES_KEY +" TEXT);";
 	
 	//-------------------------------------STRING per creazione tabelle di transizione-------------------//
 	private static final String TABLE_PORTFOLIO_BOND_CREATE = "CREATE TABLE "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+" (" +
@@ -373,7 +391,7 @@ public class MyFinanceDatabase
 			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
 			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
 			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
-			int minRoundLot, String lastUpdate)
+			int minRoundLot, String lastUpdate, String sourceSite, String preferredSite, String ignoredSites)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(BondMetaData.ID, _id);
@@ -404,6 +422,9 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_COUPON_KEY, coupon);
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, minRoundLot);
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
+		cv.put(BondMetaData.BOND_SOURCESITE_KEY, sourceSite);
+		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, preferredSite);
+		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
 		database.insert(BondMetaData.BOND_TABLE, null, cv);
 	}
 	
@@ -438,12 +459,16 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
+		cv.put(BondMetaData.BOND_SOURCESITE_KEY, newBond.getSite());
+		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
+		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
 		database.insert(BondMetaData.BOND_TABLE, null, cv);
 	}
 	
 	public void addNewFund(int _id, String isin, String name, String manager, String category, String benchmark, 
 			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
-			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate)
+			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate, 
+			String sourceSite, String preferredSite, String ignoredSites)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(FundMetaData.ID, _id);
@@ -463,6 +488,9 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
+		cv.put(FundMetaData.FUND_SOURCESITE_KEY, sourceSite);
+		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, preferredSite);
+		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, ignoredSites);
 		database.insert(FundMetaData.FUND_TABLE, null, cv);
 	}
 	
@@ -486,13 +514,17 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, newFund.getPerformance1Anno());
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, newFund.getPerformance3Anni());
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
+		cv.put(FundMetaData.FUND_SOURCESITE_KEY, newFund.getSite());
+		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
+		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
 		database.insert(FundMetaData.FUND_TABLE, null, cv);
 	}
 	
 	public void addNewShare(int _id, String code, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
 			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
 			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
-			String maxYearDate, String minYearDate, float lastClose, String lastUpdate)
+			String maxYearDate, String minYearDate, float lastClose, String lastUpdate, 
+			String sourceSite, String preferredSite, String ignoredSites)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.ID, _id);
@@ -519,6 +551,9 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
+		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, sourceSite);
+		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, preferredSite);
+		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
 	}
 	
@@ -549,6 +584,9 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno());
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
+		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSite());
+		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
+		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
 	}
 	
@@ -682,7 +720,7 @@ public class MyFinanceDatabase
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//------------------------This 3 Methods returns all details -------------------------------------//
-	//------------------------of a shares in a specific Portfolio-------------------------------------//
+	//------------------------of a tool in a specific Portfolio---------------------------------------//
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	public Cursor getBondDetails(String ISIN)
@@ -716,7 +754,7 @@ public class MyFinanceDatabase
 			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
 			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
 			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
-			int minRoundLot, String lastUpdate)
+			int minRoundLot, String lastUpdate, String sourceSite, String preferredSite, String ignoredSites)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(BondMetaData.BOND_ISIN, ISIN); //no perché serve per identificare la tupla
@@ -746,7 +784,9 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_COUPON_KEY, coupon);
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, minRoundLot);
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
-		
+		cv.put(BondMetaData.BOND_SOURCESITE_KEY, sourceSite);
+		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, preferredSite);
+		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null);
 	}
 	
@@ -781,13 +821,16 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_COUPON_KEY, newBond.getCedola());
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
-		
+		cv.put(BondMetaData.BOND_SOURCESITE_KEY, newBond.getSite());
+		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
+		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+newBond.getISIN()+"'", null);
 	}
 	
 	public void updateSelectedFund(String ISIN, String name, String manager, String category, String benchmark, 
 			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
-			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate)
+			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate, 
+			String sourceSite, String preferredSite, String ignoredSites)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(FundMetaData.FUND_ISIN, ISIN);// no serve per la ricerca
@@ -806,7 +849,9 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
-		
+		cv.put(FundMetaData.FUND_SOURCESITE_KEY, sourceSite);
+		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, preferredSite);
+		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, ignoredSites);
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null);
 
 	}
@@ -830,14 +875,17 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, newFund.getPerformance1Anno());
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, newFund.getPerformance3Anni());
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
-		
+		cv.put(FundMetaData.FUND_SOURCESITE_KEY, newFund.getSite());
+		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
+		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
 	}
 	
 	public void updateSelectedShare(String CODE, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
 			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
 			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
-			String maxYearDate, String minYearDate, float lastClose, String lastUpdate)
+			String maxYearDate, String minYearDate, float lastClose, String lastUpdate, 
+			String sourceSite, String preferredSite, String ignoredSites)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.SHARE_CODE, CODE); //no serve per ricerca
@@ -863,7 +911,9 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
-		
+		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, sourceSite);
+		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, preferredSite);
+		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
 		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null);
 	}
 	
@@ -893,7 +943,9 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, newShare.getDataMinAnno());
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
-		
+		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSite());
+		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
+		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
 		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+newShare.getISIN()+"'", null);
 	}
 	
