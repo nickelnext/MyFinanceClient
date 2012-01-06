@@ -25,12 +25,12 @@
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:layout_marginTop="5dp"
-    		android:weightSum="12">
+    		android:weightSum="13">
     	    <TableRow>
 
     	        <TextView
     	            android:id="@+id/nameCol"
-    	            android:layout_width="fill_parent"
+    	            android:layout_width="0dp"
     	            android:layout_height="wrap_content"
     	            android:textColor="#FFFFFF"
     	            android:textSize="15dp"
@@ -40,17 +40,17 @@
     	            android:textStyle="bold" />
     	        <TextView               
                 	android:id="@+id/dateCol"
-                	android:layout_width="fill_parent"
+                	android:layout_width="0dp"
                 	android:layout_height="wrap_content"                
                 	android:textSize="15dp"
                 	android:textStyle="bold" 
                 	android:textColor="#FFFFFF"
                 	android:gravity="center_horizontal"
-                	android:layout_weight="2"
+                	android:layout_weight="3"
     	            android:text="Bought"/>
 				<TextView               
                 	android:id="@+id/variationCol"
-                	android:layout_width="fill_parent"
+                	android:layout_width="0dp"
                 	android:layout_height="wrap_content"                
                 	android:textSize="15dp"
                 	android:textStyle="bold" 
@@ -60,7 +60,7 @@
     	            android:text="Var"/>
         		<TextView               
                 	android:id="@+id/percVarCol"
-                	android:layout_width="fill_parent"
+                	android:layout_width="0dp"
                 	android:layout_height="wrap_content"
                 	android:textSize="15dp"
                 	android:textStyle="bold" 
@@ -70,7 +70,7 @@
     	            android:text="Var%"/>
         		<TextView 
         		    android:id="@+id/prizeCol"
-                	android:layout_width="fill_parent"
+                	android:layout_width="0dp"
                 	android:layout_height="wrap_content"
                 	android:textSize="15dp"
                 	android:textStyle="bold" 

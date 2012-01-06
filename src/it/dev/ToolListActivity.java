@@ -172,8 +172,6 @@ public class ToolListActivity extends Activity
 			public void onClick(View v) {
 				if(shareISINEditText.getText().length()!=0 && buyPriceEditText.getText().length()!=0 && roundLotEditText.getText().length()!=0)
 				{
-					db.open();
-					
 					
 					//0. add last tool in ArrayList<String>...
 					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()+1) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
@@ -182,127 +180,24 @@ public class ToolListActivity extends Activity
 					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
 					listaLottoTmp.add(roundLotEditText.getText().toString());
 					
-					//1. send request to server for tools data....
-					
+					//1. create arrayList of Quotation Request....
 					ArrayList<Request> array = new ArrayList<Request>();
 					for (int i = 0; i < listaIsinTmp.size(); i++) 
 					{
 						array.add(new Request(listaIsinTmp.get(i)));
 					}
 					
+					//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
 					QuotationRequestAsyncTask asyncTask1 = new QuotationRequestAsyncTask(ToolListActivity.this);
 					asyncTask1.execute(array);
 					
-					
-					//QuotationContainer myQuotationContainer = connectToServerForTools(listaIsinTmp);
-					
-//					if(myQuotationContainer!=null)
-//					{
-//						//2. control number of isin returned equals number of isin requested....
-//						int totalQuotationReturned = myQuotationContainer.getBondList().size() + myQuotationContainer.getFundList().size() + myQuotationContainer.getShareList().size();
-//						if(totalQuotationReturned == listaIsinTmp.size())
-//						{
-//							//2.1 control that all isin requested are returned....
-//							if(allIsinRequestedAreReturned(listaIsinTmp, myQuotationContainer))
-//							{
-//								//3. for all BOND returned...
-//								for(Quotation_Bond qb : myQuotationContainer.getBondList())
-//								{
-//									//3.1 control if bond already exist in database --> UPDATE
-//									if(db.bondAlreadyInDatabase(qb.getISIN()))
-//									{
-//										//UPDATE
-//										
-//										try {
-//											db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
-//										} catch (Exception e) {
-//											System.out.println("Database update error");
-//										}
-//									}
-//									else
-//									{
-//										//INSERT
-//										
-//										try {
-//											db.addNewBondByQuotationObject(qb, getTodaysDate());
-//										} catch (Exception e) {
-//											System.out.println("Database insert error");
-//										}	
-//									}
-//									
-//									//3.2 INSERT bond in transition table
-//									int index = listaIsinTmp.indexOf(qb.getISIN());
-//									try {
-//										db.addNewBondInTransitionTable(portfolioName, listaIsinTmp.get(index), 
-//												listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
-//									} catch (Exception e) {
-//										System.out.println("Database insert error [transition table]");
-//									}
-//								}
-//								
-//								//4. for all FUND returned...
-//								for(Quotation_Fund qf : myQuotationContainer.getFundList())
-//								{
-//									//4.1 control if fund already exist in database --> UPDATE
-//									if(db.fundAlreadyInDatabase(qf.getISIN()))
-//									{
-//										//UPDATE
-//									}
-//									else
-//									{
-//										//INSERT
-//									}
-//									
-//									//4.2 INSERT fund in transition table
-//								}
-//								
-//								//5. for all SHARE returned...
-//								for(Quotation_Share qs : myQuotationContainer.getShareList())
-//								{
-//									//5.1 control if share already exist in database --> UPDATE
-//									if(db.shareAlreadyInDatabase(qs.getISIN()))
-//									{
-//										//UPDATE
-//									}
-//									else
-//									{
-//										//INSERT
-//									}
-//									
-//									//5.2 INSERT share in transition table
-//								}
-//							}
-//							else
-//							{
-//								//error: all requested !are returned
-//								showMessage("Error", "Some tool requested is not returned.");
-//							}
-//						}
-//						else
-//						{
-//							//error: #returned != #requested
-//							showMessage("Error", "The number of tools returned is different from the ones requested.");
-//						}
-//					}
-//					else
-//					{
-//						//connection error!
-//						showMessage("Error", "There were errors during connection with server. Please try again.");
-//					}
-					
-					db.close();
+					//3.dismiss dialog...
 					addToolDialog.dismiss();
 				}
 				else
 				{
 					showMessage("Error", "Control that you have insert all the data.");
 				}
-			}
-		});
-		
-		addToolDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-			public void onDismiss(DialogInterface dialog) {
-				updateView();
 			}
 		});
 		
@@ -376,48 +271,6 @@ public class ToolListActivity extends Activity
     	db.close();
     }
 	
-	//function that connect to server and return all the data of all the tools added by user...
-	@SuppressWarnings("unchecked")
-	private QuotationContainer connectToServerForTools(ArrayList<String> toolsList)
-	{	
-		ArrayList<Request> array = new ArrayList<Request>();
-		for (int i = 0; i < toolsList.size(); i++) 
-		{
-			array.add(new Request(toolsList.get(i)));
-		}
-		
-		QuotationRequestAsyncTask asyncTask1 = new QuotationRequestAsyncTask(ToolListActivity.this);
-		asyncTask1.execute(array);
-		
-//		try {
-//			QuotationContainer quotCont = new QuotationContainer();
-//			
-//			ArrayList<Request> array = new ArrayList<Request>();
-//			for (int i = 0; i < listaIsinTmp.size(); i++) 
-//			{
-//				array.add(new Request(listaIsinTmp.get(i)));
-//			}
-//			
-//			Gson converter = new Gson();
-//			String jsonReq = converter.toJson(array);
-//			Log.d(getPackageName(), "postData: "+jsonReq);
-//			String jsonResponse = ConnectionUtils.postData(jsonReq);
-//			Log.d(getPackageName(), "jsonResponse: "+jsonResponse);
-//			if(jsonResponse != null)
-//			{
-//				quotCont = ResponseHandler.decodeQuotations(jsonResponse);
-//				return quotCont;
-//			}
-//			else
-//			{
-//				return null;
-//			}
-//		} catch (Exception e) {
-//			System.out.println("connection ERROR");
-//		}
-		return null;
-	}
-	
 	//function that control if all the isin requested are returned...
 	private boolean allIsinRequestedAreReturned(ArrayList<String> isinList, QuotationContainer container)
 	{
@@ -447,13 +300,6 @@ public class ToolListActivity extends Activity
 		
 		return result;
 	}
-	
-	
-	
-	
-	
-	
-	
 	
 	private void goToBondDetailsActivity(String bondIsin, String bondPurchaseDate, String bondPurchasePrize, String bondRoundLot)
     {
@@ -499,7 +345,6 @@ public class ToolListActivity extends Activity
 				sharePurchaseDateArrayList.add(c.getString(3));
 				sharePurchasePrizeArrayList.add(String.valueOf(c.getFloat(4)));
 				shareRoundLotArrayList.add(String.valueOf(c.getInt(5)));
-				System.out.println("halo: "+String.valueOf(c.getInt(5)));
 			} while (c.moveToNext());
 		}
 	}
@@ -562,8 +407,8 @@ public class ToolListActivity extends Activity
 		}
 		
 		@Override
-		protected QuotationContainer doInBackground(ArrayList<Request>... params) {
-			
+		protected QuotationContainer doInBackground(ArrayList<Request>... params) 
+		{
 			try {
 				QuotationContainer quotCont = new QuotationContainer();
 				
@@ -582,7 +427,6 @@ public class ToolListActivity extends Activity
 			} catch (Exception e) {
 				System.out.println("connection ERROR");
 			}
-			
 			
 			return null;
 		}
