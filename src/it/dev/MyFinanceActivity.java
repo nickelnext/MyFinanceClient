@@ -130,7 +130,7 @@ public class MyFinanceActivity extends Activity
 						db.open();
 						String creationDate = getTodaysDate();
 						db.updateSelectedPortfolio(previousName, editedPortfolioName_ET.getText().toString(), 
-								editedPortfolioDescription_ET.getText().toString(), creationDate);
+								editedPortfolioDescription_ET.getText().toString(), creationDate, creationDate);
 						db.close();
 						editPortfolioDialog.dismiss();
 					}

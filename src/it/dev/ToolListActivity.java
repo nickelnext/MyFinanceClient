@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import Quotes.QuotationContainer;
+import Quotes.QuotationType;
 import Quotes.Quotation_Bond;
 import Quotes.Quotation_Fund;
 import Quotes.Quotation_Share;
@@ -83,7 +84,7 @@ public class ToolListActivity extends Activity
         
         setPortfolioLastUpdate();
         
-        //CALL ASYNCTASK FOR UPDATE REQUEST...
+        
     }
 	
 	private void setPortfolioLastUpdate()
@@ -107,6 +108,12 @@ public class ToolListActivity extends Activity
     {
 		super.onResume();
 		updateView();
+		
+		//CALL ASYNCTASK FOR UPDATE REQUEST...
+		if(shareIsinArrayList.size()!=0)
+		{
+			updateToolsInPortfolio();
+		}
     }
 	
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -154,6 +161,43 @@ public class ToolListActivity extends Activity
     	}
     	return super.onOptionsItemSelected(item);
     }
+	
+	@SuppressWarnings("unchecked")
+	private void updateToolsInPortfolio()
+	{
+		//0. create arrayList of QuotationType to generate the update request...
+		ArrayList<QuotationType> typeArray = new ArrayList<QuotationType>();
+		for (int i = 0; i < shareTypeArrayList.size(); i++) 
+		{
+			if(shareTypeArrayList.get(i).equals("bond"))
+			{
+				typeArray.add(QuotationType.BOND);
+			}
+			else if(shareTypeArrayList.get(i).equals("fund"))
+			{
+				typeArray.add(QuotationType.FUND);
+			}
+			else if(shareTypeArrayList.get(i).equals("share"))
+			{
+				typeArray.add(QuotationType.SHARE);
+			}
+			else
+			{
+				System.out.println("Type error.");
+			}
+		}
+		
+		//1. create arrayList of Quotation Request....
+		ArrayList<Request> array = new ArrayList<Request>();
+		for (int i = 0; i < shareIsinArrayList.size(); i++) 
+		{
+			array.add(new Request(shareIsinArrayList.get(i), typeArray.get(i), "__NONE__"));
+		}
+		
+		//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
+		UpdateRequestAsyncTask asyncTask0 = new UpdateRequestAsyncTask(ToolListActivity.this);
+		asyncTask0.execute(array);
+	}
 	
 	//Open the custom alert dialog where it is possible to add a new tool.
 	private void showAddNewToolDialog()
@@ -308,6 +352,7 @@ public class ToolListActivity extends Activity
     			}
     		});
     	}
+    	
     	db.close();
     }
 	
@@ -335,6 +380,66 @@ public class ToolListActivity extends Activity
 			if(support.contains(isinList.get(i)))
 			{
 				result = true;
+			}
+		}
+		
+		return result;
+	}
+	
+	//function that returns an array list of the Isin returned by server but not requested by client...
+	private ArrayList<String> searchIsinNotRequested(ArrayList<String> isinList, QuotationContainer container)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		
+		ArrayList<String> support = new ArrayList<String>();
+		for(Quotation_Bond qb : container.getBondList())
+		{
+			support.add(qb.getISIN());
+		}
+		for(Quotation_Fund qf : container.getFundList())
+		{
+			support.add(qf.getISIN());
+		}
+		for(Quotation_Share qs : container.getShareList())
+		{
+			support.add(qs.getISIN());
+		}
+		
+		for (int i = 0; i < support.size(); i++) 
+		{
+			if(!isinList.contains(support.get(i)))
+			{
+				result.add(support.get(i));
+			}
+		}
+		
+		return result;
+	}
+	
+	//function that returns an array list of the Isin not returned by server but requested by client...
+	private ArrayList<String> searchIsinNotReturned(ArrayList<String> isinList, QuotationContainer container)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		
+		ArrayList<String> support = new ArrayList<String>();
+		for(Quotation_Bond qb : container.getBondList())
+		{
+			support.add(qb.getISIN());
+		}
+		for(Quotation_Fund qf : container.getFundList())
+		{
+			support.add(qf.getISIN());
+		}
+		for(Quotation_Share qs : container.getShareList())
+		{
+			support.add(qs.getISIN());
+		}
+		
+		for (int i = 0; i < isinList.size(); i++) 
+		{
+			if(!support.contains(isinList.get(i)))
+			{
+				result.add(isinList.get(i));
 			}
 		}
 		
@@ -493,91 +598,128 @@ public class ToolListActivity extends Activity
 			
 			if(container!=null)
 			{
-				//2. control number of isin returned equals number of isin requested....
 				int totalQuotationReturned = container.getBondList().size() + container.getFundList().size() + container.getShareList().size();
-				if(totalQuotationReturned == listaIsinTmp.size())
+				
+				if(allIsinRequestedAreReturned(listaIsinTmp, container))
 				{
-					//2.1 control that all isin requested are returned....
-					if(allIsinRequestedAreReturned(listaIsinTmp, container))
+					if(totalQuotationReturned != listaIsinTmp.size())
 					{
-						//3. for all BOND returned...
-						for(Quotation_Bond qb : container.getBondList())
+						//ne ho ricevuti di più rispetto a quelli richiesti....
+						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
+						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(listaIsinTmp, container);
+						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
 						{
-							//3.1 control if bond already exist in database --> UPDATE
-							if(db.bondAlreadyInDatabase(qb.getISIN()))
+							System.out.println(listaIsinNotRequested.get(i));							
+						}
+						
+						//elimino quelli non richiesti dal container...
+						System.out.println("elimino quelli non richiesti dal container...");
+						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
+						{
+							for(Quotation_Bond qb : container.getBondList())
 							{
-								//UPDATE
-								
-								try {
-									db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
-								} catch (Exception e) {
-									System.out.println("Database update error");
+								if(qb.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getBondList().remove(qb);
 								}
 							}
-							else
+							for(Quotation_Fund qf : container.getFundList())
 							{
-								//INSERT
-								
-								try {
-									db.addNewBondByQuotationObject(qb, getTodaysDate());
-								} catch (Exception e) {
-									System.out.println("Database insert error");
-								}	
+								if(qf.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getFundList().remove(qf);
+								}
 							}
-							
-							//3.2 INSERT bond in transition table
-							int index = listaIsinTmp.indexOf(qb.getISIN());
-							try {
-								db.addNewBondInTransitionTable(portfolioName, listaIsinTmp.get(index), 
-										listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
-							} catch (Exception e) {
-								System.out.println("Database insert error [transition table]");
+							for(Quotation_Share qs : container.getShareList())
+							{
+								if(qs.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getShareList().remove(qs);
+								}
 							}
 						}
-						
-						//4. for all FUND returned...
-						for(Quotation_Fund qf : container.getFundList())
-						{
-							//4.1 control if fund already exist in database --> UPDATE
-							if(db.fundAlreadyInDatabase(qf.getISIN()))
-							{
-								//UPDATE
-							}
-							else
-							{
-								//INSERT
-							}
-							
-							//4.2 INSERT fund in transition table
-						}
-						
-						//5. for all SHARE returned...
-						for(Quotation_Share qs : container.getShareList())
-						{
-							//5.1 control if share already exist in database --> UPDATE
-							if(db.shareAlreadyInDatabase(qs.getISIN()))
-							{
-								//UPDATE
-							}
-							else
-							{
-								//INSERT
-							}
-							
-							//5.2 INSERT share in transition table
-						}
-					}
-					else
-					{
-						//error: all requested !are returned
-						showMessage("Error", "Some tool requested is not returned.");
 					}
 				}
 				else
 				{
-					//error: #returned != #requested
-					showMessage("Error", "The number of tools returned is different from the ones requested.");
+					//alcuni di quelli richiesti non sono stati tornati....
+					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
+					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(listaIsinTmp, container);
+					for (int i = 0; i < listaIsinNotReturned.size(); i++) 
+					{
+						System.out.println(listaIsinNotReturned.get(i));
+						showMessage("Info", listaIsinNotReturned.get(i)+" is not returned by Server");
+					}
 				}
+				
+				
+				//SAVE IN DATABASE <BOND/FUND/SHARE> OF 'container'
+				for(Quotation_Bond qb : container.getBondList())
+				{
+					//3.1 control if bond already exist in database --> UPDATE
+					if(db.bondAlreadyInDatabase(qb.getISIN()))
+					{
+						//UPDATE
+						
+						try {
+							db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
+						} catch (Exception e) {
+							System.out.println("Database update error");
+						}
+					}
+					else
+					{
+						//INSERT
+						
+						try {
+							db.addNewBondByQuotationObject(qb, getTodaysDate());
+						} catch (Exception e) {
+							System.out.println("Database insert error");
+						}	
+					}
+					
+					//3.2 INSERT bond in transition table
+					int index = listaIsinTmp.indexOf(qb.getISIN());
+					try {
+						db.addNewBondInTransitionTable(portfolioName, listaIsinTmp.get(index), 
+								listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
+					} catch (Exception e) {
+						System.out.println("Database insert error [transition table]");
+					}
+				}
+				
+				//4. for all FUND returned...
+				for(Quotation_Fund qf : container.getFundList())
+				{
+					//4.1 control if fund already exist in database --> UPDATE
+					if(db.fundAlreadyInDatabase(qf.getISIN()))
+					{
+						//UPDATE
+					}
+					else
+					{
+						//INSERT
+					}
+					
+					//4.2 INSERT fund in transition table
+				}
+				
+				//5. for all SHARE returned...
+				for(Quotation_Share qs : container.getShareList())
+				{
+					//5.1 control if share already exist in database --> UPDATE
+					if(db.shareAlreadyInDatabase(qs.getISIN()))
+					{
+						//UPDATE
+					}
+					else
+					{
+						//INSERT
+					}
+					
+					//5.2 INSERT share in transition table
+				}
+				
 			}
 			else
 			{
@@ -612,24 +754,24 @@ public class ToolListActivity extends Activity
 		@Override
 		protected QuotationContainer doInBackground(ArrayList<Request>... params) 
 		{
-//			try {
-//				QuotationContainer quotCont = new QuotationContainer();
-//				
-//				Gson converter = new Gson();
-//				String jsonReq = converter.toJson(params[0]);
-//				String jsonResponse = ConnectionUtils.postData(jsonReq);
-//				if(jsonResponse != null)
-//				{
-//					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
-//					return quotCont;
-//				}
-//				else
-//				{
-//					return null;
-//				}
-//			} catch (Exception e) {
-//				System.out.println("connection ERROR");
-//			}
+			try {
+				QuotationContainer quotCont = new QuotationContainer();
+				
+				Gson converter = new Gson();
+				String jsonReq = converter.toJson(params[0]);
+				String jsonResponse = ConnectionUtils.postData(jsonReq);
+				if(jsonResponse != null)
+				{
+					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+					return quotCont;
+				}
+				else
+				{
+					return null;
+				}
+			} catch (Exception e) {
+				System.out.println("connection ERROR");
+			}
 			
 			return null;
 		}
@@ -639,14 +781,119 @@ public class ToolListActivity extends Activity
 		{
 			//load progress dialog....
 			dialog = new ProgressDialog(this.context);
-			dialog.setMessage("Loading, contacting server for data...");
+			dialog.setMessage("Loading, update data from server...");
 			dialog.show();
 		}
 		
 		@Override
 		protected void onPostExecute(QuotationContainer container)
 		{
+			db.open();
 			
+			//dismiss progress dialog....
+			if(dialog.isShowing())
+			{
+				dialog.dismiss();
+			}
+			
+			
+			if(container!=null)
+			{
+				
+				int totalQuotationReturned = container.getBondList().size() + container.getFundList().size() + container.getShareList().size();
+				
+				if(allIsinRequestedAreReturned(shareIsinArrayList, container))
+				{
+					if(totalQuotationReturned != shareIsinArrayList.size())
+					{
+						//ne ho ricevuti di più rispetto a quelli richiesti....
+						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
+						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(shareIsinArrayList, container);
+						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
+						{
+							System.out.println(listaIsinNotRequested.get(i));							
+						}
+						
+						//elimino quelli non richiesti dal container...
+						System.out.println("elimino quelli non richiesti dal container...");
+						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
+						{
+							for(Quotation_Bond qb : container.getBondList())
+							{
+								if(qb.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getBondList().remove(qb);
+								}
+							}
+							for(Quotation_Fund qf : container.getFundList())
+							{
+								if(qf.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getFundList().remove(qf);
+								}
+							}
+							for(Quotation_Share qs : container.getShareList())
+							{
+								if(qs.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getShareList().remove(qs);
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					//alcuni di quelli richiesti non sono stati tornati....
+					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
+					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(shareIsinArrayList, container);
+					for (int i = 0; i < listaIsinNotReturned.size(); i++) 
+					{
+						System.out.println(listaIsinNotReturned.get(i));
+						showMessage("Info", listaIsinNotReturned.get(i)+" is not returned by Server");
+					}
+				}
+				
+				//UPDATE IN DATABASE <BOND/FUND/SHARE> OF 'container'
+				for(Quotation_Bond qb : container.getBondList())
+				{
+					try {
+						db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
+				}
+				
+				//4. for all FUND returned...
+				for(Quotation_Fund qf : container.getFundList())
+				{
+					//4.1 control if fund already exist in database --> UPDATE
+					//UPDATE
+				}
+				
+				//5. for all SHARE returned...
+				for(Quotation_Share qs : container.getShareList())
+				{
+					//5.1 control if share already exist in database --> UPDATE
+					//UPDATE
+				}
+				
+				//update portfolio lastupdate field...
+				db.updateSelectedPortfolioLastUpdate(portfolioName, getTodaysDate());
+				
+			}
+			else
+			{
+				//connection error!
+				showMessage("Error", "There were errors during connection with server. Please try again.");
+			}
+			
+			
+			updateView();
+			
+			setPortfolioLastUpdate();
+			
+			db.close();
 		}
 	}
 	

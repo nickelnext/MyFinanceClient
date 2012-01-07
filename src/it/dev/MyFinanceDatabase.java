@@ -749,13 +749,21 @@ public class MyFinanceDatabase
 	
 	//--------------------------------UPDATE methods----------------------------//
 	
-	public void updateSelectedPortfolio(String previousName, String newName, String newDescription, String newDate)
+	public void updateSelectedPortfolio(String previousName, String newName, String newDescription, String newDate, String newLastUpdate)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioMetaData.PORTFOLIO_NAME_KEY, newName);
 		cv.put(PortfolioMetaData.PORTFOLIO_DESCRIPTION_KEY, newDescription);
 		cv.put(PortfolioMetaData.PORTFOLIO_CREATION_DATE_KEY, newDate);
+		cv.put(PortfolioMetaData.PORTFOLIO_LASTUPDATE_KEY, newLastUpdate);
 		database.update(PortfolioMetaData.PORTFOLIO_TABLE, cv, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+previousName+"'", null);
+	}
+	
+	public void updateSelectedPortfolioLastUpdate(String portfolioName, String newLastUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(PortfolioMetaData.PORTFOLIO_LASTUPDATE_KEY, newLastUpdate);
+		database.update(PortfolioMetaData.PORTFOLIO_TABLE, cv, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
 	}
 	
 	public void updateSelectedBond(String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 
