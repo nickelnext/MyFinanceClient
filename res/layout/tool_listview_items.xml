@@ -17,8 +17,8 @@
     	            android:layout_width="0dp"
     	            android:layout_height="wrap_content"
     	            android:paddingLeft="5dp"
-    	            android:textColor="#FFFFFF"
-    	            android:textSize="12dp"
+    	            android:textColor="#000000"
+					android:textSize="12dp"
     	            android:layout_weight="4"
     	            android:text="isin / code"/>
     	        <TextView               
@@ -26,8 +26,8 @@
                 	android:layout_width="0dp"
                 	android:layout_height="wrap_content"                
                 	android:textSize="12dp"
-                	android:textColor="#FFFFFF"
-                	android:gravity="center_horizontal"
+                	android:textColor="#000000"
+					android:gravity="center_horizontal"
                 	android:layout_weight="3"
     	            android:text="date"/>
 				<TextView               
@@ -35,8 +35,8 @@
                 	android:layout_width="0dp"
                 	android:layout_height="wrap_content"                
                 	android:textSize="12dp"
-                	android:textColor="#FFFFFF"
-                	android:gravity="center_horizontal"
+                	android:textColor="#000000"
+					android:gravity="center_horizontal"
                 	android:layout_weight="2"
     	            android:text="var"/>
         		<TextView               
@@ -44,8 +44,8 @@
                 	android:layout_width="0dp"
                 	android:layout_height="wrap_content"
                 	android:textSize="12dp"
-                	android:textColor="#FFFFFF"
-                	android:gravity="center_horizontal"
+                	android:textColor="#000000"
+					android:gravity="center_horizontal"
                 	android:layout_weight="2"
     	            android:text="var %"/>
         		<TextView 
@@ -53,8 +53,8 @@
                 	android:layout_width="0dp"
                 	android:layout_height="wrap_content"
                 	android:textSize="12dp"
-                	android:textColor="#FFFFFF"
-                	android:gravity="center_horizontal"
+                	android:textColor="#000000"
+					android:gravity="center_horizontal"
                 	android:layout_weight="2"
     	            android:text="prize"/>
     		</TableRow>

@@ -4,10 +4,13 @@
 /project.properties -text
 res/drawable-hdpi/ic_launcher.png -text
 res/drawable-hdpi/ic_menu_refresh.png -text
+res/drawable-hdpi/tool_list_bkg.jpg -text
 res/drawable-ldpi/ic_launcher.png -text
 res/drawable-ldpi/ic_menu_refresh.png -text
+res/drawable-ldpi/tool_list_bkg.jpg -text
 res/drawable-mdpi/ic_launcher.png -text
 res/drawable-mdpi/ic_menu_refresh.png -text
+res/drawable-mdpi/tool_list_bkg.jpg -text
 res/layout/bond_details.xml -text svneol=unset#text/plain
 res/layout/custom_add_new_portfolio_dialog.xml -text
 res/layout/custom_add_new_tool.xml -text

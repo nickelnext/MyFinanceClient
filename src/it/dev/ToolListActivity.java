@@ -561,17 +561,19 @@ public class ToolListActivity extends Activity
 				String jsonResponse = ConnectionUtils.postData(jsonReq);
 				if(jsonResponse != null)
 				{
+					System.out.println("risposta non nulla....");
 					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
 					return quotCont;
 				}
 				else
 				{
+					System.out.println("risposta nulla");
 					return null;
 				}
 			} catch (Exception e) {
 				System.out.println("connection ERROR");
 			}
-			
+			System.out.println("ritorno nulL");
 			return null;
 		}
 		
