@@ -4,16 +4,11 @@ import it.dev.MyFinanceDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
 import Requests.Request;
 import android.database.Cursor;
-import android.sax.StartElementListener;
-import android.util.Log;
 
 import com.google.gson.Gson;
 

@@ -35,13 +35,13 @@
     		android:weightSum="2">
     	    <TableRow>
         		<TextView
-        		    android:layout_width="wrap_content"
+        		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:layout_weight="1"
         		    android:text="Purchase Price"/>
         		<EditText
         		    android:id="@+id/buyPriceEditText"
-        		    android:layout_width="wrap_content"
+        		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:inputType="number|numberDecimal" 
         		    android:layout_weight="1"
@@ -49,13 +49,13 @@
     		</TableRow>
     		<TableRow>
         		<TextView
-        		    android:layout_width="wrap_content"
+        		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:layout_weight="1"
         		    android:text="Round Lot"/>
         		<EditText
         		    android:id="@+id/roundLotEditText"
-        		    android:layout_width="wrap_content"
+        		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:inputType="number" 
         		    android:layout_weight="1"
@@ -72,19 +72,19 @@
     	    <TableRow>
         		<Button
         		    android:id="@+id/undoNewToolButton"
-        		    android:layout_width="fill_parent"
+        		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
         		    android:text="Back"/>
         		<Button
         		    android:id="@+id/saveNewToolButton"
-        		    android:layout_width="fill_parent"
+        		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
         		    android:text="Add Tool"/>
         		<Button
         		    android:id="@+id/finishAddToolsButton"
-        		    android:layout_width="fill_parent"
+        		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
         		    android:text="Finish"/>

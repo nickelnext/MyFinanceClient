@@ -17,7 +17,7 @@
     		android:weightSum="10">
     	    <TableRow>
         		<TextView
-        			android:layout_width="wrap_content"
+        			android:layout_width="0dp"
         			android:layout_height="wrap_content"
         			android:layout_marginLeft="5dp"
         			android:layout_gravity="center_vertical"
@@ -25,7 +25,7 @@
         			android:text="Update every: " />
         		<Spinner 
         		    android:id="@+id/updateTimeSpinner"
-        		    android:layout_width="fill_parent"
+        		    android:layout_width="0dp"
         		    android:layout_weight="4"
         		    android:layout_height="wrap_content"/>
     		</TableRow>
@@ -38,13 +38,13 @@
     	    <TableRow>
         		<Button
         		    android:id="@+id/undoSavePreferencesButton"
-        		    android:layout_width="fill_parent"
+        		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
         		    android:text="Back"/>
         		<Button
         		    android:id="@+id/saveUpdatePreferencesButton"
-        		    android:layout_width="fill_parent"
+        		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
         		    android:text="Save preferences"/>

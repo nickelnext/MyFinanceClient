@@ -84,6 +84,14 @@ public class ToolListActivity extends Activity
         
         setPortfolioLastUpdate();
         
+        updateView();
+		
+		//CALL ASYNCTASK FOR UPDATE REQUEST...(when activity starts)
+		if(shareIsinArrayList.size()!=0)
+		{
+			updateToolsInPortfolio();
+		}
+        
         
     }
 	
@@ -108,12 +116,6 @@ public class ToolListActivity extends Activity
     {
 		super.onResume();
 		updateView();
-		
-		//CALL ASYNCTASK FOR UPDATE REQUEST...
-		if(shareIsinArrayList.size()!=0)
-		{
-			updateToolsInPortfolio();
-		}
     }
 	
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -573,7 +575,7 @@ public class ToolListActivity extends Activity
 			} catch (Exception e) {
 				System.out.println("connection ERROR");
 			}
-			System.out.println("ritorno nulL");
+			System.out.println("ritorno null");
 			return null;
 		}
 		
