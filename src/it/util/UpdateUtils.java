@@ -4,6 +4,10 @@ import it.dev.MyFinanceDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
@@ -15,24 +19,27 @@ import com.google.gson.Gson;
 public class UpdateUtils {
 	
 	private MyFinanceDatabase db;
-	private Calendar today;
+	private GregorianCalendar today;
 	
 	public UpdateUtils(){
 		
-		today = Calendar.getInstance();
+		today = (GregorianCalendar) Calendar.getInstance();
+		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
+		today.add(Calendar.MINUTE, -30);
+		Cursor c = db.getDetailsOfPortfolio(portfolioName);
+		String updateDate = c.getString(4);
+		String[] updateString	= updateDate.split("[/: ]");
+		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
+		if(today.after(upDate)){
+		}
+		
 		
 	}
 	
 	public QuotationContainer updatePortfolio(String portfolioName){
 		
 		QuotationContainer quotCont = new QuotationContainer();
-		ArrayList<Request> array = new ArrayList<Request>();
-		
-		Calendar upDate = null;
-		String date= null;
-		String[] ud	= date.split("// ::");//da fare espressione regolare
-		upDate.set(Integer.valueOf(ud[2]), Integer.valueOf(ud[0]), Integer.valueOf(ud[1]), Integer.valueOf(ud[3]), Integer.valueOf(ud[4]), Integer.valueOf(ud[5]));
-		today.roll(4, -30);
+		ArrayList<Request> array = new ArrayList<Request>();		
 		
 		Cursor c_bond = db.getAllBondOverviewInPortfolio(portfolioName);
 		Cursor c_fund = db.getAllFundOverviewInPortfolio(portfolioName);
@@ -41,9 +48,9 @@ public class UpdateUtils {
     	while(c_bond.moveToNext()){
     		
     		Cursor c = db.getBondDetails(c_bond.getString(1));
-    		date = c.getString(27);
-    		ud	= date.split("// ::");//da fare espressione regolare
-    		upDate.set(Integer.valueOf(ud[2]), Integer.valueOf(ud[0]), Integer.valueOf(ud[1]), Integer.valueOf(ud[3]), Integer.valueOf(ud[4]), Integer.valueOf(ud[5]));
+    		String date = c.getString(27);
+    		String[] ud	= date.split("[/: ]");
+    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
     		today.roll(4, -30);
     		if(today.after(upDate)){
     			Request req = new Request(c_bond.getColumnName(1), QuotationType.BOND, "prefsite");
@@ -55,10 +62,10 @@ public class UpdateUtils {
     	while(c_fund.moveToNext()){
     		
     		Cursor c = db.getFondDetails(c_fund.getString(1));
-    		date = c.getString(27);
+    		String date = c.getString(27);
     		//trasformo la data da String a Calendar (magari da fare in un metodo separato)
-    		ud	= date.split("// ::");//da fare espressione regolare
-    		upDate.set(Integer.valueOf(ud[2]), Integer.valueOf(ud[0]), Integer.valueOf(ud[1]), Integer.valueOf(ud[3]), Integer.valueOf(ud[4]), Integer.valueOf(ud[5]));
+    		String[] ud	= date.split("[/: ]");
+    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
     		//prendo la data di desso e torno indietro di 30min... spero funzioni
     		today.roll(4, -30);
     		
@@ -71,9 +78,9 @@ public class UpdateUtils {
     	while(c_share.moveToNext()){
     		
     		Cursor c = db.getShareDetails(c_share.getString(1));
-    		date = c.getString(27);
-    		ud	= date.split("// ::");//da fare espressione regolare
-    		upDate.set(Integer.valueOf(ud[2]), Integer.valueOf(ud[0]), Integer.valueOf(ud[1]), Integer.valueOf(ud[3]), Integer.valueOf(ud[4]), Integer.valueOf(ud[5]));
+    		String date = c.getString(27);
+    		String[] ud	= date.split("[/: ]");
+    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
     		today.roll(4, -30);
     		if(today.after(upDate)){
     			Request req = new Request(c_share.getColumnName(1), QuotationType.SHARE, "prefSite");
