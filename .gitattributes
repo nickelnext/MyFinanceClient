@@ -11,16 +11,13 @@ res/drawable-ldpi/tool_list_bkg.jpg -text
 res/drawable-mdpi/ic_launcher.png -text
 res/drawable-mdpi/ic_menu_refresh.png -text
 res/drawable-mdpi/tool_list_bkg.jpg -text
-res/layout/bond_details.xml -text svneol=unset#text/plain
 res/layout/custom_add_new_portfolio_dialog.xml -text
 res/layout/custom_add_new_tool.xml -text
 res/layout/custom_edit_portfolio_dialog.xml -text
 res/layout/custom_edit_selected_tool_dialog.xml -text
 res/layout/custom_update_option_dialog.xml -text
-res/layout/fund_details.xml -text svneol=unset#text/plain
 res/layout/main.xml -text svneol=unset#text/plain
 res/layout/portfolio_listview_items.xml -text svneol=unset#text/plain
-res/layout/share_details.xml -text svneol=unset#text/plain
 res/layout/tool_details.xml -text
 res/layout/tool_details_row.xml -text
 res/layout/tool_list_activity.xml -text
@@ -40,11 +37,8 @@ serverside/Requests/Request.java -text
 serverside/Requests/RequestContainer.java -text
 serverside/Requests/RequestType.java -text
 serverside/myUtils/UtilFuncs.java -text
-src/it/dev/BondDetailsActivity.java -text svneol=unset#text/plain
-src/it/dev/FundDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
-src/it/dev/ShareDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/ToolDetailsActivity.java -text
 src/it/dev/ToolListActivity.java -text
 src/it/util/Conn.java -text svneol=unset#text/plain

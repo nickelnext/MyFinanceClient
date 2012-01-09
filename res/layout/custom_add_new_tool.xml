@@ -75,13 +75,13 @@
         		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
-        		    android:text="Back"/>
+        		    android:text="Cancel"/>
         		<Button
         		    android:id="@+id/saveNewToolButton"
         		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
-        		    android:text="Add Tool"/>
+        		    android:text="Add other Tools"/>
         		<Button
         		    android:id="@+id/finishAddToolsButton"
         		    android:layout_width="0dp"

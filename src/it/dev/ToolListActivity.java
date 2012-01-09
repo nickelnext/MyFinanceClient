@@ -338,8 +338,9 @@ public class ToolListActivity extends Activity
 				if(shareISINEditText.getText().length()!=0 && buyPriceEditText.getText().length()!=0 && roundLotEditText.getText().length()!=0)
 				{
 					//save temporary data....[USING ARRAYLIST<STRING>]
+					// String -> Uppercase -> cut spaces and get first element
 					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
-					listaIsinTmp.add(shareISINEditText.getText().toString());
+					listaIsinTmp.add(shareISINEditText.getText().toString().toUpperCase().split(" ")[0]);
 					listaDataAcqTmp.add(purchaseDate);
 					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
 					listaLottoTmp.add(roundLotEditText.getText().toString());
@@ -365,8 +366,9 @@ public class ToolListActivity extends Activity
 				{
 					
 					//0. add last tool in ArrayList<String>...
+					// String -> Uppercase -> cut spaces and get first element
 					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()+1) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
-					listaIsinTmp.add(shareISINEditText.getText().toString());
+					listaIsinTmp.add(shareISINEditText.getText().toString().toUpperCase().split(" ")[0]);
 					listaDataAcqTmp.add(purchaseDate);
 					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
 					listaLottoTmp.add(roundLotEditText.getText().toString());
@@ -415,6 +417,7 @@ public class ToolListActivity extends Activity
     	
     	Cursor c_bond = db.getAllBondOverviewInPortfolio(portfolioName);
     	startManagingCursor(c_bond);
+    	c_bond.moveToFirst();
     	saveSharesFromCursor(c_bond, "bond");
     	    	
     	Cursor c_fund = db.getAllFundOverviewInPortfolio(portfolioName);
@@ -445,19 +448,6 @@ public class ToolListActivity extends Activity
     			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
     			{
     				goToToolDetailsActivity(shareIsinArrayList.get(position), shareTypeArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-//    				if(shareTypeArrayList.get(position).equals("bond"))
-//    				{
-//    					
-//    					//goToBondDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-//    				}
-//    				else if(shareTypeArrayList.get(position).equals("fund"))
-//    				{
-//    					goToFundDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-//    				}
-//    				else if(shareTypeArrayList.get(position).equals("share"))
-//    				{
-//    					goToShareDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-//    				}
     			}
     		});
     	}
@@ -567,39 +557,6 @@ public class ToolListActivity extends Activity
 		startActivity(i);
 		
 	}
-	
-	private void goToBondDetailsActivity(String bondIsin, String bondPurchaseDate, String bondPurchasePrize, String bondRoundLot)
-    {
-    	Intent i = new Intent(this, BondDetailsActivity.class);
-		String pkg = getPackageName();
-		i.putExtra(pkg+".bondIsin", bondIsin);
-		i.putExtra(pkg+".bondPurchaseDate", bondPurchaseDate);
-		i.putExtra(pkg+".bondPurchasePrize", bondPurchasePrize);
-		i.putExtra(pkg+".bondRoundLot", bondRoundLot);
-		startActivity(i);
-    }
-	
-	private void goToFundDetailsActivity(String fundIsin, String fundPurchaseDate, String fundPurchasePrize, String fundRoundLot)
-    {
-    	Intent i = new Intent(this, FundDetailsActivity.class);
-		String pkg = getPackageName();
-		i.putExtra(pkg+".fundIsin", fundIsin);
-		i.putExtra(pkg+".fundPurchaseDate", fundPurchaseDate);
-		i.putExtra(pkg+".fundPurchasePrize", fundPurchasePrize);
-		i.putExtra(pkg+".fundRoundLot", fundRoundLot);
-		startActivity(i);
-    }
-	
-	private void goToShareDetailsActivity(String shareIsin, String sharePurchaseDate, String sharePurchasePrize, String shareRoundLot)
-    {
-    	Intent i = new Intent(this, ShareDetailsActivity.class);
-		String pkg = getPackageName();
-		i.putExtra(pkg+".shareIsin", shareIsin);
-		i.putExtra(pkg+".sharePurchaseDate", sharePurchaseDate);
-		i.putExtra(pkg+".sharePurchasePrize", sharePurchasePrize);
-		i.putExtra(pkg+".shareRoundLot", shareRoundLot);
-		startActivity(i);
-    }
 	
 	private void saveSharesFromCursor(Cursor c, String type)
 	{

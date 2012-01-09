@@ -22,9 +22,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".ToolListActivity"></activity>
-        <activity android:name=".BondDetailsActivity"></activity>
-        <activity android:name=".FundDetailsActivity"></activity>
-        <activity android:name=".ShareDetailsActivity"></activity>
         <activity android:name=".ToolDetailsActivity"></activity>
     </application>
 
