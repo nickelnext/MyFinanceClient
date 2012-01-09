@@ -26,12 +26,12 @@ public class UpdateUtils {
 		today = (GregorianCalendar) Calendar.getInstance();
 		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
 		today.add(Calendar.MINUTE, -30);
-		Cursor c = db.getDetailsOfPortfolio(portfolioName);
-		String updateDate = c.getString(4);
-		String[] updateString	= updateDate.split("[/: ]");
-		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
-		if(today.after(upDate)){
-		}
+		//Cursor c = db.getDetailsOfPortfolio(portfolioName);
+//		String updateDate = c.getString(4);
+//		String[] updateString	= updateDate.split("[/: ]");
+//		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
+//		if(today.after(upDate)){
+//		}
 		
 		
 	}
@@ -50,12 +50,12 @@ public class UpdateUtils {
     		Cursor c = db.getBondDetails(c_bond.getString(1));
     		String date = c.getString(27);
     		String[] ud	= date.split("[/: ]");
-    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
-    		today.roll(4, -30);
-    		if(today.after(upDate)){
-    			Request req = new Request(c_bond.getColumnName(1), QuotationType.BOND, "prefsite");
-    			array.add(req);
-    		}
+//    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
+//    		today.roll(4, -30);
+//    		if(today.after(upDate)){
+//    			Request req = new Request(c_bond.getColumnName(1), QuotationType.BOND, "prefsite");
+//    			array.add(req);
+//    		}
 			
 		}
     	
@@ -65,14 +65,14 @@ public class UpdateUtils {
     		String date = c.getString(27);
     		//trasformo la data da String a Calendar (magari da fare in un metodo separato)
     		String[] ud	= date.split("[/: ]");
-    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
-    		//prendo la data di desso e torno indietro di 30min... spero funzioni
-    		today.roll(4, -30);
-    		
-    		if(today.after(upDate)){
-    			Request req = new Request(c_fund.getColumnName(1), QuotationType.FUND, "prefSite");
-    			array.add(req);
-    		}
+//    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
+//    		//prendo la data di desso e torno indietro di 30min... spero funzioni
+//    		today.roll(4, -30);
+//    		
+//    		if(today.after(upDate)){
+//    			Request req = new Request(c_fund.getColumnName(1), QuotationType.FUND, "prefSite");
+//    			array.add(req);
+//    		}
     	}
     	
     	while(c_share.moveToNext()){
@@ -80,12 +80,12 @@ public class UpdateUtils {
     		Cursor c = db.getShareDetails(c_share.getString(1));
     		String date = c.getString(27);
     		String[] ud	= date.split("[/: ]");
-    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
-    		today.roll(4, -30);
-    		if(today.after(upDate)){
-    			Request req = new Request(c_share.getColumnName(1), QuotationType.SHARE, "prefSite");
-    			array.add(req);
-    		}
+//    		upDate.set(Integer.parseInt(ud[2]), Integer.parseInt(ud[1])-1, Integer.parseInt(ud[0]), Integer.parseInt(ud[3]), Integer.parseInt(ud[4]), Integer.parseInt(ud[5]));
+//    		today.roll(4, -30);
+//    		if(today.after(upDate)){
+//    			Request req = new Request(c_share.getColumnName(1), QuotationType.SHARE, "prefSite");
+//    			array.add(req);
+//    		}
     	}
     	
     	Gson converter = new Gson();
