@@ -3,6 +3,7 @@ package it.dev;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -107,35 +108,41 @@ public class ToolDetailsActivity extends Activity
 				LayoutInflater inflater = getLayoutInflater();
 
 				TableRow newRow = (TableRow) inflater.inflate(R.layout.tool_details_row, dynamic_detail_table, false);
+				if(i%2==0)
+				{
+					newRow.setBackgroundColor(Color.parseColor("#CCCCCC"));
+				}
+				else
+				{
+					newRow.setBackgroundColor(Color.parseColor("#29E3E3"));
+				}
 
 				TextView key = (TextView) newRow.findViewById(R.id.key_entry);
 				TextView value = (TextView) newRow.findViewById(R.id.value_entry);
 
+				key.setTextColor(Color.BLACK);
 				key.setText(toolDetails.getColumnName(i));
-
-				boolean found=false;
+				
 				try	{
 					value.setText(toolDetails.getString(i));
 				}
 				catch(Exception e){
 					try{
-						value.setText("" +toolDetails.getInt(i));
+						value.setText(""+toolDetails.getInt(i));
 					}
 					catch(Exception e1)	{
 						try{
-						value.setText("" +toolDetails.getFloat(i));
+						value.setText(""+toolDetails.getFloat(i));
 						}
 						catch(Exception e2){
-							System.out.println("BUUUURN");
+							System.out.println("error");
 						}
 					}
 				}
-
-
-
-
-
-
+				value.setTextColor(Color.BLACK);
+				
+				dynamic_detail_table.addView(newRow);
+				
 			}
 		}
 

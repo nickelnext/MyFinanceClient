@@ -446,7 +446,8 @@ public class ToolListActivity extends Activity
     			{
     				if(shareTypeArrayList.get(position).equals("bond"))
     				{
-    					goToBondDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
+    					goToToolDetailsActivity(shareIsinArrayList.get(position), shareTypeArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
+    					//goToBondDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
     				}
     				else if(shareTypeArrayList.get(position).equals("fund"))
     				{
@@ -551,6 +552,19 @@ public class ToolListActivity extends Activity
 		}
 		
 		return result;
+	}
+	
+	private void goToToolDetailsActivity(String toolIsin, String toolType, String toolPurchaseDate, String toolPurchasePrize, String toolRoundLot)
+	{
+		Intent i = new Intent(this, ToolDetailsActivity.class);
+		String pkg = getPackageName();
+		i.putExtra(pkg+".toolIsin", toolIsin);
+		i.putExtra(pkg+".toolType", toolType);
+		i.putExtra(pkg+".toolPurchaseDate", toolPurchaseDate);
+		i.putExtra(pkg+".toolPurchasePrize", toolPurchasePrize);
+		i.putExtra(pkg+".toolRoundLot", toolRoundLot);
+		startActivity(i);
+		
 	}
 	
 	private void goToBondDetailsActivity(String bondIsin, String bondPurchaseDate, String bondPurchasePrize, String bondRoundLot)
