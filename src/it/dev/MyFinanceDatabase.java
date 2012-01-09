@@ -1039,17 +1039,17 @@ public class MyFinanceDatabase
 	public void deleteBondInTransitionTable(String portfolioName, String ISIN) 
 	{
 		
-		database.delete(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"' AND '"+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+		database.delete(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"' AND "+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
 	}
 	
 	public void deleteFundInTransitionTable(String portfolioName, String ISIN) 
 	{
-		database.delete(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+ISIN+"' AND '"+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+		database.delete(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+ISIN+"' AND "+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
 	}
 	
 	public void deleteShareInTransitionTable(String portfolioName, String CODE) 
 	{
-		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+CODE+"' AND '"+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
 	}
 	
 }
