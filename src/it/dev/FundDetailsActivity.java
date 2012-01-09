@@ -116,7 +116,7 @@ public class FundDetailsActivity extends Activity
     {
 		db.open();
 		
-    	Cursor details = db.getFondDetails(fundIsin);
+    	Cursor details = db.getFundDetails(fundIsin);
     	startManagingCursor(details);
     	
     	details.moveToFirst();

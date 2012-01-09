@@ -21,6 +21,8 @@ res/layout/fund_details.xml -text svneol=unset#text/plain
 res/layout/main.xml -text svneol=unset#text/plain
 res/layout/portfolio_listview_items.xml -text svneol=unset#text/plain
 res/layout/share_details.xml -text svneol=unset#text/plain
+res/layout/tool_details.xml -text
+res/layout/tool_details_row.xml -text
 res/layout/tool_list_activity.xml -text
 res/layout/tool_listview_items.xml -text
 res/menu/add_portfolio_menu.xml -text svneol=unset#text/plain
@@ -43,6 +45,7 @@ src/it/dev/FundDetailsActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
 src/it/dev/ShareDetailsActivity.java -text svneol=unset#text/plain
+src/it/dev/ToolDetailsActivity.java -text
 src/it/dev/ToolListActivity.java -text
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain

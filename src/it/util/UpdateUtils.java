@@ -61,7 +61,7 @@ public class UpdateUtils {
     	
     	while(c_fund.moveToNext()){
     		
-    		Cursor c = db.getFondDetails(c_fund.getString(1));
+    		Cursor c = db.getFundDetails(c_fund.getString(1));
     		String date = c.getString(27);
     		//trasformo la data da String a Calendar (magari da fare in un metodo separato)
     		String[] ud	= date.split("[/: ]");

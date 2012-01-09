@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:weightSum="10">
+	<TableRow >           
+    	<TextView
+    		android:id="@+id/key_entry"
+       		android:layout_width="0dp"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="4"
+        	android:text="a" />
+		<TextView
+    		android:id="@+id/value_entry"
+       		android:layout_width="0dp"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="6"
+        	android:text="b"
+        	android:gravity="center_horizontal"/>
+	</TableRow>	
+</TableLayout>

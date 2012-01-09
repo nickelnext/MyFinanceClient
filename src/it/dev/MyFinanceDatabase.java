@@ -756,7 +756,7 @@ public class MyFinanceDatabase
 		return database.query(BondMetaData.BOND_TABLE, null, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null, null, null, null);
 	}
 	
-	public Cursor getFondDetails(String ISIN)
+	public Cursor getFundDetails(String ISIN)
 	{
 		return database.query(FundMetaData.FUND_TABLE, null, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null, null, null, null);
 	}
