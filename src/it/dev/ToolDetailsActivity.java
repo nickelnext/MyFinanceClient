@@ -108,13 +108,10 @@ public class ToolDetailsActivity extends Activity
 				LayoutInflater inflater = getLayoutInflater();
 
 				TableRow newRow = (TableRow) inflater.inflate(R.layout.tool_details_row, dynamic_detail_table, false);
-				if(i%2==0)
-				{
-					newRow.setBackgroundColor(Color.parseColor("#CCCCCC"));
-				}
+				if(i%2==0);
 				else
 				{
-					newRow.setBackgroundColor(Color.parseColor("#29E3E3"));
+					newRow.setBackgroundColor(Color.parseColor("#BDEEF9"));
 				}
 
 				TextView key = (TextView) newRow.findViewById(R.id.key_entry);

@@ -444,19 +444,20 @@ public class ToolListActivity extends Activity
     		{
     			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
     			{
-    				if(shareTypeArrayList.get(position).equals("bond"))
-    				{
-    					goToToolDetailsActivity(shareIsinArrayList.get(position), shareTypeArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-    					//goToBondDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-    				}
-    				else if(shareTypeArrayList.get(position).equals("fund"))
-    				{
-    					goToFundDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-    				}
-    				else if(shareTypeArrayList.get(position).equals("share"))
-    				{
-    					goToShareDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
-    				}
+    				goToToolDetailsActivity(shareIsinArrayList.get(position), shareTypeArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
+//    				if(shareTypeArrayList.get(position).equals("bond"))
+//    				{
+//    					
+//    					//goToBondDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
+//    				}
+//    				else if(shareTypeArrayList.get(position).equals("fund"))
+//    				{
+//    					goToFundDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
+//    				}
+//    				else if(shareTypeArrayList.get(position).equals("share"))
+//    				{
+//    					goToShareDetailsActivity(shareIsinArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
+//    				}
     			}
     		});
     	}

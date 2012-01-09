@@ -2,7 +2,8 @@
 <ScrollView 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:layout_gravity="center_horizontal"
+        android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceLarge" />
     <View
         android:layout_height="2dip"
@@ -27,12 +29,13 @@
         <TextView
 			android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:textColor="#999999"
         	android:text="Purchase Date: " />
         <TextView
             android:id="@+id/tool_purchaseDate_TV"
 			android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:textColor="#33FF00"
+        	android:textColor="#999999"
         	android:text="" />
     </LinearLayout>
     <LinearLayout 
@@ -42,12 +45,13 @@
         <TextView
 			android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:textColor="#999999"
         	android:text="Purchase Prize: " />
         <TextView
             android:id="@+id/tool_purchasePrize_TV"
 			android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:textColor="#33FF00"
+        	android:textColor="#999999"
         	android:text="" />
     </LinearLayout>
     <LinearLayout 
@@ -57,12 +61,13 @@
         <TextView
 			android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
+        	android:textColor="#999999"
         	android:text="Round Lot: " />
         <TextView
             android:id="@+id/tool_roundLot_TV"
 			android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-        	android:textColor="#33FF00"
+        	android:textColor="#999999"
         	android:text="" />
     </LinearLayout>
     
