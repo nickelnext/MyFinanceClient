@@ -133,7 +133,7 @@ public class ToolListActivity extends Activity
         	showEditToolDialog(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position), sharePurchaseDateArrayList.get(info.position));
         	return true;            
         case R.id.remove_item:        	
-        	deleteSelectedTool(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position));        	
+        	deleteSelectedTool(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position), sharePurchaseDateArrayList.get(info.position));        	
         	return true;        
         }
         return false;
@@ -629,17 +629,17 @@ public class ToolListActivity extends Activity
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
 	}
 	
-	private void deleteSelectedTool(String ISIN, String type)
+	private void deleteSelectedTool(String ISIN, String type, String purchaseDate)
 	{
 		db.open();
 		if(type.equals("bond")){
-			db.deleteBondInTransitionTable(portfolioName, ISIN);			
+			db.deleteBondInTransitionTable(portfolioName, ISIN, purchaseDate);			
 		}
 		else if (type.equals("fund")){
-			db.deleteFundInTransitionTable(portfolioName, ISIN);
+			db.deleteFundInTransitionTable(portfolioName, ISIN, purchaseDate);
 		}
 		else if (type.equals("share")){
-			db.deleteShareInTransitionTable(portfolioName, ISIN);
+			db.deleteShareInTransitionTable(portfolioName, ISIN, purchaseDate);
 		}
 		else{
 			System.out.println("type error");

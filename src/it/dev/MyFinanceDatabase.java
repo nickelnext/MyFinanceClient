@@ -1036,20 +1036,20 @@ public class MyFinanceDatabase
 		database.delete(ShareMetaData.SHARE_TABLE, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null);
 	}
 	
-	public void deleteBondInTransitionTable(String portfolioName, String ISIN) 
+	public void deleteBondInTransitionTable(String portfolioName, String ISIN, String purchaseDate) 
 	{
 		
-		database.delete(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"' AND "+PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+		database.delete(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"' AND "+PortfolioBondMetadata.BOND_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
 	}
 	
-	public void deleteFundInTransitionTable(String portfolioName, String ISIN) 
+	public void deleteFundInTransitionTable(String portfolioName, String ISIN, String purchaseDate) 
 	{
-		database.delete(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+ISIN+"' AND "+PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+		database.delete(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+ISIN+"' AND "+PortfolioFundMetadata.FUND_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
 	}
 	
-	public void deleteShareInTransitionTable(String portfolioName, String CODE) 
+	public void deleteShareInTransitionTable(String portfolioName, String CODE, String purchaseDate) 
 	{
-		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
 	}
 	
 }
