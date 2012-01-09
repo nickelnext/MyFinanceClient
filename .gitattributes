@@ -15,6 +15,7 @@ res/layout/bond_details.xml -text svneol=unset#text/plain
 res/layout/custom_add_new_portfolio_dialog.xml -text
 res/layout/custom_add_new_tool.xml -text
 res/layout/custom_edit_portfolio_dialog.xml -text
+res/layout/custom_edit_selected_tool_dialog.xml -text
 res/layout/custom_update_option_dialog.xml -text
 res/layout/fund_details.xml -text svneol=unset#text/plain
 res/layout/main.xml -text svneol=unset#text/plain

@@ -644,6 +644,26 @@ public class MyFinanceDatabase
 		return database.query(PortfolioMetaData.PORTFOLIO_TABLE, null, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null, null, null, null);
 	}
 	
+	
+	//3 methods that return data of BOND/FUND/SHARE from specific transition table...
+	public Cursor getSpecificBondOverviewInPortfolio(String portfolioName, String bondIsin, String purchaseDate)
+	{
+		return database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, 
+				PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+bondIsin+"' AND "+PortfolioBondMetadata.BOND_BUYDATE_KEY+" = '"+purchaseDate+"'", null, null, null, null);
+	}
+	
+	public Cursor getSpecificFundOverviewInPortfolio(String portfolioName, String fundIsin, String purchaseDate)
+	{
+		return database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, 
+				PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+fundIsin+"' AND "+PortfolioFundMetadata.FUND_BUYDATE_KEY+" = '"+purchaseDate+"'", null, null, null, null);
+	}
+	
+	public Cursor getSpecificShareOverviewInPortfolio(String portfolioName, String shareIsin, String purchaseDate)
+	{
+		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, 
+				PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+shareIsin+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null, null, null, null);
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//------------------------This 3 Methods returns--------------------------------------------------//
 	//------------------------------------------------------------------------------------------------//
@@ -764,6 +784,34 @@ public class MyFinanceDatabase
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioMetaData.PORTFOLIO_LASTUPDATE_KEY, newLastUpdate);
 		database.update(PortfolioMetaData.PORTFOLIO_TABLE, cv, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+	}
+	
+	//3 methods that update selected BOND/FUND/SHARE in transition table
+	public void updateSelectedBondInTransitionTable(String portfolioName, String bondIsin, String oldPurchaseDate, String newPurchaseDate, Float newPrize, int newLot)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(PortfolioBondMetadata.BOND_BUYDATE_KEY, newPurchaseDate);
+		cv.put(PortfolioBondMetadata.BOND_BUYPRICE_KEY, newPrize);
+		cv.put(PortfolioBondMetadata.BOND_ROUNDLOT_KEY, newLot);
+		database.update(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, cv, PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+bondIsin+"' AND "+PortfolioBondMetadata.BOND_BUYDATE_KEY+" = '"+oldPurchaseDate+"'", null);
+	}
+	
+	public void updateSelectedFundInTransitionTable(String portfolioName, String fundIsin, String oldPurchaseDate, String newPurchaseDate, Float newPrize, int newLot)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(PortfolioFundMetadata.FUND_BUYDATE_KEY, newPurchaseDate);
+		cv.put(PortfolioFundMetadata.FUND_BUYPRICE_KEY, newPrize);
+		cv.put(PortfolioFundMetadata.FUND_ROUNDLOT_KEY, newLot);
+		database.update(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, cv, PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+fundIsin+"' AND "+PortfolioFundMetadata.FUND_BUYDATE_KEY+" = '"+oldPurchaseDate+"'", null);
+	}
+	
+	public void updateSelectedShareInTransitionTable(String portfolioName, String shareIsin, String oldPurchaseDate, String newPurchaseDate, Float newPrize, int newLot)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(PortfolioShareMetadata.SHARE_BUYDATE_KEY, newPurchaseDate);
+		cv.put(PortfolioShareMetadata.SHARE_BUYPRICE_KEY, newPrize);
+		cv.put(PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, newLot);
+		database.update(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, cv, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+shareIsin+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+oldPurchaseDate+"'", null);
 	}
 	
 	public void updateSelectedBond(String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 

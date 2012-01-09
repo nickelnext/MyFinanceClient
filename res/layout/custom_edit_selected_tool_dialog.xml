@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:minWidth="300dp" >
+	
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="horizontal">
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Isin: " />
+        <TextView 
+            android:id="@+id/isinRef_TV"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="" />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:orientation="horizontal">
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Saved purchase date: " />
+        <TextView 
+            android:id="@+id/previousDate_TV"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="" />
+    </LinearLayout>
+    
+    <View
+        android:layout_height="2dip"
+        android:layout_marginTop="5dp"
+       	android:layout_width="fill_parent"
+       	android:background="#FF909090" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="New Tool purchase date" />
+    
+    <DatePicker
+        android:id="@+id/edit_purchaseDateDatePicker"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content" 
+    		android:layout_marginLeft="5dp"
+        	android:layout_marginTop="5dp"
+    		android:weightSum="2">
+    	    <TableRow>
+        		<TextView
+        		    android:layout_width="0dp"
+        		    android:layout_height="wrap_content"
+        		    android:layout_weight="1"
+        		    android:text="New Purchase Price"/>
+        		<EditText
+        		    android:id="@+id/edit_buyPriceEditText"
+        		    android:layout_width="0dp"
+        		    android:layout_height="wrap_content"
+        		    android:inputType="number|numberDecimal" 
+        		    android:layout_weight="1"
+        		    android:hint="price"/>
+    		</TableRow>
+    		<TableRow>
+        		<TextView
+        		    android:layout_width="0dp"
+        		    android:layout_height="wrap_content"
+        		    android:layout_weight="1"
+        		    android:text="New Round Lot"/>
+        		<EditText
+        		    android:id="@+id/edit_roundLotEditText"
+        		    android:layout_width="0dp"
+        		    android:layout_height="wrap_content"
+        		    android:inputType="number" 
+        		    android:layout_weight="1"
+        		    android:hint="round lot"/>
+    		</TableRow>
+	</TableLayout>
+	
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="5dp"
+			android:weightSum="2">
+        	
+    	    <TableRow>
+        		<Button
+        		    android:id="@+id/undoEditToolButton"
+        		    android:layout_width="0dp"
+        		    android:layout_height="fill_parent"
+        		    android:layout_weight="1"
+        		    android:text="Back"/>
+        		
+        		<Button
+        		    android:id="@+id/finishEditToolButton"
+        		    android:layout_width="0dp"
+        		    android:layout_height="fill_parent"
+        		    android:layout_weight="1"
+        		    android:text="Save Changes"/>
+    		</TableRow>
+	</TableLayout>
+</LinearLayout>

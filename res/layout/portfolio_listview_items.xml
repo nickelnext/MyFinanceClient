@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout
+<TableLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content">
-	<TextView
-		android:id="@+id/Center"
-		android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_centerHorizontal="true"/>
-    <TextView
-    	android:id="@+id/nameTextView"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_toLeftOf="@+id/Center"/>
-	<TextView               
-    	android:id="@+id/descriptionTextView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-    	android:layout_toRightOf="@+id/Center"/>   		
-</RelativeLayout>
+    android:layout_height="wrap_content"
+    android:weightSum="10">
+    <TableRow >
+    	<TextView
+    		android:id="@+id/nameTextView"
+    		android:layout_width="0dp"
+    		android:layout_height="wrap_content"
+    		android:layout_weight="4"/>
+		<TextView               
+    		android:id="@+id/descriptionTextView"
+        	android:layout_width="0dp"
+        	android:layout_height="wrap_content"
+    		android:layout_weight="6"/>   		
+	</TableRow>
+</TableLayout>

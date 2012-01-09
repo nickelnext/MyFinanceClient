@@ -130,7 +130,7 @@ public class ToolListActivity extends Activity
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.edit_item:
-        	//fare
+        	showEditToolDialog(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position), sharePurchaseDateArrayList.get(info.position));
         	return true;            
         case R.id.remove_item:        	
         	deleteSelectedTool(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position));        	
@@ -199,6 +199,111 @@ public class ToolListActivity extends Activity
 		//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
 		UpdateRequestAsyncTask asyncTask0 = new UpdateRequestAsyncTask(ToolListActivity.this);
 		asyncTask0.execute(array);
+	}
+	
+	//Open the custom alert dialog where it is possible to edit a saved tool.
+	private void showEditToolDialog(String isin, String type, String purchaseDate)
+	{
+		final Dialog editToolDialog = new Dialog(ToolListActivity.this);
+		editToolDialog.setContentView(R.layout.custom_edit_selected_tool_dialog);
+		editToolDialog.setTitle(isin);
+		editToolDialog.setCancelable(true);
+		
+		final String risin = isin;
+		final String rtype = type;
+		
+		final TextView isinRef_TV = (TextView) editToolDialog.findViewById(R.id.isinRef_TV);
+		final TextView previousDate_TV = (TextView) editToolDialog.findViewById(R.id.previousDate_TV);
+		final DatePicker edit_purchaseDateDatePicker = (DatePicker) editToolDialog.findViewById(R.id.edit_purchaseDateDatePicker);
+		final EditText edit_buyPriceEditText = (EditText) editToolDialog.findViewById(R.id.edit_buyPriceEditText);
+		final EditText edit_roundLotEditText = (EditText) editToolDialog.findViewById(R.id.edit_roundLotEditText);
+		Button undoEditToolButton = (Button) editToolDialog.findViewById(R.id.undoEditToolButton);
+		Button finishEditToolButton = (Button) editToolDialog.findViewById(R.id.finishEditToolButton);
+		
+		isinRef_TV.setText(isin);
+		previousDate_TV.setText(purchaseDate);
+		
+		undoEditToolButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				editToolDialog.dismiss();
+			}
+		});
+		
+		finishEditToolButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				if(edit_buyPriceEditText.getText().length()!=0 && edit_roundLotEditText.getText().length()!=0)
+				{
+					db.open();
+					
+					String purchaseDate = String.valueOf(edit_purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(edit_purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(edit_purchaseDateDatePicker.getYear());
+					
+					if(rtype.equals("bond"))
+					{
+						db.updateSelectedBondInTransitionTable(portfolioName, risin, previousDate_TV.getText().toString(), purchaseDate, Float.parseFloat(edit_buyPriceEditText.getText().toString()), Integer.parseInt(edit_roundLotEditText.getText().toString()));
+					}
+					else if(rtype.equals("fund"))
+					{
+						db.updateSelectedFundInTransitionTable(portfolioName, risin, previousDate_TV.getText().toString(), purchaseDate, Float.parseFloat(edit_buyPriceEditText.getText().toString()), Integer.parseInt(edit_roundLotEditText.getText().toString()));
+					}
+					else if(rtype.equals("share"))
+					{
+						db.updateSelectedShareInTransitionTable(portfolioName, risin, previousDate_TV.getText().toString(), purchaseDate, Float.parseFloat(edit_buyPriceEditText.getText().toString()), Integer.parseInt(edit_roundLotEditText.getText().toString()));
+					}
+					
+					db.close();
+					editToolDialog.dismiss();
+				}
+				else
+				{
+					showMessage("Error", "Control that you have insert all the data.");
+				}
+			}
+		});
+		
+		db.open();
+		Cursor toolOverview;
+		
+		if(type.equals("bond"))
+		{
+			toolOverview = db.getSpecificBondOverviewInPortfolio(portfolioName, isin, purchaseDate);
+		}
+		else if(type.equals("fund"))
+		{
+			toolOverview = db.getSpecificFundOverviewInPortfolio(portfolioName, isin, purchaseDate);
+		}
+		else if(type.equals("share"))
+		{
+			toolOverview = db.getSpecificShareOverviewInPortfolio(portfolioName, isin, purchaseDate);
+		}
+		else
+		{
+			toolOverview = null;
+			System.out.println("type error");
+			showMessage("Error", "Non dovrebbe mai accadere...");
+			editToolDialog.dismiss();
+		}
+		
+		startManagingCursor(toolOverview);
+		if(toolOverview!=null)
+		{
+			if(toolOverview.getCount()==1)
+			{
+				toolOverview.moveToFirst();
+				edit_buyPriceEditText.setText(String.valueOf(toolOverview.getFloat(4)));
+				edit_roundLotEditText.setText(String.valueOf(toolOverview.getInt(5)));
+			}
+		}
+		db.close();
+		
+		editToolDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			public void onDismiss(DialogInterface dialog) {
+				updateView();
+			}
+		});
+		
+		
+		editToolDialog.show();
+		
 	}
 	
 	//Open the custom alert dialog where it is possible to add a new tool.
@@ -584,7 +689,7 @@ public class ToolListActivity extends Activity
 		{
 			//load progress dialog....
 			dialog = new ProgressDialog(this.context);
-			dialog.setMessage("Loading, contacting server for data...");
+			dialog.setMessage("Loading, contacting server for data");
 			dialog.show();
 		}
 		
@@ -785,7 +890,7 @@ public class ToolListActivity extends Activity
 		{
 			//load progress dialog....
 			dialog = new ProgressDialog(this.context);
-			dialog.setMessage("Loading, update data from server...");
+			dialog.setMessage("Loading, update data from server");
 			dialog.show();
 		}
 		
