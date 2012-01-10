@@ -52,8 +52,12 @@ public class UpdateTimeTask extends TimerTask{
     			while(c_bond.moveToNext()){
     				array.add(new Request(c_bond.getColumnName(1), QuotationType.BOND, "__NONE__"));
     			}
-    			while(c_fund.moveToNext()) array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, "__NONE__"));
-    			while(c_share.moveToNext()) array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, "__NONE__"));
+    			while(c_fund.moveToNext()){
+    				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, "__NONE__"));
+    			}
+    			while(c_share.moveToNext()){
+    				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, "__NONE__"));
+    			}
     			
     			try {
     				   				
@@ -64,55 +68,44 @@ public class UpdateTimeTask extends TimerTask{
     					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
     				}
     				else{
-    					//risposta vuota
+    					System.out.println("Empty jsonResponse");
     				}
     			} catch (Exception e) {
     				System.out.println("connection ERROR");
     			}
 			}
-			//qui
-			db.open();
 			
-			//dismiss progress dialog...
+			db.open();
+
 			if(quotCont!=null)
 			{
 				
 				int totalQuotationReturned = quotCont.getBondList().size() + quotCont.getFundList().size() + quotCont.getShareList().size();
 				
-				if(allIsinRequestedAreReturned(shareIsinArrayList, quotCont))
-				{
-					if(totalQuotationReturned != shareIsinArrayList.size())
-					{
+				if(allIsinRequestedAreReturned(shareIsinArrayList, quotCont)){
+					if(totalQuotationReturned != shareIsinArrayList.size()){
 						//ne ho ricevuti di più rispetto a quelli richiesti....
 						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
 						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(shareIsinArrayList, quotCont);
-						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
-						{
+						for (int i = 0; i < listaIsinNotRequested.size(); i++){
 							System.out.println(listaIsinNotRequested.get(i));							
 						}
 						
 						//elimino quelli non richiesti dal container...
 						System.out.println("elimino quelli non richiesti dal container...");
-						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
-						{
-							for(Quotation_Bond qb : quotCont.getBondList())
-							{
-								if(qb.getISIN().equals(listaIsinNotRequested.get(i)))
-								{
+						for (int i = 0; i < listaIsinNotRequested.size(); i++){
+							for(Quotation_Bond qb : quotCont.getBondList())	{
+								if(qb.getISIN().equals(listaIsinNotRequested.get(i))){
 									quotCont.getBondList().remove(qb);
 								}
 							}
-							for(Quotation_Fund qf : quotCont.getFundList())
-							{
-								if(qf.getISIN().equals(listaIsinNotRequested.get(i)))
-								{
+							for(Quotation_Fund qf : quotCont.getFundList()){
+								if(qf.getISIN().equals(listaIsinNotRequested.get(i))){
 									quotCont.getFundList().remove(qf);
 								}
 							}
-							for(Quotation_Share qs : quotCont.getShareList())
-							{
-								if(qs.getISIN().equals(listaIsinNotRequested.get(i)))
-								{
+							for(Quotation_Share qs : quotCont.getShareList()){
+								if(qs.getISIN().equals(listaIsinNotRequested.get(i))){
 									quotCont.getShareList().remove(qs);
 								}
 							}
@@ -124,15 +117,13 @@ public class UpdateTimeTask extends TimerTask{
 					//alcuni di quelli richiesti non sono stati tornati....
 					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
 					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(shareIsinArrayList, quotCont);
-					for (int i = 0; i < listaIsinNotReturned.size(); i++) 
-					{
+					for (int i = 0; i < listaIsinNotReturned.size(); i++){
 						System.out.println(listaIsinNotReturned.get(i));
 					}
 				}
 				
 				//UPDATE IN DATABASE <BOND/FUND/SHARE> OF 'container'
-				for(Quotation_Bond qb : quotCont.getBondList())
-				{
+				for(Quotation_Bond qb : quotCont.getBondList())	{
 					try {
 						db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
 					} catch (Exception e) {
@@ -141,10 +132,14 @@ public class UpdateTimeTask extends TimerTask{
 				}
 				
 				//4. for all FUND returned...
-				for(Quotation_Fund qf : quotCont.getFundList())
-				{
+				for(Quotation_Fund qf : quotCont.getFundList()){
 					//4.1 control if fund already exist in database --> UPDATE
 					//UPDATE
+					try {
+						db.updateSelectedFundByQuotationObject(qf, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
 				}
 				
 				//5. for all SHARE returned...
@@ -152,6 +147,11 @@ public class UpdateTimeTask extends TimerTask{
 				{
 					//5.1 control if share already exist in database --> UPDATE
 					//UPDATE
+					try {
+						db.updateSelectedShareByQuotationObject(qs, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
 				}
 				
 				//update portfolio lastupdate field...
@@ -160,12 +160,10 @@ public class UpdateTimeTask extends TimerTask{
 			}
 			else{
 				//connection error!
+				System.out.println("Connection error");
 				
 			}
-			
-			
-			setPortfolioLastUpdate(s);
-			
+						
 			db.close();
 			
 		}
@@ -239,16 +237,7 @@ public class UpdateTimeTask extends TimerTask{
 	            .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
 	            .append(c.get(Calendar.MINUTE)).append(":")
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
-	}
-	
-	private void setPortfolioLastUpdate(String name){
-		db.open();		
-		Cursor portfolio = db.getDetailsOfPortfolio(name);
-		if(portfolio.getCount()==1)portfolio.moveToFirst();
-		portfolio.close();
-		db.close();
-	}
-		
+	}		
 }
 
 

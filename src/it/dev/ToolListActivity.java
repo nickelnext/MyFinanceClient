@@ -778,14 +778,31 @@ public class ToolListActivity extends Activity
 					//4.1 control if fund already exist in database --> UPDATE
 					if(db.fundAlreadyInDatabase(qf.getISIN()))
 					{
-						//UPDATE
+//						//UPDATE
+						try {
+							db.updateSelectedFundByQuotationObject(qf, getTodaysDate());
+						} catch (Exception e) {
+							System.out.println("Database update error");
+						}
 					}
 					else
 					{
-						//INSERT
+//						//INSERT
+						try {
+							db.addNewFundByQuotationObject(qf, getTodaysDate());
+						} catch (Exception e) {
+							System.out.println("Database insert error");
+						}	
 					}
 					
-					//4.2 INSERT fund in transition table
+//					//4.2 INSERT fund in transition table
+					int index = listaIsinTmp.indexOf(qf.getISIN());
+					try {
+						db.addNewFundInTransitionTable(portfolioName, listaIsinTmp.get(index), 
+								listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
+					} catch (Exception e) {
+						System.out.println("Database insert error [transition table]");
+					}
 				}
 				
 				//5. for all SHARE returned...
@@ -794,14 +811,31 @@ public class ToolListActivity extends Activity
 					//5.1 control if share already exist in database --> UPDATE
 					if(db.shareAlreadyInDatabase(qs.getISIN()))
 					{
-						//UPDATE
+//						//UPDATE
+						try {
+							db.updateSelectedShareByQuotationObject(qs, getTodaysDate());
+						} catch (Exception e) {
+							System.out.println("Database update error");
+						}
 					}
 					else
 					{
-						//INSERT
+//						//INSERT
+						try {
+							db.addNewShareByQuotationObject(qs, getTodaysDate());
+						} catch (Exception e) {
+							System.out.println("Database insert error");
+						}	
 					}
 					
-					//5.2 INSERT share in transition table
+//					//5.2 INSERT share in transition table
+					int index = listaIsinTmp.indexOf(qs.getISIN());
+					try {
+						db.addNewShareInTransitionTable(portfolioName, listaIsinTmp.get(index), 
+								listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
+					} catch (Exception e) {
+						System.out.println("Database insert error [transition table]");
+					}
 				}
 				
 			}
@@ -951,15 +985,15 @@ public class ToolListActivity extends Activity
 				//4. for all FUND returned...
 				for(Quotation_Fund qf : container.getFundList())
 				{
-					//4.1 control if fund already exist in database --> UPDATE
-					//UPDATE
+//					//4.1 control if fund already exist in database --> UPDATE
+//					//UPDATE
 				}
 				
 				//5. for all SHARE returned...
 				for(Quotation_Share qs : container.getShareList())
 				{
-					//5.1 control if share already exist in database --> UPDATE
-					//UPDATE
+//					//5.1 control if share already exist in database --> UPDATE
+//					//UPDATE
 				}
 				
 				//update portfolio lastupdate field...
