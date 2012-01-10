@@ -13,4 +13,5 @@
 	<string name="add_share">Add a new Tool</string>
 	<string name="manual_update">Update Tools</string>
 	<string name="forced_update">Forced Update</string>
+	<string name="advanced_settings">Advanced Settings</string>
 </resources>

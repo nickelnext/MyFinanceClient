@@ -102,6 +102,9 @@ public class ToolDetailsActivity extends Activity
 		case R.id.menu_forced_update:
 			callForcedUpdate();
 			break;
+		case R.id.menu_advanced_settings:
+			//open advanced settings dialog...
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}
