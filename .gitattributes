@@ -32,6 +32,7 @@ serverside/Quotes/QuotationContainer.java -text
 serverside/Quotes/QuotationType.java -text
 serverside/Quotes/Quotation_Bond.java -text
 serverside/Quotes/Quotation_Fund.java -text
+serverside/Quotes/Quotation_Invalid.java -text
 serverside/Quotes/Quotation_Share.java -text
 serverside/Requests/Request.java -text
 serverside/Requests/RequestContainer.java -text
