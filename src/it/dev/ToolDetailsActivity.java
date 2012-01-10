@@ -1,9 +1,26 @@
 package it.dev;
 
+import it.util.ConnectionUtils;
+import it.util.ResponseHandler;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import Quotes.QuotationContainer;
+import Quotes.QuotationType;
+import Quotes.Quotation_Bond;
+import Quotes.Quotation_Fund;
+import Quotes.Quotation_Share;
+import Requests.Request;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +28,8 @@ import android.view.MenuItem;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 public class ToolDetailsActivity extends Activity 
 {
@@ -68,7 +87,7 @@ public class ToolDetailsActivity extends Activity
 		switch(item.getItemId())
 		{
 		case R.id.menu_forced_update:
-			//do forced update...
+			callForcedUpdate();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -142,22 +161,319 @@ public class ToolDetailsActivity extends Activity
 				
 			}
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		db.close();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void callForcedUpdate()
+	{
+		db.open();
+		QuotationType qType;
+		ArrayList<String> ignoredSites = new ArrayList<String>();
+		Cursor details;
+		
+		if(toolType.equals("bond"))
+		{
+			qType = QuotationType.BOND;
+			details = db.getBondDetails(toolIsin);
+			
+			startManagingCursor(details);
+			if(details.getCount()==1)
+			{
+				details.moveToFirst();
+				
+				//add ignored sites already saved in database...
+				String[] array = details.getString(30).split(" ");
+				
+				for (String string : array) 
+				{
+					ignoredSites.add(string);
+				}
+				
+				//add source site...
+				ignoredSites.add(details.getString(28));
+			}
+		}
+		else if(toolType.equals("fund"))
+		{
+			qType = QuotationType.FUND;
+			details = db.getFundDetails(toolIsin);
+			
+			startManagingCursor(details);
+			if(details.getCount()==1)
+			{
+				details.moveToFirst();
+				
+				String[] array = details.getString(19).split(" ");
+				
+				for (String string : array) 
+				{
+					ignoredSites.add(string);
+				}
+				
+				ignoredSites.add(details.getString(17));
+			}
+		}
+		else if(toolType.equals("share"))
+		{
+			qType = QuotationType.SHARE;
+			details = db.getShareDetails(toolIsin);
+			
+			startManagingCursor(details);
+			if(details.getCount()==1)
+			{
+				details.moveToFirst();
+				
+				String[] array = details.getString(26).split(" ");
+				
+				for (String string : array) 
+				{
+					ignoredSites.add(string);
+				}
+				
+				ignoredSites.add(details.getString(24));
+			}
+		}
+		else
+		{
+			return;
+		}
+		
+		//1. create arrayList of Quotation Request....
+		ArrayList<Request> array = new ArrayList<Request>();
+		array.add(new Request(toolIsin, qType, ignoredSites));
+		
+		
+		//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
+		ForcedRequestAsyncTask asyncTask1 = new ForcedRequestAsyncTask(ToolDetailsActivity.this);
+		asyncTask1.execute(array);
+		
+		
+		
+		db.close();
+	}
+	
+	private void showMessage(String type, String message)
+	{
+		AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+    	alert_builder.setTitle(type);
+    	alert_builder.setMessage(message);
+    	alert_builder.setCancelable(false);
+    	alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+    	AlertDialog message_empty = alert_builder.create();
+    	message_empty.show();
+	}
+	
+	private boolean isinRequestedIsReturned(String isinRequested, QuotationContainer container)
+	{
+		boolean result = false;
+		
+		for(Quotation_Bond qb : container.getBondList())
+		{
+			if(qb.getISIN().equals(isinRequested))
+			{
+				result = true;
+			}
+		}
+		for(Quotation_Fund qf : container.getFundList())
+		{
+			if(qf.getISIN().equals(isinRequested))
+			{
+				result = true;
+			}
+		}
+		for(Quotation_Share qs : container.getShareList())
+		{
+			if(qs.getISIN().equals(isinRequested))
+			{
+				result = true;
+			}
+		}
+		
+		return result;
+		
+	}
+	
+	private ArrayList<String> searchIsinNotRequested(String toolIsin, QuotationContainer container)
+	{
+		ArrayList<String> result = new ArrayList<String>();
+		
+		ArrayList<String> support = new ArrayList<String>();
+		for(Quotation_Bond qb : container.getBondList())
+		{
+			support.add(qb.getISIN());
+		}
+		for(Quotation_Fund qf : container.getFundList())
+		{
+			support.add(qf.getISIN());
+		}
+		for(Quotation_Share qs : container.getShareList())
+		{
+			support.add(qs.getISIN());
+		}
+		
+		for (int i = 0; i < support.size(); i++) 
+		{
+			if(!support.get(i).equals(toolIsin))
+			{
+				result.add(support.get(i));
+			}
+		}
+		
+		return result;
+	}
+	
+	private String getTodaysDate() 
+	{
+	    final Calendar c = Calendar.getInstance();
+	    return(new StringBuilder()
+	            .append(c.get(Calendar.MONTH) + 1).append("/")
+	            .append(c.get(Calendar.DAY_OF_MONTH)).append("/")
+	            .append(c.get(Calendar.YEAR)).append(" ")
+	            .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
+	            .append(c.get(Calendar.MINUTE)).append(":")
+	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
+	}
+	
+	private class ForcedRequestAsyncTask extends AsyncTask<ArrayList<Request>, Void, QuotationContainer>
+	{
+		private ProgressDialog dialog;
+		private Context context;
+		
+		public ForcedRequestAsyncTask(Context ctx)
+		{
+			this.context = ctx;
+		}
+		
+		@Override
+		protected QuotationContainer doInBackground(ArrayList<Request>... params) 
+		{
+			try {
+				QuotationContainer quotCont = new QuotationContainer();
+				
+				Gson converter = new Gson();
+				String jsonReq = converter.toJson(params[0]);
+				String jsonResponse = ConnectionUtils.postData(jsonReq);
+				if(jsonResponse != null)
+				{
+					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+					return quotCont;
+				}
+				else
+				{
+					return null;
+				}
+			} catch (Exception e) {
+				System.out.println("connection ERROR");
+			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPreExecute()
+		{
+			//load progress dialog....
+			dialog = new ProgressDialog(this.context);
+			dialog.setMessage("Loading, forced update");
+			dialog.show();
+		}
+		
+		@Override
+		protected void onPostExecute(QuotationContainer container)
+		{
+			db.open();
+			
+			//dismiss progress dialog....
+			if(dialog.isShowing())
+			{
+				dialog.dismiss();
+			}
+			
+			
+			if(container!=null)
+			{
+				int totalQuotationReturned = container.getBondList().size() + container.getFundList().size() + container.getShareList().size();
+				
+				System.out.println("total returned: "+totalQuotationReturned);
+				
+				if(isinRequestedIsReturned(toolIsin, container))
+				{
+					if(totalQuotationReturned > 1)
+					{
+						//ne ho ricevuti di più rispetto a quello richiesto....
+						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(toolIsin, container);
+						
+						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
+						{
+							for(Quotation_Bond qb : container.getBondList())
+							{
+								if(qb.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getBondList().remove(qb);
+								}
+							}
+							for(Quotation_Fund qf : container.getFundList())
+							{
+								if(qf.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getFundList().remove(qf);
+								}
+							}
+							for(Quotation_Share qs : container.getShareList())
+							{
+								if(qs.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									container.getShareList().remove(qs);
+								}
+							}
+						}
+					}
+					
+					//procedo all'update dei dati del titolo...
+					for(Quotation_Bond qb : container.getBondList())
+					{
+						try {
+							db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
+						} catch (Exception e) {
+							System.out.println("Database update error");
+						}
+					}
+					
+					//4. for all FUND returned...
+					for(Quotation_Fund qf : container.getFundList())
+					{
+						//4.1 control if fund already exist in database --> UPDATE
+						//UPDATE
+					}
+					
+					//5. for all SHARE returned...
+					for(Quotation_Share qs : container.getShareList())
+					{
+						//5.1 control if share already exist in database --> UPDATE
+						//UPDATE
+					}
+				}
+				else
+				{
+					showMessage("Info", "The "+toolIsin+" tool is not found from other sites");
+				}
+			}
+			else
+			{
+				//connection error!
+				showMessage("Error", "There were errors during connection with server. Please try again.");
+			}
+			
+			
+			updateView();
+			
+			db.close();
+		}
 	}
 }

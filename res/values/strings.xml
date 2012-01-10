@@ -12,5 +12,5 @@
     </string-array>
 	<string name="add_share">Add a new Tool</string>
 	<string name="manual_update">Update Tools</string>
-	<string name="forced_update">Update values</string>
+	<string name="forced_update">Forced Update</string>
 </resources>
