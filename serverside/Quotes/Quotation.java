@@ -1,8 +1,8 @@
 package Quotes;
 
 import java.lang.reflect.Field;
-
-import myUtils.UtilFuncs;
+import Quotes.QuotationType;
+import Utils.UtilFuncs;
 
 public abstract class Quotation {
 
@@ -10,6 +10,14 @@ public abstract class Quotation {
 	protected String ISIN;
 	protected QuotationType type;
 	protected String site;
+	protected String siteUrl;
+	public String getSiteUrl() {
+		return siteUrl;
+	}
+
+	public void setSiteUrl(String siteUrl) {
+		this.siteUrl = siteUrl;
+	}
 
 	//this field is used to know which language the website is, so we can parse the dates using dd/MM/yyyy or MM/dd/yyyy.
 	private String country;

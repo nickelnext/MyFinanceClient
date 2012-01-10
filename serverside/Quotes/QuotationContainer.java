@@ -7,6 +7,8 @@ public class QuotationContainer {
 	private ArrayList<Quotation_Bond> bondList;
 	private ArrayList<Quotation_Fund> fundList;
 	private ArrayList<Quotation_Share> shareList;
+	private ArrayList<Quotation_Invalid> invalidList;
+	private String comments;
 
 	
 	
@@ -45,6 +47,25 @@ public class QuotationContainer {
 	public void setShareList(ArrayList<Quotation_Share> shareList) {
 		this.shareList = shareList;
 	}
+
+	public ArrayList<Quotation_Invalid> getInvalidList() {
+		if(null == this.invalidList){
+			this.invalidList = new ArrayList<Quotation_Invalid>();
+		}
+		return invalidList;
+	}
+	public void setInvalidList(ArrayList<Quotation_Invalid> invalidList) {
+		this.invalidList = invalidList;
+	}
+	
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	
 	
 
 

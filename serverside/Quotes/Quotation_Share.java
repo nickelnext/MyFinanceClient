@@ -1,6 +1,6 @@
 package Quotes;
 
-import myUtils.UtilFuncs;
+import Utils.UtilFuncs;
 
 public class Quotation_Share extends Quotation{
 
@@ -24,7 +24,18 @@ public class Quotation_Share extends Quotation{
 	protected String dataMaxAnno;
 	protected String dataMinAnno;
 	protected float chiusuraPrecedente;
+	protected String valuta;
 	
+	public String getValuta() {
+		return valuta;
+	}
+
+
+	public void setValuta(String valuta) {
+		this.valuta = valuta;
+	}
+
+
 	public Quotation_Share() {
 		super();
 		super.setType(QuotationType.SHARE);

@@ -1,6 +1,6 @@
 package Quotes;
 
-import myUtils.UtilFuncs;
+import Utils.UtilFuncs;
 
 public class Quotation_Bond extends Quotation{
 
