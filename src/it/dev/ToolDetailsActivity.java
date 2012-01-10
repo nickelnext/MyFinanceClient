@@ -43,6 +43,8 @@ public class ToolDetailsActivity extends Activity
 
 	private String toolIsin;
 	private String toolType;
+	
+	private ArrayList<String> ignoredSites = new ArrayList<String>();
 
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -167,9 +169,9 @@ public class ToolDetailsActivity extends Activity
 	@SuppressWarnings("unchecked")
 	private void callForcedUpdate()
 	{
+		ignoredSites.clear();
 		db.open();
 		QuotationType qType;
-		ArrayList<String> ignoredSites = new ArrayList<String>();
 		Cursor details;
 		
 		if(toolType.equals("bond"))
@@ -435,6 +437,21 @@ public class ToolDetailsActivity extends Activity
 						}
 					}
 					
+					
+					String ignoredSitesString = "";
+					for (int i = 0; i < ignoredSites.size(); i++) 
+					{
+						if(i==0)
+						{
+							ignoredSitesString = ignoredSites.get(i);
+						}
+						else
+						{
+							ignoredSitesString = ignoredSitesString+" "+ignoredSites.get(i);
+						}
+					}
+					System.out.println("siti ignorati:"+ignoredSitesString);
+					
 					//procedo all'update dei dati del titolo...
 					for(Quotation_Bond qb : container.getBondList())
 					{
@@ -470,6 +487,7 @@ public class ToolDetailsActivity extends Activity
 				showMessage("Error", "There were errors during connection with server. Please try again.");
 			}
 			
+			dynamic_detail_table.removeAllViews();
 			
 			updateView();
 			
