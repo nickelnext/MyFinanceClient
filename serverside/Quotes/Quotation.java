@@ -1,8 +1,8 @@
 package Quotes;
 
 import java.lang.reflect.Field;
-import Quotes.QuotationType;
-import Utils.UtilFuncs;
+
+import myUtils.UtilFuncs;
 
 public abstract class Quotation {
 
