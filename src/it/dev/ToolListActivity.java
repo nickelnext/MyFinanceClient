@@ -605,13 +605,16 @@ public class ToolListActivity extends Activity
 	{
 		db.open();
 		if(type.equals("bond")){
-			db.deleteBondInTransitionTable(portfolioName, ISIN, purchaseDate);			
+			db.deleteBondInTransitionTable(portfolioName, ISIN, purchaseDate);
+			if(!db.bondAlreadyInDatabase(ISIN))db.deleteBond(ISIN);
 		}
 		else if (type.equals("fund")){
 			db.deleteFundInTransitionTable(portfolioName, ISIN, purchaseDate);
+			if(!db.fundAlreadyInDatabase(ISIN))db.deleteFund(ISIN);
 		}
 		else if (type.equals("share")){
 			db.deleteShareInTransitionTable(portfolioName, ISIN, purchaseDate);
+			if(!db.shareAlreadyInDatabase(ISIN))db.deleteShare(ISIN);
 		}
 		else{
 			System.out.println("type error");

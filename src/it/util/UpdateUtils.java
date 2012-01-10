@@ -27,11 +27,11 @@ public class UpdateUtils {
 		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
 		today.add(Calendar.MINUTE, -30);
 		//Cursor c = db.getDetailsOfPortfolio(portfolioName);
-//		String updateDate = c.getString(4);
-//		String[] updateString	= updateDate.split("[/: ]");
-//		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
-//		if(today.after(upDate)){
-//		}
+		//String updateDate = c.getString(4);
+		//String[] updateString	= updateDate.split("[/: ]");
+		//upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
+		if(today.after(upDate)){
+		}
 		
 		
 	}

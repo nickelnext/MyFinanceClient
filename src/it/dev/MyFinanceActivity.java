@@ -11,7 +11,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -45,6 +47,8 @@ public class MyFinanceActivity extends Activity
         registerForContextMenu(portfolioListView);
         
         db = new MyFinanceDatabase(this);
+        
+        Log.d("CONNESSIONE", ConnectivityManager.EXTRA_EXTRA_INFO);
     }
     
     public void onResume()

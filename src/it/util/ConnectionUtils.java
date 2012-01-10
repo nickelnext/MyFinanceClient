@@ -23,14 +23,14 @@ import org.apache.http.message.BasicNameValuePair;
 
 public class ConnectionUtils {
 	
-	private static String URL = "http://myfinance.no-ip.org:8080/Pinellas/MainServlet";
+	private static String URL = "http://bbcentrale.dyndns-server.com/Pinellas/MainServlet";
 //	private static String URL = "http://bbcentrale.dyndns-server.com:8083/Pinellas/MainServlet";
-	private static String JSONREQ = "[{\"idCode\":\"IT0004572910\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"__NONE__\"}]";
+	//private static String JSONREQ = "[{\"idCode\":\"IT0004572910\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"__NONE__\"}]";
 
 	//only for testing purpose
 	public static void main(String[] args) {
 		//System.out.println(getInputStreamFromUrl(JSONREQ));
-		postData(JSONREQ);
+		//postData(JSONREQ);
 	
 	}
 	
