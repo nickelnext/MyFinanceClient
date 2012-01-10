@@ -1,6 +1,7 @@
 * text=auto !eol
 .settings/org.eclipse.jdt.core.prefs -text svneol=unset#text/plain
 /AndroidManifest.xml -text svneol=unset#text/plain
+assets/support -text
 /project.properties -text
 res/drawable-hdpi/ic_launcher.png -text
 res/drawable-hdpi/ic_menu_refresh.png -text
@@ -40,6 +41,7 @@ serverside/Requests/RequestType.java -text
 serverside/myUtils/UtilFuncs.java -text
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
+src/it/dev/SupportDatabaseHelper.java -text
 src/it/dev/ToolDetailsActivity.java -text
 src/it/dev/ToolListActivity.java -text
 src/it/util/Conn.java -text svneol=unset#text/plain

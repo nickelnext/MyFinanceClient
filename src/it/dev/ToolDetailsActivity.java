@@ -3,6 +3,7 @@ package it.dev;
 import it.util.ConnectionUtils;
 import it.util.ResponseHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -34,6 +35,7 @@ import com.google.gson.Gson;
 public class ToolDetailsActivity extends Activity 
 {
 	private MyFinanceDatabase db;
+	private SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(this);
 
 	private TextView toolReferenceTextView;
 	private TextView tool_purchaseDate_TV;
@@ -69,6 +71,15 @@ public class ToolDetailsActivity extends Activity
 		tool_roundLot_TV.setText((String) intent.getStringExtra(pkg+".toolRoundLot"));
 
 		db = new MyFinanceDatabase(this);
+		
+		try 
+        {
+        	supportDatabase.createDataBase();
+ 
+        } catch (IOException ioe) 
+        {
+        	throw new Error("Unable to create database");
+        }
 
 	}
 
@@ -99,20 +110,25 @@ public class ToolDetailsActivity extends Activity
 	private void updateView()
 	{
 		db.open();
+		supportDatabase.openDataBase();
 
 		Cursor toolDetails;
+		Cursor toolTranslate;
 
 		if(toolType.equals("bond"))
 		{
 			toolDetails = db.getBondDetails(toolIsin);
+			toolTranslate = supportDatabase.getBondTranslation("italiano");
 		}
 		else if(toolType.equals("fund"))
 		{
 			toolDetails = db.getFundDetails(toolIsin);
+			toolTranslate = supportDatabase.getFundTranslation("italiano");
 		}
 		else if(toolType.equals("share"))
 		{
 			toolDetails = db.getShareDetails(toolIsin);
+			toolTranslate = supportDatabase.getShareTranslation("italiano");
 		}
 		else
 		{
@@ -120,10 +136,13 @@ public class ToolDetailsActivity extends Activity
 		}
 
 		startManagingCursor(toolDetails);
+		startManagingCursor(toolTranslate);
 
 		if(toolDetails.getCount()==1)
 		{
 			toolDetails.moveToFirst();
+			toolTranslate.moveToFirst();
+			int j = 2;
 			for (int i = 1; i < toolDetails.getColumnCount(); i++) 
 			{
 				LayoutInflater inflater = getLayoutInflater();
@@ -139,7 +158,7 @@ public class ToolDetailsActivity extends Activity
 				TextView value = (TextView) newRow.findViewById(R.id.value_entry);
 
 				key.setTextColor(Color.BLACK);
-				key.setText(toolDetails.getColumnName(i));
+				key.setText(toolTranslate.getString(j));
 				
 				try	{
 					value.setText(toolDetails.getString(i));
@@ -160,10 +179,11 @@ public class ToolDetailsActivity extends Activity
 				value.setTextColor(Color.BLACK);
 				
 				dynamic_detail_table.addView(newRow);
-				
+				j++;
 			}
 		}
 		db.close();
+		supportDatabase.close();
 	}
 	
 	@SuppressWarnings("unchecked")
