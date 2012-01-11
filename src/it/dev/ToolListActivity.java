@@ -8,6 +8,7 @@ import it.util.UpdateTimeTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
@@ -82,7 +83,9 @@ public class ToolListActivity extends Activity
 		//CALL ASYNCTASK FOR UPDATE REQUEST...(when activity starts)
 		if(toolLoadedByDatabase.size()!=0)
 		{
-			//updateToolsInPortfolio();
+			if(portfolioToUpdated(portfolioName)){
+				updateToolsInPortfolio();
+			}
 			
 			UpdateTimeTask.add(portfolioName);
 		}
@@ -154,7 +157,9 @@ public class ToolListActivity extends Activity
     		break;
     	case R.id.menu_manual_update:
     		//manual update...
-    		updateToolsInPortfolio();
+    		if(portfolioToUpdated(portfolioName)){
+    			updateToolsInPortfolio();
+    		}
     		break;
     	}
     	return super.onOptionsItemSelected(item);
@@ -1081,6 +1086,19 @@ public class ToolListActivity extends Activity
 			
 			db.close();
 		}
+	}
+	
+	private boolean portfolioToUpdated(String portfolioName){
+		GregorianCalendar today = (GregorianCalendar) Calendar.getInstance();
+		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
+		today.add(Calendar.MINUTE, -30);
+		Cursor c = db.getDetailsOfPortfolio(portfolioName);
+		String updateDate = c.getString(4);
+		c.close();
+		String[] updateString	= updateDate.split("[/: ]");
+		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
+		if(today.after(upDate))return true;
+		else return false;
 	}
 	
 }

@@ -45,7 +45,6 @@ public class UpdateTimeTask extends TimerTask{
 			upDate = (GregorianCalendar) Calendar.getInstance();
 			today.add(Calendar.MINUTE, -30);
 			
-			
 			Cursor c = db.getDetailsOfPortfolio(s);
 			System.out.println("colonne:"+c.getColumnCount());
 			c.moveToFirst();
@@ -54,8 +53,8 @@ public class UpdateTimeTask extends TimerTask{
 			c.close();
 			String[] updateString	= updateDate.split("[/: ]");
 			upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
-			//	if(today.after(upDate)){
-			if(true){	
+			
+			if(today.after(upDate)){	
 				ArrayList<Request> array = new ArrayList<Request>();		
 				
 				Cursor c_bond = db.getAllBondOverviewInPortfolio(s);
@@ -107,7 +106,6 @@ public class UpdateTimeTask extends TimerTask{
     			} catch (Exception e) {
     				System.out.println("connection ERROR");
     			}
-			}
 
 			if(quotCont!=null)
 			{
@@ -199,6 +197,7 @@ public class UpdateTimeTask extends TimerTask{
 			
 			System.out.println("completo!");
 			
+			}
 		}
 		db.close();
     }
