@@ -46,6 +46,7 @@ public class ToolDetailsActivity extends Activity
 	private String toolIsin;
 	private String toolType;
 	
+	private String preferredSite;
 	private ArrayList<String> ignoredSites = new ArrayList<String>();
 
 	public void onCreate(Bundle savedInstanceState) 
@@ -207,6 +208,9 @@ public class ToolDetailsActivity extends Activity
 			{
 				details.moveToFirst();
 				
+				//add preferred site...
+				preferredSite = details.getString(29);
+				
 				//add ignored sites already saved in database...
 				String[] array = details.getString(30).split(" ");
 				
@@ -229,6 +233,8 @@ public class ToolDetailsActivity extends Activity
 			{
 				details.moveToFirst();
 				
+				preferredSite = details.getString(18);
+				
 				String[] array = details.getString(19).split(" ");
 				
 				for (String string : array) 
@@ -249,6 +255,8 @@ public class ToolDetailsActivity extends Activity
 			{
 				details.moveToFirst();
 				
+				preferredSite = details.getString(25);
+				
 				String[] array = details.getString(26).split(" ");
 				
 				for (String string : array) 
@@ -266,7 +274,7 @@ public class ToolDetailsActivity extends Activity
 		
 		//1. create arrayList of Quotation Request....
 		ArrayList<Request> array = new ArrayList<Request>();
-		array.add(new Request(toolIsin, qType, ignoredSites));
+		array.add(new Request(toolIsin, qType, preferredSite, ignoredSites));
 		
 		
 		//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
@@ -380,10 +388,13 @@ public class ToolDetailsActivity extends Activity
 		{
 			try {
 				QuotationContainer quotCont = new QuotationContainer();
-				
 				Gson converter = new Gson();
 				String jsonReq = converter.toJson(params[0]);
+				System.out.println(""+jsonReq);
 				String jsonResponse = ConnectionUtils.postData(jsonReq);
+				
+				
+				
 				if(jsonResponse != null)
 				{
 					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
@@ -396,7 +407,6 @@ public class ToolDetailsActivity extends Activity
 			} catch (Exception e) {
 				System.out.println("connection ERROR");
 			}
-			
 			return null;
 		}
 		
@@ -480,6 +490,7 @@ public class ToolDetailsActivity extends Activity
 					{
 						try {
 							db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
+							db.updateSelectedBondIgnoredSites(qb.getISIN(), ignoredSitesString);
 						} catch (Exception e) {
 							System.out.println("Database update error");
 						}

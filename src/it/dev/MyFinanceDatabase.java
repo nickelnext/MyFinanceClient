@@ -1037,6 +1037,13 @@ public class MyFinanceDatabase
 		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+newShare.getISIN()+"'", null);
 	}
 	
+	public void updateSelectedBondIgnoredSites(String bondIsin, String ignoredSites)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
+		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+bondIsin+"'", null);
+	}
+	
 	
 	//--------------------------------DELETE methods----------------------------//
 	
