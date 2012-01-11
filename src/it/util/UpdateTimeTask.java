@@ -64,32 +64,32 @@ public class UpdateTimeTask extends TimerTask{
 			
 				c_bond.moveToFirst();
     			while(c_bond.moveToNext()){
-    				String[] split = c.getString(c.getColumnIndex("sitiIgnorati")).split(" ");
+    				String[] split = c_bond.getString(c_bond.getColumnIndex("sitiIgnorati")).split(" ");
     				ArrayList<String> ignored = new ArrayList<String>();
     				for(String b : split){
     					ignored.add(b);
     				}
-    				array.add(new Request(c_bond.getColumnName(1), QuotationType.BOND, c.getString(c.getColumnIndex("sitoPreferito")), ignored));
+    				array.add(new Request(c_bond.getColumnName(1), QuotationType.BOND, c_bond.getString(c.getColumnIndex("sitoPreferito")), ignored));
     			}
     			c_bond.close();
     			c_fund.moveToFirst();
     			while(c_fund.moveToNext()){
-    				String[] split = c.getString(c.getColumnIndex("sitiIgnorati")).split(" ");
+    				String[] split = c_fund.getString(c_fund.getColumnIndex("sitiIgnorati")).split(" ");
     				ArrayList<String> ignored = new ArrayList<String>();
     				for(String b : split){
     					ignored.add(b);
     				}
-    				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, c.getString(c.getColumnIndex("sitoPreferito")), ignored));
+    				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, c_fund.getString(c.getColumnIndex("sitoPreferito")), ignored));
     			}
     			c_fund.close();
     			c_share.moveToFirst();
     			while(c_share.moveToNext()){
-    				String[] split = c.getString(c.getColumnIndex("sitiIgnorati")).split(" ");
+    				String[] split = c_share.getString(c_share.getColumnIndex("sitiIgnorati")).split(" ");
     				ArrayList<String> ignored = new ArrayList<String>();
     				for(String b : split){
     					ignored.add(b);
     				}
-    				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, c.getString(c.getColumnIndex("sitoPreferito")), ignored));
+    				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, c_share.getString(c.getColumnIndex("sitoPreferito")), ignored));
     			}
     			c_share.close();
     			
