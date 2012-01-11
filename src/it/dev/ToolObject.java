@@ -4,11 +4,6 @@ import java.util.ArrayList;
 
 public class ToolObject 
 {
-	public ToolObject()
-	{
-		
-	}
-	
 	private String ISIN;
 	private String type;
 	private String preferredSite;
@@ -17,6 +12,15 @@ public class ToolObject
 	private String purchasePrice;
 	private String roundLot;
 	
+	public ToolObject(String ISIN, String type, String purchaseDate, String purchasePrice, String roundLot) 
+	{
+		super();
+		this.ISIN = ISIN;
+		this.type = type;
+		this.purchaseDate = purchaseDate;
+		this.purchasePrice = purchasePrice;
+		this.roundLot = roundLot;
+	}
 	
 	public String getISIN() {
 		return ISIN;

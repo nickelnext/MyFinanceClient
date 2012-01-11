@@ -49,23 +49,13 @@ public class ToolListActivity extends Activity
 	
 	private String portfolioName;
 	
-	private ArrayList<String> shareIsinArrayList = new ArrayList<String>();
-	private ArrayList<String> shareTypeArrayList = new ArrayList<String>();
-	private ArrayList<String> sharePreferredSite = new ArrayList<String>();
-	private ArrayList<String> shareIgnoredSites = new ArrayList<String>();
-	private ArrayList<String> sharePurchaseDateArrayList = new ArrayList<String>();
-	private ArrayList<String> sharePurchasePrizeArrayList = new ArrayList<String>();
-	private ArrayList<String> shareRoundLotArrayList = new ArrayList<String>();
+	private ArrayList<ToolObject> toolLoadedByDatabase = new ArrayList<ToolObject>();
+	
+	private ArrayList<ToolObject> toolTmpToAddInDatabase = new ArrayList<ToolObject>();
 	
 	private TextView portfolioReferenceTextView;
 	private TextView portfolioLastUpdate_TV;
 	private ListView toolListView;
-	
-	//liste di supporto per salvare i dati temporanei prima di scriverli nel database
-	private ArrayList<String> listaIsinTmp = new ArrayList<String>();
-	private ArrayList<String> listaDataAcqTmp = new ArrayList<String>();
-	private ArrayList<String> listaPrezzoAcqTmp = new ArrayList<String>();
-	private ArrayList<String> listaLottoTmp = new ArrayList<String>();
 	
 	public void onCreate(Bundle savedInstanceState) 
     {
@@ -90,7 +80,7 @@ public class ToolListActivity extends Activity
         updateView();
 		
 		//CALL ASYNCTASK FOR UPDATE REQUEST...(when activity starts)
-		if(shareIsinArrayList.size()!=0)
+		if(toolLoadedByDatabase.size()!=0)
 		{
 			//updateToolsInPortfolio();
 			
@@ -126,7 +116,7 @@ public class ToolListActivity extends Activity
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-        menu.setHeaderTitle(shareIsinArrayList.get(info.position));
+        menu.setHeaderTitle(toolLoadedByDatabase.get(info.position).getISIN());
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.select_portfolio_context_menu, menu);
     }
@@ -135,10 +125,10 @@ public class ToolListActivity extends Activity
         AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
         case R.id.edit_item:
-        	showEditToolDialog(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position), sharePurchaseDateArrayList.get(info.position));
+        	showEditToolDialog(toolLoadedByDatabase.get(info.position).getISIN(), toolLoadedByDatabase.get(info.position).getType(), toolLoadedByDatabase.get(info.position).getPurchaseDate());
         	return true;            
         case R.id.remove_item:        	
-        	deleteSelectedTool(shareIsinArrayList.get(info.position), shareTypeArrayList.get(info.position), sharePurchaseDateArrayList.get(info.position));        	
+        	deleteSelectedTool(toolLoadedByDatabase.get(info.position).getISIN(), toolLoadedByDatabase.get(info.position).getType(), toolLoadedByDatabase.get(info.position).getPurchaseDate());        	
         	return true;        
         }
         return false;
@@ -175,17 +165,17 @@ public class ToolListActivity extends Activity
 	{
 		//0. create arrayList of QuotationType to generate the update request...
 		ArrayList<QuotationType> typeArray = new ArrayList<QuotationType>();
-		for (int i = 0; i < shareTypeArrayList.size(); i++) 
+		for (int i = 0; i < toolLoadedByDatabase.size(); i++) 
 		{
-			if(shareTypeArrayList.get(i).equals("bond"))
+			if(toolLoadedByDatabase.get(i).getType().equals("bond"))
 			{
 				typeArray.add(QuotationType.BOND);
 			}
-			else if(shareTypeArrayList.get(i).equals("fund"))
+			else if(toolLoadedByDatabase.get(i).getType().equals("fund"))
 			{
 				typeArray.add(QuotationType.FUND);
 			}
-			else if(shareTypeArrayList.get(i).equals("share"))
+			else if(toolLoadedByDatabase.get(i).getType().equals("share"))
 			{
 				typeArray.add(QuotationType.SHARE);
 			}
@@ -197,9 +187,9 @@ public class ToolListActivity extends Activity
 		
 		//1. create arrayList of Quotation Request....
 		ArrayList<Request> array = new ArrayList<Request>();
-		for (int i = 0; i < shareIsinArrayList.size(); i++) 
+		for (int i = 0; i < toolLoadedByDatabase.size(); i++) 
 		{
-			//array.add(new Request(shareIsinArrayList.get(i), typeArray.get(i), "__NONE__"));
+			array.add(new Request(toolLoadedByDatabase.get(i).getISIN(), typeArray.get(i), toolLoadedByDatabase.get(i).getPreferredSite(), toolLoadedByDatabase.get(i).getIgnoredSites()));
 		}
 		
 		//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
@@ -316,10 +306,7 @@ public class ToolListActivity extends Activity
 	private void showAddNewToolDialog()
 	{
 		//initilize arraylists...
-		listaIsinTmp.clear();
-		listaDataAcqTmp.clear();
-		listaPrezzoAcqTmp.clear();
-		listaLottoTmp.clear();
+		toolTmpToAddInDatabase.clear();
 		
 		final Dialog addToolDialog = new Dialog(ToolListActivity.this);
 		addToolDialog.setContentView(R.layout.custom_add_new_tool);
@@ -346,10 +333,9 @@ public class ToolListActivity extends Activity
 					//save temporary data....[USING ARRAYLIST<STRING>]
 					// String -> Uppercase -> cut spaces and get first element
 					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
-					listaIsinTmp.add(shareISINEditText.getText().toString().toUpperCase().split(" ")[0]);
-					listaDataAcqTmp.add(purchaseDate);
-					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
-					listaLottoTmp.add(roundLotEditText.getText().toString());
+					
+					toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
+							"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
 					
 					//initialize view...
 					final Calendar c = Calendar.getInstance();
@@ -374,16 +360,15 @@ public class ToolListActivity extends Activity
 					//0. add last tool in ArrayList<String>...
 					// String -> Uppercase -> cut spaces and get first element
 					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()+1) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
-					listaIsinTmp.add(shareISINEditText.getText().toString().toUpperCase().split(" ")[0]);
-					listaDataAcqTmp.add(purchaseDate);
-					listaPrezzoAcqTmp.add(buyPriceEditText.getText().toString());
-					listaLottoTmp.add(roundLotEditText.getText().toString());
+					
+					toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
+							"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
 					
 					//1. create arrayList of Quotation Request....
 					ArrayList<Request> array = new ArrayList<Request>();
-					for (int i = 0; i < listaIsinTmp.size(); i++) 
+					for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
 					{
-						array.add(new Request(listaIsinTmp.get(i)));
+						array.add(new Request(toolTmpToAddInDatabase.get(i).getISIN()));
 					}
 					
 					//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
@@ -413,14 +398,8 @@ public class ToolListActivity extends Activity
     {
 		//inizialize variables...
 		toolListView.setAdapter(null);
-    	shareIsinArrayList.clear();
-    	shareTypeArrayList.clear();
-    	sharePreferredSite.clear();
-    	shareIgnoredSites.clear();
-    	sharePurchaseDateArrayList.clear();
-    	sharePurchasePrizeArrayList.clear();
-    	shareRoundLotArrayList.clear();
-    	
+		toolLoadedByDatabase.clear();
+		
     	db.open();
     	
     	Cursor c_bond = db.getAllBondOverviewInPortfolio(portfolioName);
@@ -454,43 +433,72 @@ public class ToolListActivity extends Activity
     		{
     			public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
     			{
-    				goToToolDetailsActivity(shareIsinArrayList.get(position), shareTypeArrayList.get(position), sharePurchaseDateArrayList.get(position), sharePurchasePrizeArrayList.get(position), shareRoundLotArrayList.get(position));
+    				goToToolDetailsActivity(toolLoadedByDatabase.get(position).getISIN(), toolLoadedByDatabase.get(position).getType(), toolLoadedByDatabase.get(position).getPurchaseDate(), toolLoadedByDatabase.get(position).getPurchasePrice(), toolLoadedByDatabase.get(position).getRoundLot());
     			}
     		});
     	}
     	
     	Cursor details;
     	
-    	for (int i = 0; i < shareIsinArrayList.size(); i++) 
+    	ArrayList<String> ignoredSites = new ArrayList<String>();
+    	
+    	for (int i = 0; i < toolLoadedByDatabase.size(); i++) 
     	{
-			if(shareTypeArrayList.get(i).equals("bond"))
+    		ignoredSites.clear();
+    		
+			if(toolLoadedByDatabase.get(i).getType().equals("bond"))
 			{
-				details = db.getBondDetails(shareIsinArrayList.get(i));
+				details = db.getBondDetails(toolLoadedByDatabase.get(i).getISIN());
 				startManagingCursor(details);
 				if(details.getCount()==1)
 				{
 					details.moveToFirst();
-					sharePreferredSite.add(details.getString(29));
+					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(29));
+					String[] array = details.getString(30).split(" ");
+					
+					for (String string : array) 
+					{
+						ignoredSites.add(string);
+					}
+					
+					toolLoadedByDatabase.get(i).setIgnoredSites(ignoredSites);
+					
 				}
 			}
-			else if(shareTypeArrayList.get(i).equals("fund"))
+			else if(toolLoadedByDatabase.get(i).getType().equals("fund"))
 			{
-				details = db.getFundDetails(shareIsinArrayList.get(i));
+				details = db.getFundDetails(toolLoadedByDatabase.get(i).getISIN());
 				startManagingCursor(details);
 				if(details.getCount()==1)
 				{
 					details.moveToFirst();
-					sharePreferredSite.add(details.getString(18));
+					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(18));
+					String[] array = details.getString(19).split(" ");
+					
+					for (String string : array) 
+					{
+						ignoredSites.add(string);
+					}
+					
+					toolLoadedByDatabase.get(i).setIgnoredSites(ignoredSites);
 				}
 			}
-			else if(shareTypeArrayList.get(i).equals("share"))
+			else if(toolLoadedByDatabase.get(i).getType().equals("share"))
 			{
-				details = db.getShareDetails(shareIsinArrayList.get(i));
+				details = db.getShareDetails(toolLoadedByDatabase.get(i).getISIN());
 				startManagingCursor(details);
 				if(details.getCount()==1)
 				{
 					details.moveToFirst();
-					sharePreferredSite.add(details.getString(25));
+					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(25));
+					String[] array = details.getString(26).split(" ");
+					
+					for (String string : array) 
+					{
+						ignoredSites.add(string);
+					}
+					
+					toolLoadedByDatabase.get(i).setIgnoredSites(ignoredSites);
 				}
 			}
 		}
@@ -500,11 +508,18 @@ public class ToolListActivity extends Activity
     }
 	
 	//function that control if all the isin requested are returned...
-	private boolean allIsinRequestedAreReturned(ArrayList<String> isinList, QuotationContainer container)
+	private boolean allIsinRequestedAreReturned(ArrayList<ToolObject> toolList, QuotationContainer container)
 	{
 		boolean result = false;
 		
 		ArrayList<String> support = new ArrayList<String>();
+		ArrayList<String> isinList = new ArrayList<String>();
+		
+		for(ToolObject obj : toolList)
+		{
+			isinList.add(obj.getISIN());
+		}
+		
 		for(Quotation_Bond qb : container.getBondList())
 		{
 			support.add(qb.getISIN());
@@ -530,11 +545,18 @@ public class ToolListActivity extends Activity
 	}
 	
 	//function that returns an array list of the Isin returned by server but not requested by client...
-	private ArrayList<String> searchIsinNotRequested(ArrayList<String> isinList, QuotationContainer container)
+	private ArrayList<String> searchIsinNotRequested(ArrayList<ToolObject> toolList, QuotationContainer container)
 	{
 		ArrayList<String> result = new ArrayList<String>();
 		
 		ArrayList<String> support = new ArrayList<String>();
+		ArrayList<String> isinList = new ArrayList<String>();
+		
+		for(ToolObject obj : toolList)
+		{
+			isinList.add(obj.getISIN());
+		}
+		
 		for(Quotation_Bond qb : container.getBondList())
 		{
 			support.add(qb.getISIN());
@@ -560,11 +582,13 @@ public class ToolListActivity extends Activity
 	}
 	
 	//function that returns an array list of the Isin not returned by server but requested by client...
-	private ArrayList<String> searchIsinNotReturned(ArrayList<String> isinList, QuotationContainer container)
+	private ArrayList<ToolObject> searchIsinNotReturned(ArrayList<ToolObject> toolList, QuotationContainer container)
 	{
-		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<ToolObject> result = new ArrayList<ToolObject>();
 		
 		ArrayList<String> support = new ArrayList<String>();
+		
+		
 		for(Quotation_Bond qb : container.getBondList())
 		{
 			support.add(qb.getISIN());
@@ -578,11 +602,11 @@ public class ToolListActivity extends Activity
 			support.add(qs.getISIN());
 		}
 		
-		for (int i = 0; i < isinList.size(); i++) 
+		for (int i = 0; i < toolList.size(); i++) 
 		{
-			if(!support.contains(isinList.get(i)))
+			if(!support.contains(toolList.get(i).getISIN()))
 			{
-				result.add(isinList.get(i));
+				result.add(toolList.get(i));
 			}
 		}
 		
@@ -608,11 +632,8 @@ public class ToolListActivity extends Activity
 		{
 			c.moveToFirst();
 			do {
-				shareIsinArrayList.add(c.getString(2));
-				shareTypeArrayList.add(type);
-				sharePurchaseDateArrayList.add(c.getString(3));
-				sharePurchasePrizeArrayList.add(String.valueOf(c.getFloat(4)));
-				shareRoundLotArrayList.add(String.valueOf(c.getInt(5)));
+				
+				toolLoadedByDatabase.add(new ToolObject(c.getString(2), type, c.getString(3), String.valueOf(c.getFloat(4)), String.valueOf(c.getInt(5))));
 			} while (c.moveToNext());
 		}
 	}
@@ -728,13 +749,13 @@ public class ToolListActivity extends Activity
 			{
 				int totalQuotationReturned = container.getBondList().size() + container.getFundList().size() + container.getShareList().size();
 				
-				if(allIsinRequestedAreReturned(listaIsinTmp, container))
+				if(allIsinRequestedAreReturned(toolTmpToAddInDatabase, container))
 				{
-					if(totalQuotationReturned != listaIsinTmp.size())
+					if(totalQuotationReturned != toolTmpToAddInDatabase.size())
 					{
 						//ne ho ricevuti di più rispetto a quelli richiesti....
 						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
-						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(listaIsinTmp, container);
+						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(toolTmpToAddInDatabase, container);
 						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
 						{
 							System.out.println(listaIsinNotRequested.get(i));							
@@ -772,12 +793,21 @@ public class ToolListActivity extends Activity
 				{
 					//alcuni di quelli richiesti non sono stati tornati....
 					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
-					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(listaIsinTmp, container);
+					ArrayList<ToolObject> listaIsinNotReturned = searchIsinNotReturned(toolTmpToAddInDatabase, container);
 					for (int i = 0; i < listaIsinNotReturned.size(); i++) 
 					{
 						System.out.println(listaIsinNotReturned.get(i));
 						showMessage("Info", listaIsinNotReturned.get(i)+" is not returned by Server");
 					}
+					
+					//rimuovo dalla lista dei tool che devo inserire nel DB quei tool che non vengono restituiti...
+					for(ToolObject obj : listaIsinNotReturned)
+					{
+						toolTmpToAddInDatabase.remove(obj);
+					}
+					
+					
+					
 				}
 				
 				
@@ -805,15 +835,6 @@ public class ToolListActivity extends Activity
 							System.out.println("Database insert error");
 						}	
 					}
-					
-					//3.2 INSERT bond in transition table
-					int index = listaIsinTmp.indexOf(qb.getISIN());
-					try {
-						db.addNewBondInTransitionTable(portfolioName, listaIsinTmp.get(index), 
-								listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
-					} catch (Exception e) {
-						System.out.println("Database insert error [transition table]");
-					}
 				}
 				
 				//4. for all FUND returned...
@@ -837,15 +858,6 @@ public class ToolListActivity extends Activity
 						} catch (Exception e) {
 							System.out.println("Database insert error");
 						}	
-					}
-					
-//					//4.2 INSERT fund in transition table
-					int index = listaIsinTmp.indexOf(qf.getISIN());
-					try {
-						db.addNewFundInTransitionTable(portfolioName, listaIsinTmp.get(index), 
-								listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
-					} catch (Exception e) {
-						System.out.println("Database insert error [transition table]");
 					}
 				}
 				
@@ -871,14 +883,26 @@ public class ToolListActivity extends Activity
 							System.out.println("Database insert error");
 						}	
 					}
-					
-//					//5.2 INSERT share in transition table
-					int index = listaIsinTmp.indexOf(qs.getISIN());
-					try {
-						db.addNewShareInTransitionTable(portfolioName, listaIsinTmp.get(index), 
-								listaDataAcqTmp.get(index), Float.parseFloat(listaPrezzoAcqTmp.get(index)), Integer.parseInt(listaLottoTmp.get(index)));
-					} catch (Exception e) {
-						System.out.println("Database insert error [transition table]");
+				}
+				
+				
+				//6. save all returned BOND/FUND/SHARE in transition table...
+				for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
+				{
+					if(toolTmpToAddInDatabase.get(i).getType().equals("bond"))
+					{
+						db.addNewBondInTransitionTable(portfolioName, toolTmpToAddInDatabase.get(i).getISIN(), toolTmpToAddInDatabase.get(i).getPurchaseDate(), 
+								Float.parseFloat(toolTmpToAddInDatabase.get(i).getPurchasePrice()), Integer.parseInt(toolTmpToAddInDatabase.get(i).getRoundLot()));
+					}
+					else if(toolTmpToAddInDatabase.get(i).getType().equals("fund"))
+					{
+						db.addNewFundInTransitionTable(portfolioName, toolTmpToAddInDatabase.get(i).getISIN(), toolTmpToAddInDatabase.get(i).getPurchaseDate(), 
+								Float.parseFloat(toolTmpToAddInDatabase.get(i).getPurchasePrice()), Integer.parseInt(toolTmpToAddInDatabase.get(i).getRoundLot()));
+					}
+					else if(toolTmpToAddInDatabase.get(i).getType().equals("share"))
+					{
+						db.addNewShareInTransitionTable(portfolioName, toolTmpToAddInDatabase.get(i).getISIN(), toolTmpToAddInDatabase.get(i).getPurchaseDate(), 
+								Float.parseFloat(toolTmpToAddInDatabase.get(i).getPurchasePrice()), Integer.parseInt(toolTmpToAddInDatabase.get(i).getRoundLot()));
 					}
 				}
 				
@@ -964,13 +988,13 @@ public class ToolListActivity extends Activity
 				
 				int totalQuotationReturned = container.getBondList().size() + container.getFundList().size() + container.getShareList().size();
 				
-				if(allIsinRequestedAreReturned(shareIsinArrayList, container))
+				if(allIsinRequestedAreReturned(toolLoadedByDatabase, container))
 				{
-					if(totalQuotationReturned != shareIsinArrayList.size())
+					if(totalQuotationReturned != toolLoadedByDatabase.size())
 					{
 						//ne ho ricevuti di più rispetto a quelli richiesti....
 						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
-						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(shareIsinArrayList, container);
+						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(toolLoadedByDatabase, container);
 						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
 						{
 							System.out.println(listaIsinNotRequested.get(i));							
@@ -1008,7 +1032,7 @@ public class ToolListActivity extends Activity
 				{
 					//alcuni di quelli richiesti non sono stati tornati....
 					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
-					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(shareIsinArrayList, container);
+					ArrayList<ToolObject> listaIsinNotReturned = searchIsinNotReturned(toolLoadedByDatabase, container);
 					for (int i = 0; i < listaIsinNotReturned.size(); i++) 
 					{
 						System.out.println(listaIsinNotReturned.get(i));
