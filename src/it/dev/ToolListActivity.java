@@ -51,6 +51,8 @@ public class ToolListActivity extends Activity
 	
 	private ArrayList<String> shareIsinArrayList = new ArrayList<String>();
 	private ArrayList<String> shareTypeArrayList = new ArrayList<String>();
+	private ArrayList<String> sharePreferredSite = new ArrayList<String>();
+	private ArrayList<String> shareIgnoredSites = new ArrayList<String>();
 	private ArrayList<String> sharePurchaseDateArrayList = new ArrayList<String>();
 	private ArrayList<String> sharePurchasePrizeArrayList = new ArrayList<String>();
 	private ArrayList<String> shareRoundLotArrayList = new ArrayList<String>();
@@ -197,7 +199,7 @@ public class ToolListActivity extends Activity
 		ArrayList<Request> array = new ArrayList<Request>();
 		for (int i = 0; i < shareIsinArrayList.size(); i++) 
 		{
-			array.add(new Request(shareIsinArrayList.get(i), typeArray.get(i), "__NONE__"));
+			//array.add(new Request(shareIsinArrayList.get(i), typeArray.get(i), "__NONE__"));
 		}
 		
 		//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
@@ -413,6 +415,8 @@ public class ToolListActivity extends Activity
 		toolListView.setAdapter(null);
     	shareIsinArrayList.clear();
     	shareTypeArrayList.clear();
+    	sharePreferredSite.clear();
+    	shareIgnoredSites.clear();
     	sharePurchaseDateArrayList.clear();
     	sharePurchasePrizeArrayList.clear();
     	shareRoundLotArrayList.clear();
@@ -431,7 +435,6 @@ public class ToolListActivity extends Activity
     	Cursor c_share = db.getAllShareOverviewInPortfolio(portfolioName);
     	startManagingCursor(c_share);
     	saveSharesFromCursor(c_share, "share");
-    	
     	
     	Cursor[] mCursor = new Cursor[3];
     	mCursor[0] = c_bond;
@@ -455,6 +458,43 @@ public class ToolListActivity extends Activity
     			}
     		});
     	}
+    	
+    	Cursor details;
+    	
+    	for (int i = 0; i < shareIsinArrayList.size(); i++) 
+    	{
+			if(shareTypeArrayList.get(i).equals("bond"))
+			{
+				details = db.getBondDetails(shareIsinArrayList.get(i));
+				startManagingCursor(details);
+				if(details.getCount()==1)
+				{
+					details.moveToFirst();
+					sharePreferredSite.add(details.getString(29));
+				}
+			}
+			else if(shareTypeArrayList.get(i).equals("fund"))
+			{
+				details = db.getFundDetails(shareIsinArrayList.get(i));
+				startManagingCursor(details);
+				if(details.getCount()==1)
+				{
+					details.moveToFirst();
+					sharePreferredSite.add(details.getString(18));
+				}
+			}
+			else if(shareTypeArrayList.get(i).equals("share"))
+			{
+				details = db.getShareDetails(shareIsinArrayList.get(i));
+				startManagingCursor(details);
+				if(details.getCount()==1)
+				{
+					details.moveToFirst();
+					sharePreferredSite.add(details.getString(25));
+				}
+			}
+		}
+    	
     	
     	db.close();
     }

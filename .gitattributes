@@ -50,6 +50,7 @@ src/it/dev/Splashscreen.java -text
 src/it/dev/SupportDatabaseHelper.java -text
 src/it/dev/ToolDetailsActivity.java -text
 src/it/dev/ToolListActivity.java -text
+src/it/dev/ToolObject.java -text
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
 src/it/util/ResponseHandler.java -text
