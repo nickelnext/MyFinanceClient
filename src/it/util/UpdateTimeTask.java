@@ -13,6 +13,7 @@ import Quotes.Quotation_Bond;
 import Quotes.Quotation_Fund;
 import Quotes.Quotation_Share;
 import Requests.Request;
+import android.content.Context;
 import android.database.Cursor;
 import it.dev.MyFinanceDatabase;
 import it.util.UpdateUtils;
@@ -24,9 +25,12 @@ public class UpdateTimeTask extends TimerTask{
 	private ArrayList<String> shareIsinArrayList = new ArrayList<String>();
 	private GregorianCalendar today, upDate;
 	private MyFinanceDatabase db;
+	private Context ctx;
 	//private UpdateUtils up;
 	
-	public UpdateTimeTask(){
+	public UpdateTimeTask(Context ctx){
+		this.ctx = ctx;
+		db = new MyFinanceDatabase(ctx);
 		
 	}
 	
@@ -171,7 +175,7 @@ public class UpdateTimeTask extends TimerTask{
 		}
     }
 	
-	public void add(String portfolioName){
+	public static void add(String portfolioName){
 		portfolii.add(portfolioName);
 	}
 	

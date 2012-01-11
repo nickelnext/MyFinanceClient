@@ -91,8 +91,8 @@ public class ToolListActivity extends Activity
 		if(shareIsinArrayList.size()!=0)
 		{
 			//updateToolsInPortfolio();
-			UpdateTimeTask up = new UpdateTimeTask();
-			up.add(portfolioName);
+			
+			UpdateTimeTask.add(portfolioName);
 		}
         
         

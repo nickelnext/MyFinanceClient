@@ -101,7 +101,7 @@ public class MyFinanceActivity extends Activity
     	case R.id.menu_update_option:
     		//showUpdateOptionDialog();
     		Timer timer = new Timer();
-    		UpdateTimeTask up = new UpdateTimeTask();
+    		UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
     		timer.schedule(up, 60000, 100);
     		break;
     	}
