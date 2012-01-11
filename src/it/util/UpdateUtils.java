@@ -108,8 +108,8 @@ public class UpdateUtils {
 		if(type == "fund") qType = QuotationType.FUND;
 		if(type == "share") qType = QuotationType.SHARE;
 		
-		Request req = new Request(isin, qType, blackList);
-		array.add(req);
+		//Request req = new Request(isin, qType, blackList);
+		//array.add(req);
 		Gson converter = new Gson();
 		String jsonReq = converter.toJson(array);
 		String jsonResponse = ConnectionUtils.postData(jsonReq);

@@ -30,24 +30,31 @@ public class UpdateTimeTask extends TimerTask{
 	
 	public UpdateTimeTask(Context ctx){
 		this.ctx = ctx;
-		db = new MyFinanceDatabase(ctx);
+		db = new MyFinanceDatabase(this.ctx);
 		
 	}
 	
 	public void run(){
-		System.out.println("update");
+		db.open();
+		System.out.println(ctx.toString());
+		System.out.println("updateAutomatico");
 		for(String s : portfolii){
 			//up.updatePortfolio(s);
 			System.out.println(s);
 			today = (GregorianCalendar) Calendar.getInstance();
 			upDate = (GregorianCalendar) Calendar.getInstance();
 			today.add(Calendar.MINUTE, -30);
+			
+			
 			Cursor c = db.getDetailsOfPortfolio(s);
-			String updateDate = c.getString(4);
+			System.out.println("colonne:"+c.getColumnCount());
+			c.moveToFirst();
+			String updateDate = c.getString(c.getColumnIndex("ultimoAggiornamento"));
+			System.out.println("update data:"+updateDate);
+			c.close();
 			String[] updateString	= updateDate.split("[/: ]");
 			upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
-			
-		//	if(today.after(upDate)){
+			//	if(today.after(upDate)){
 			if(true){	
 				ArrayList<Request> array = new ArrayList<Request>();		
 				
@@ -55,15 +62,36 @@ public class UpdateTimeTask extends TimerTask{
 				Cursor c_fund = db.getAllFundOverviewInPortfolio(s);
 				Cursor c_share = db.getAllShareOverviewInPortfolio(s);
 			
+				c_bond.moveToFirst();
     			while(c_bond.moveToNext()){
-    				array.add(new Request(c_bond.getColumnName(1), QuotationType.BOND, "__NONE__"));
+    				String[] split = c.getString(c.getColumnIndex("sitiIgnorati")).split(" ");
+    				ArrayList<String> ignored = new ArrayList<String>();
+    				for(String b : split){
+    					ignored.add(b);
+    				}
+    				array.add(new Request(c_bond.getColumnName(1), QuotationType.BOND, c.getString(c.getColumnIndex("sitoPreferito")), ignored));
     			}
+    			c_bond.close();
+    			c_fund.moveToFirst();
     			while(c_fund.moveToNext()){
-    				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, "__NONE__"));
+    				String[] split = c.getString(c.getColumnIndex("sitiIgnorati")).split(" ");
+    				ArrayList<String> ignored = new ArrayList<String>();
+    				for(String b : split){
+    					ignored.add(b);
+    				}
+    				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, c.getString(c.getColumnIndex("sitoPreferito")), ignored));
     			}
+    			c_fund.close();
+    			c_share.moveToFirst();
     			while(c_share.moveToNext()){
-    				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, "__NONE__"));
+    				String[] split = c.getString(c.getColumnIndex("sitiIgnorati")).split(" ");
+    				ArrayList<String> ignored = new ArrayList<String>();
+    				for(String b : split){
+    					ignored.add(b);
+    				}
+    				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, c.getString(c.getColumnIndex("sitoPreferito")), ignored));
     			}
+    			c_share.close();
     			
     			try {
     				   				
@@ -80,8 +108,6 @@ public class UpdateTimeTask extends TimerTask{
     				System.out.println("connection ERROR");
     			}
 			}
-			
-			db.open();
 
 			if(quotCont!=null)
 			{
@@ -170,9 +196,11 @@ public class UpdateTimeTask extends TimerTask{
 				
 			}
 						
-			db.close();
+			
+			System.out.println("completo!");
 			
 		}
+		db.close();
     }
 	
 	public static void add(String portfolioName){

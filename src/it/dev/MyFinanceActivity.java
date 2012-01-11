@@ -154,7 +154,7 @@ public class MyFinanceActivity extends Activity
     		//showUpdateOptionDialog();
     		Timer timer = new Timer();
     		UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
-    		timer.schedule(up, 60000, 100);
+    		timer.schedule(up, 100, 60000);//i tempi li deve prendere dal db
     		break;
     	}
     	return super.onOptionsItemSelected(item);
