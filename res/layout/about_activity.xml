@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+	android:weightSum="10">
+
+
+    <TextView
+        android:id="@+id/aboutHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ABOUT"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+     <View
+        android:layout_height="2dip"
+       	android:layout_width="fill_parent"
+       	android:background="#FF909090" />
+	<TextView
+        android:id="@+id/versionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="MyFinance: v.1.0.0"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+        android:id="@+id/copyrightTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Copyright © Pannula Inc.
+        All Rights Reserved
+        For more info visit http://www.pannula.com"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+        android:id="@+id/creditsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Credits: Francesco Marconi, Michele Giani, Luigi Oliveto, Roberto Mangano"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+</LinearLayout>
