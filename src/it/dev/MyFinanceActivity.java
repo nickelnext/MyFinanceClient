@@ -465,7 +465,7 @@ public class MyFinanceActivity extends Activity
 		int time = Integer.parseInt(c.getString(c.getColumnIndex("Minutes")));
 		if(active){			
 			UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
-			timer.schedule(up, 100, time*60000);//i tempi li deve prendere dal db
+			timer.schedule(up, 100, time*60000);
 		}
 		else{
 			timer.cancel();
