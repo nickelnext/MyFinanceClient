@@ -18,4 +18,6 @@
 	<string name="manual_update">Update Tools</string>
 	<string name="forced_update">Forced Update</string>
 	<string name="advanced_settings">Advanced Settings</string>
+	<string name="about_page">About</string>
+	<string name="help_page">Help</string>
 </resources>
