@@ -15,7 +15,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -40,10 +41,36 @@ public class MyFinanceActivity extends Activity
 	private ArrayList<String> portfolioNameArrayList = new ArrayList<String>();
 	private ArrayList<String> portfolioDescriptionArrayList = new ArrayList<String>();
 	
+	private Handler mHandler;
+
+	protected static final int FINISH_LOAD = 0 ;
+	protected static final int START_LOAD = 1 ;
+	protected static final int ABORT_LOAD = 2 ;
+	
     public void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        
+        mHandler = new Handler() 
+        {
+        	public void handleMessage(Message msg) {
+        		switch (msg.what) {
+        		case FINISH_LOAD:
+                    Splashscreen.sendMessage(Splashscreen.CLOSE_SPLASH);
+                    break;
+        		case START_LOAD:
+        			initializing();
+                    break;
+        		case ABORT_LOAD:
+        			finish();
+        		}
+            }
+        };
+        startSplash();
+        
+        
+        
         
         portfolioListView = (ListView) findViewById(R.id.portfolioListView);
         registerForContextMenu(portfolioListView);
@@ -51,6 +78,31 @@ public class MyFinanceActivity extends Activity
         db = new MyFinanceDatabase(this);
         
         System.out.println(ConnectivityManager.EXTRA_EXTRA_INFO);
+    }
+    
+    private void startSplash() 
+    {
+    	Intent intent = new Intent(this, Splashscreen.class);
+        Splashscreen.setMainHandler(mHandler);
+        startActivity(intent);
+    }
+
+    private void initializing() 
+    {
+    	new Thread () 
+    	{
+    		public void run() 
+    		{
+    			for (int i = 0; i < 10000; i++) 
+    			{
+                    Message msg = new Message();
+                    msg.what = Splashscreen.SET_PROGRESS;
+                    msg.arg1 = i;
+                    Splashscreen.sendMessage(msg);
+    			}
+                mHandler.sendEmptyMessage(FINISH_LOAD);
+    		}
+        }.start();
     }
     
     public void onResume()

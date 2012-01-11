@@ -14,12 +14,18 @@
         android:debuggable="true">
         <activity
             android:label="@string/app_name"
-            android:name=".MyFinanceActivity" >
+            android:name=".MyFinanceActivity" 
+            android:configChanges="keyboardHidden|orientation">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity 
+            android:name=".Splashscreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">
         </activity>
         <activity android:name=".ToolListActivity"></activity>
         <activity android:name=".ToolDetailsActivity"></activity>

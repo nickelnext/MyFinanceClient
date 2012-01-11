@@ -5,12 +5,15 @@ assets/support -text
 /project.properties -text
 res/drawable-hdpi/ic_launcher.png -text
 res/drawable-hdpi/ic_menu_refresh.png -text
+res/drawable-hdpi/logo.png -text
 res/drawable-hdpi/tool_list_bkg.jpg -text
 res/drawable-ldpi/ic_launcher.png -text
 res/drawable-ldpi/ic_menu_refresh.png -text
+res/drawable-ldpi/logo.png -text
 res/drawable-ldpi/tool_list_bkg.jpg -text
 res/drawable-mdpi/ic_launcher.png -text
 res/drawable-mdpi/ic_menu_refresh.png -text
+res/drawable-mdpi/logo.png -text
 res/drawable-mdpi/tool_list_bkg.jpg -text
 res/layout/custom_add_new_portfolio_dialog.xml -text
 res/layout/custom_add_new_tool.xml -text
@@ -19,6 +22,7 @@ res/layout/custom_edit_selected_tool_dialog.xml -text
 res/layout/custom_update_option_dialog.xml -text
 res/layout/main.xml -text svneol=unset#text/plain
 res/layout/portfolio_listview_items.xml -text svneol=unset#text/plain
+res/layout/splashscreen.xml -text
 res/layout/tool_details.xml -text
 res/layout/tool_details_row.xml -text
 res/layout/tool_list_activity.xml -text
@@ -41,6 +45,7 @@ serverside/Requests/RequestType.java -text
 serverside/myUtils/UtilFuncs.java -text
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
+src/it/dev/Splashscreen.java -text
 src/it/dev/SupportDatabaseHelper.java -text
 src/it/dev/ToolDetailsActivity.java -text
 src/it/dev/ToolListActivity.java -text
