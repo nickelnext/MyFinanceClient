@@ -1,9 +1,11 @@
 package it.dev;
 
 import it.dev.MyFinanceDatabase.PortfolioMetaData;
+import it.util.UpdateTimeTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Timer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -48,7 +50,7 @@ public class MyFinanceActivity extends Activity
         
         db = new MyFinanceDatabase(this);
         
-        Log.d("CONNESSIONE", ConnectivityManager.EXTRA_EXTRA_INFO);
+        System.out.println(ConnectivityManager.EXTRA_EXTRA_INFO);
     }
     
     public void onResume()
@@ -97,7 +99,10 @@ public class MyFinanceActivity extends Activity
     		showAddNewPortfolioDialog();
     		break;
     	case R.id.menu_update_option:
-    		showUpdateOptionDialog();
+    		//showUpdateOptionDialog();
+    		Timer timer = new Timer();
+    		UpdateTimeTask up = new UpdateTimeTask();
+    		timer.schedule(up, 60000, 100);
     		break;
     	}
     	return super.onOptionsItemSelected(item);

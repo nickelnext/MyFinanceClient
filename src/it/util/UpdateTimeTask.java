@@ -31,8 +31,10 @@ public class UpdateTimeTask extends TimerTask{
 	}
 	
 	public void run(){
+		System.out.println("update");
 		for(String s : portfolii){
 			//up.updatePortfolio(s);
+			System.out.println(s);
 			today = (GregorianCalendar) Calendar.getInstance();
 			upDate = (GregorianCalendar) Calendar.getInstance();
 			today.add(Calendar.MINUTE, -30);
@@ -41,8 +43,8 @@ public class UpdateTimeTask extends TimerTask{
 			String[] updateString	= updateDate.split("[/: ]");
 			upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
 			
-			if(today.after(upDate)){
-				
+		//	if(today.after(upDate)){
+			if(true){	
 				ArrayList<Request> array = new ArrayList<Request>();		
 				
 				Cursor c_bond = db.getAllBondOverviewInPortfolio(s);

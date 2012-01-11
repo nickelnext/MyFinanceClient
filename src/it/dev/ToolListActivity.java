@@ -4,6 +4,7 @@ import it.dev.MyFinanceDatabase.PortfolioBondMetadata;
 import it.dev.MyFinanceDatabase.ShareMetaData;
 import it.util.ConnectionUtils;
 import it.util.ResponseHandler;
+import it.util.UpdateTimeTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,7 +90,9 @@ public class ToolListActivity extends Activity
 		//CALL ASYNCTASK FOR UPDATE REQUEST...(when activity starts)
 		if(shareIsinArrayList.size()!=0)
 		{
-			updateToolsInPortfolio();
+			//updateToolsInPortfolio();
+			UpdateTimeTask up = new UpdateTimeTask();
+			up.add(portfolioName);
 		}
         
         
@@ -159,6 +162,7 @@ public class ToolListActivity extends Activity
     		break;
     	case R.id.menu_manual_update:
     		//manual update...
+    		updateToolsInPortfolio();
     		break;
     	}
     	return super.onOptionsItemSelected(item);
