@@ -151,10 +151,10 @@ public class MyFinanceActivity extends Activity
     		showAddNewPortfolioDialog();
     		break;
     	case R.id.menu_update_option:
-    		//showUpdateOptionDialog();
-    		Timer timer = new Timer();
-    		UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
-    		timer.schedule(up, 100, 60000);//i tempi li deve prendere dal db
+    		showUpdateOptionDialog();
+//    		Timer timer = new Timer();
+//    		UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
+//    		timer.schedule(up, 100, 60000);//i tempi li deve prendere dal db
     		break;
     	}
     	return super.onOptionsItemSelected(item);
@@ -280,14 +280,20 @@ public class MyFinanceActivity extends Activity
     	final Spinner updateTimeSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateTimeSpinner);
     	final Button undoSavePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.undoSavePreferencesButton);
     	final Button saveUpdatePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.saveUpdatePreferencesButton);
+    	final Spinner updateLanguageSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateLanguageSpinner);
+    	
     	
     	enableAutoUpdateCheckBox.setChecked(false);   
         updateTimeSpinner.setEnabled(false);
         saveUpdatePreferencesButton.setEnabled(false);
+        
     	
-        ArrayAdapter<CharSequence> TimeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
-        TimeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        updateTimeSpinner.setAdapter(TimeAdapter);
+        ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.update_language_array, android.R.layout.simple_spinner_item);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        updateTimeSpinner.setAdapter(timeAdapter);
+        updateLanguageSpinner.setAdapter(languageAdapter);
         
         enableAutoUpdateCheckBox.setOnClickListener(new View.OnClickListener() 
         {

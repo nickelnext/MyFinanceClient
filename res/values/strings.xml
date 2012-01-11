@@ -10,6 +10,10 @@
         <item>240\'</item>
         <item>360\'</item>        
     </string-array>
+    <string-array name="update_language_array">
+        <item>Italiano</item>
+        <item>English</item>   
+    </string-array>
 	<string name="add_share">Add a new Tool</string>
 	<string name="manual_update">Update Tools</string>
 	<string name="forced_update">Forced Update</string>
