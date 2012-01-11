@@ -1,7 +1,5 @@
 package it.dev;
 
-import it.dev.MyFinanceDatabase.PortfolioMetaData;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

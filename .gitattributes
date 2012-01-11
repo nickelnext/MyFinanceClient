@@ -16,6 +16,7 @@ res/drawable-mdpi/ic_menu_refresh.png -text
 res/drawable-mdpi/logo.png -text
 res/drawable-mdpi/tool_list_bkg.jpg -text
 res/layout/about_activity.xml -text
+res/layout/advanced_options_row.xml -text
 res/layout/custom_add_new_portfolio_dialog.xml -text
 res/layout/custom_add_new_tool.xml -text
 res/layout/custom_advanced_options_dialog.xml -text

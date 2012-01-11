@@ -15,6 +15,7 @@ import Quotes.Quotation_Share;
 import Requests.Request;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,6 +27,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -104,7 +106,7 @@ public class ToolDetailsActivity extends Activity
 			callForcedUpdate();
 			break;
 		case R.id.menu_advanced_settings:
-			//open advanced settings dialog...
+			showAdvancedSettingsDialog();
 			break;
 		}
 		return super.onOptionsItemSelected(item);
@@ -284,6 +286,22 @@ public class ToolDetailsActivity extends Activity
 		
 		
 		db.close();
+	}
+	
+	//this method open the dialog for advanced settings...
+	private void showAdvancedSettingsDialog()
+	{
+		final Dialog advancedOptionsDialog = new Dialog(ToolDetailsActivity.this);
+		advancedOptionsDialog.setContentView(R.layout.custom_advanced_options_dialog);
+		advancedOptionsDialog.setTitle(toolIsin);
+		advancedOptionsDialog.setCancelable(true);
+		
+		final CheckBox prefSite_CB = (CheckBox) advancedOptionsDialog.findViewById(R.id.prefSite_CB);
+		final TextView preferredSiteRef = (TextView) findViewById(R.id.preferredSiteRef);
+		
+		
+		
+		advancedOptionsDialog.show();
 	}
 	
 	private void showMessage(String type, String message)
