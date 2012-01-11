@@ -36,7 +36,7 @@
         android:id="@+id/modifyPortfolioHeaderTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Modificare/Eliminare un  Portafoglio"
+        android:text="Modificare/Eliminare un Portafoglio"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 	<TextView
         android:id="@+id/modifyPortfolioTextView"
