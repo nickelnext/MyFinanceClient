@@ -290,7 +290,7 @@ public class MyFinanceActivity extends Activity
     	
     	enableAutoUpdateCheckBox.setChecked(false);   
         updateTimeSpinner.setEnabled(false);
-        saveUpdatePreferencesButton.setEnabled(false);
+        saveUpdatePreferencesButton.setEnabled(true);
         
     	
         ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
@@ -305,15 +305,9 @@ public class MyFinanceActivity extends Activity
 			public void onClick(View v) 
 			{
 				if (((CheckBox) v).isChecked())
-				{
 					updateTimeSpinner.setEnabled(true);
-					saveUpdatePreferencesButton.setEnabled(true);
-				}
 				else
-				{
 					updateTimeSpinner.setEnabled(false);
-					saveUpdatePreferencesButton.setEnabled(false);
-				}
 			}
 		});
         
