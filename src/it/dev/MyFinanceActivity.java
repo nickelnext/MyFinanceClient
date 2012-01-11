@@ -4,6 +4,8 @@ import it.dev.MyFinanceDatabase.PortfolioMetaData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Timer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -150,9 +152,6 @@ public class MyFinanceActivity extends Activity
     		break;
     	case R.id.menu_update_option:
     		showUpdateOptionDialog();
-//    		Timer timer = new Timer();
-//    		UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
-//    		timer.schedule(up, 100, 60000);//i tempi li deve prendere dal db
     		break;
     	}
     	return super.onOptionsItemSelected(item);
@@ -449,5 +448,17 @@ public class MyFinanceActivity extends Activity
 	            .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
 	            .append(c.get(Calendar.MINUTE)).append(":")
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
+	}
+	
+	private void automaticUpdate(boolean active, int time){
+		Timer timer = new Timer();
+		if(active){			
+			UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
+			timer.schedule(up, 100, time*60000);//i tempi li deve prendere dal db
+		}
+		else{
+			timer.cancel();
+		}
+		
 	}
 }
