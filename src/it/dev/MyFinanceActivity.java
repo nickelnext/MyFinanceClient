@@ -1,6 +1,7 @@
 package it.dev;
 
 import it.dev.MyFinanceDatabase.PortfolioMetaData;
+import it.util.UpdateTimeTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
