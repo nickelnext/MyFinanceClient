@@ -1,11 +1,9 @@
 package it.dev;
 
 import it.dev.MyFinanceDatabase.PortfolioMetaData;
-import it.util.UpdateTimeTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Timer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
