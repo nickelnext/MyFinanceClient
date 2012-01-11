@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+	android:weightSum="10">
+
+
+    <TextView
+        android:id="@+id/aboutHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HELP"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+     <View
+        android:layout_height="2dip"
+       	android:layout_width="fill_parent"
+       	android:background="#FF909090" />
+	<TextView
+        android:id="@+id/addPortfolioHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aggiungere un Portafoglio"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+        android:id="@+id/addPortfolioTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nella schermata iniziale, cliccare il tasto MENU e poi selezionare Add a new Portfolio."
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+        android:id="@+id/modifyPortfolioHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modificare/Eliminare un  Portafoglio"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+        android:id="@+id/modifyPortfolioTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nella schermata iniziale, tenere il dito premuto per qualche secondo sul portafoglio di nostro interesse.
+Seguire le istruzioni a schermo.
+"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+        android:id="@+id/viewPortfolioHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Visualizzare un portafoglio"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+        android:id="@+id/viewPortfolioTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Per visualizzare un portafoglio, cliccare sulla riga corrispondente.
+Verranno visualizzati gli strumenti finanziari contenuti nel portafoglio selezionato.
+"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+        android:id="@+id/addTitleHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aggiungere uno o più Titoli ad un Portafoglio"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+        android:id="@+id/addTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nella schermata del portafoglio, cliccare il tasto MENU e poi selezionare Add a new Tool."
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+        android:id="@+id/modifyTitleHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Modificare/Eliminare un  Titolo"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+        android:id="@+id/modifyTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nella schermata del portafoglio, tenere il dito premuto per qualche secondo sul titolo  di nostro interesse.
+Seguire le istruzioni a schermo.
+"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+	<TextView
+        android:id="@+id/detailsTitleHeaderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Visualizzare i dettagli del titolo"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+	<TextView
+        android:id="@+id/detailsTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nella schermata del portafoglio, selezionare un titolo con un click.
+Per tornare alla schermata del portafoglio, utilizzare il tasto BACK.
+"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+</LinearLayout>
