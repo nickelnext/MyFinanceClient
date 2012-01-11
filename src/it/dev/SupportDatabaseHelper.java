@@ -1,10 +1,13 @@
 package it.dev;
 
+import it.dev.MyFinanceDatabase.PortfolioMetaData;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -162,5 +165,16 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 		return myDataBase.query("Share_Translate", null, "language = '"+language+"'", null, null, null, null);
 	}
 	
+	public Cursor getAutomaticUpdateStatus(){
+		return myDataBase.query("autoUpdates", new String[]{"Actives","Minutes"}, "_id = 0", null, null, null, null);
+	}
+	
+	public void setAutomaticUpdateStatus(boolean active, int min){
+		ContentValues cv = new ContentValues();
+		cv.put("_id", 0);
+		cv.put("Minutes", min);
+		cv.put("Actives", active);
+		myDataBase.update("autoUpdates", cv, "_id = 0", null);
+	}
 
 }

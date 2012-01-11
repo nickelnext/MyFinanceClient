@@ -452,8 +452,17 @@ public class MyFinanceActivity extends Activity
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
 	}
 	
-	private void automaticUpdate(boolean active, int time){
+	private void automaticUpdate(){
 		Timer timer = new Timer();
+		SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(MyFinanceActivity.this);
+
+		timer.cancel();
+		supportDatabase.openDataBase();
+		Cursor c = supportDatabase.getAutomaticUpdateStatus();
+		startManagingCursor(c);
+		
+		boolean active = Boolean.getBoolean(c.getString(c.getColumnIndex("Actives")));
+		int time = Integer.parseInt(c.getString(c.getColumnIndex("Minutes")));
 		if(active){			
 			UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
 			timer.schedule(up, 100, time*60000);//i tempi li deve prendere dal db
@@ -461,6 +470,12 @@ public class MyFinanceActivity extends Activity
 		else{
 			timer.cancel();
 		}
-		
+	}
+	
+	private void setAutomaticUpdate(boolean active, int min){
+		SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(MyFinanceActivity.this);
+		supportDatabase.openDataBase();
+		supportDatabase.setAutomaticUpdateStatus(active, min);
+
 	}
 }
