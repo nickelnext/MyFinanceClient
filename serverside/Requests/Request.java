@@ -15,18 +15,6 @@ public class Request {
 	
 	private ArrayList<String> ignoredSites;
 
-
-	
-	//COSTRUTTORE CHE SETTA TUTTO
-	// DA ELIMINARE SE SI LASCIANO QUELLI SOTTo
-	public Request(String idCode, RequestType rType, QuotationType qType,
-			String preferredSite, ArrayList<String> ignoredSites) { 
-		this.idCode = idCode;
-		this.reqType = rType;
-		this.quotType = qType;
-		this.preferredSite = preferredSite;
-		this.ignoredSites = ignoredSites;
-	}
 	
 	//overloading --> QUOTATION REQ
 	public Request(String idCode) { 
@@ -36,26 +24,40 @@ public class Request {
 		this.preferredSite = null;
 		this.ignoredSites = null;
 	}
-	//overloading --> UPDATE REQ
+
+
+	//overloading --> UPDATE+FORCED REQ
 	public Request(String idCode, QuotationType qType,
-			String preferredSite) { 
+			String preferredSite, ArrayList<String> ignoredSites) { 
 		this.idCode = idCode;
 		this.reqType = RequestType.UPDATE;
 		this.quotType = qType;
 		this.preferredSite = preferredSite;
-		this.ignoredSites = null;
-	}
-
-	//overloading --> FORCED REQ
-	public Request(String idCode, QuotationType qType,
-			 ArrayList<String> ignoredSites) { 
-		this.idCode = idCode;
-		this.reqType = RequestType.FORCED;
-		this.quotType = qType;
-		this.preferredSite = null;
 		this.ignoredSites = ignoredSites;
 	}
+	
 
+//			DEPRECATIIIIII
+//	//overloading --> UPDATE REQ
+//	public Request(String idCode, QuotationType qType,
+//			String preferredSite) { 
+//		this.idCode = idCode;
+//		this.reqType = RequestType.UPDATE;
+//		this.quotType = qType;
+//		this.preferredSite = preferredSite;
+//		this.ignoredSites = null;
+//	}
+//
+//	//overloading --> FORCED REQ
+//	public Request(String idCode, QuotationType qType,
+//			 ArrayList<String> ignoredSites) { 
+//		this.idCode = idCode;
+//		this.reqType = RequestType.FORCED;
+//		this.quotType = qType;
+//		this.preferredSite = null;
+//		this.ignoredSites = ignoredSites;
+//	}
+//
 	
 	public String getIdCode() {
 		return idCode;
