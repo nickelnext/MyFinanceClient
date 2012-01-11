@@ -153,6 +153,14 @@ public class MyFinanceActivity extends Activity
     	case R.id.menu_update_option:
     		showUpdateOptionDialog();
     		break;
+    	case R.id.menu_about_page:
+    		Intent i = new Intent(this, AboutActivity.class);
+    		startActivity(i);
+    		break;
+    	case R.id.menu_help_page:
+    		Intent i1 = new Intent(this, HelpActivity.class);
+    		startActivity(i1);
+    		break;
     	}
     	return super.onOptionsItemSelected(item);
     }
