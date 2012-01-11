@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/menu_add_portfolio" android:title="@string/add_portfolio" android:icon="@android:drawable/ic_menu_add"/>
 	<item android:id="@+id/menu_update_option" android:title="@string/update_option" android:icon="@android:drawable/ic_menu_manage"/>
-	<item android:id="@+id/menu_about_page" android:title="@string/about_page" android:icon="@android:drawable/ic_menu_manage"></item>
-	<item android:id="@+id/menu_help_page" android:title="@string/help_page" android:icon="@android:drawable/ic_menu_manage"></item>
+	<item android:id="@+id/menu_about_page" android:title="@string/about_page" android:icon="@android:drawable/ic_menu_info_details"></item>
+	<item android:id="@+id/menu_help_page" android:title="@string/help_page" android:icon="@android:drawable/ic_menu_help"></item>
 </menu>

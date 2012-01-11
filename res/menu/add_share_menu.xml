@@ -2,4 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item android:id="@+id/menu_add_share" android:title="@string/add_share" android:icon="@android:drawable/ic_menu_add"/>
 	<item android:id="@+id/menu_manual_update" android:title="@string/manual_update" android:icon="@drawable/ic_menu_refresh"/>
+	<item android:id="@+id/menu_about_page" android:title="@string/about_page" android:icon="@android:drawable/ic_menu_info_details"></item>
+	<item android:id="@+id/menu_help_page" android:title="@string/help_page" android:icon="@android:drawable/ic_menu_help"></item>
 </menu>
