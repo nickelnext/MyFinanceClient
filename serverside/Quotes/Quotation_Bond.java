@@ -32,8 +32,8 @@ public class Quotation_Bond extends Quotation{
 	
 
 
-	public Quotation_Bond() {
-		super();
+	public Quotation_Bond(String country) {
+		super(country);
 		super.setType(QuotationType.BOND);
 	}
 	

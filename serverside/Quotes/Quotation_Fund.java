@@ -22,8 +22,8 @@ public class Quotation_Fund extends Quotation{
 	protected float performance3Anni;
 	
 	
-	public Quotation_Fund() {
-		super();
+	public Quotation_Fund(String country) {
+		super(country);
 		this.setType(QuotationType.FUND);
 	}
 	

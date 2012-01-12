@@ -36,8 +36,8 @@ public class Quotation_Share extends Quotation{
 	}
 
 
-	public Quotation_Share() {
-		super();
+	public Quotation_Share(String country) {
+		super(country);
 		super.setType(QuotationType.SHARE);
 	}
 	
