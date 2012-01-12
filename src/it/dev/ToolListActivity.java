@@ -1119,7 +1119,9 @@ public class ToolListActivity extends Activity
 		}
 	}
 	
-	private boolean portfolioToUpdated(String portfolioName){
+	private boolean portfolioToUpdated(String portfolioName)
+	{
+		db.open();
 		GregorianCalendar today = (GregorianCalendar) Calendar.getInstance();
 		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
 		today.add(Calendar.MINUTE, -30);
@@ -1128,8 +1130,10 @@ public class ToolListActivity extends Activity
 		c.close();
 		String[] updateString	= updateDate.split("[/: ]");
 		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
+		db.close();
 		if(today.after(upDate))return true;
 		else return false;
+		
 	}
 	
 }

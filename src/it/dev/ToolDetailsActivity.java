@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -50,6 +51,9 @@ public class ToolDetailsActivity extends Activity
 	
 	private String preferredSite;
 	private ArrayList<String> ignoredSites = new ArrayList<String>();
+	
+	private ArrayList<CheckBox> ignoredSitesCB = new ArrayList<CheckBox>();
+	private ArrayList<TextView> ignoredSitesTV = new ArrayList<TextView>();
 
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -229,7 +233,7 @@ public class ToolDetailsActivity extends Activity
 			String tmp = details.getString(details.getColumnIndex("sitoPreferito"));
 			if(tmp.equals(""))
 			{
-				preferredSite = "__NONE__";
+				preferredSite = null;
 			}
 			else
 			{
@@ -270,6 +274,9 @@ public class ToolDetailsActivity extends Activity
 	//this method open the dialog for advanced settings...
 	private void showAdvancedSettingsDialog()
 	{
+		ignoredSitesCB.clear();
+		ignoredSitesTV.clear();
+		
 		final Dialog advancedOptionsDialog = new Dialog(ToolDetailsActivity.this);
 		advancedOptionsDialog.setContentView(R.layout.custom_advanced_options_dialog);
 		advancedOptionsDialog.setTitle(toolIsin);
@@ -278,6 +285,9 @@ public class ToolDetailsActivity extends Activity
 		final CheckBox prefSite_CB = (CheckBox) advancedOptionsDialog.findViewById(R.id.prefSite_CB);
 		final TextView preferredSiteRef = (TextView) advancedOptionsDialog.findViewById(R.id.preferredSiteRef);
 		final TableLayout dynamic_ignoredSites_table = (TableLayout) advancedOptionsDialog.findViewById(R.id.dynamic_ignoredSites_table);
+		
+		Button canc_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.canc_adv_sett_btn);
+		Button save_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.save_adv_sett_btn);
 		
 		db.open();
 		
@@ -311,51 +321,61 @@ public class ToolDetailsActivity extends Activity
 			}
 		}
 		
-		
+		ArrayList<String> array = new ArrayList<String>();
 		
 		//add rows for ignored sites...
-		//1. all sites that do not find this type of tools...
+		//1. all sites that find this type of tools...
+		Cursor sites = db.getSitesForType(toolType);
+		startManagingCursor(sites);
+		
+		if(sites.getCount()!=0)
+		{
+			sites.moveToFirst();
+			do {
+				array.add(sites.getString(sites.getColumnIndex("sito")));
+			} while (sites.moveToNext());
+		}
 		
 		
-		
-		
-		//2. all sites saved in database for this tool...
-		
-		String[] array = null;
+		//2. all sites already ignored must be checked...
+		ArrayList<String> ignoredSitesFromDB = new ArrayList<String>();
 		
 		if(toolDetails!=null)
 		{
 			if(toolDetails.getCount()==1)
 			{
 				toolDetails.moveToFirst();
-				array = toolDetails.getString(toolDetails.getColumnIndex("sitiIgnorati")).split(" ");
+				String[] arraytmp = toolDetails.getString(toolDetails.getColumnIndex("sitiIgnorati")).split(" ");
+				for (String string : arraytmp) 
+				{
+					if(!string.equals(""))
+					{
+						ignoredSitesFromDB.add(string);
+					}
+				}
 			}
 		}
 		
-		if(array!=null)
+		for (int i = 0; i < array.size(); i++)
 		{
-			for (String string : array) 
+			LayoutInflater inflater = getLayoutInflater();
+			
+			TableRow newRow = (TableRow) inflater.inflate(R.layout.advanced_options_row, dynamic_ignoredSites_table, false);
+			
+			CheckBox ignored_cb = (CheckBox) newRow.findViewById(R.id.ignoredSite_CB);
+			TextView ignored_tv = (TextView) newRow.findViewById(R.id.ignoredSite_TV);
+			
+			if(ignoredSitesFromDB.contains(array.get(i)))
 			{
-				LayoutInflater inflater = getLayoutInflater();
-				
-				TableRow newRow = (TableRow) inflater.inflate(R.layout.advanced_options_row, dynamic_ignoredSites_table, false);
-				
-				CheckBox ignored_cb = (CheckBox) newRow.findViewById(R.id.ignoredSite_CB);
-				TextView ignored_tv = (TextView) newRow.findViewById(R.id.ignoredSite_TV);
-				
-				ignored_tv.setText(string);
-				
-				
-				dynamic_ignoredSites_table.addView(newRow);
+				ignored_cb.setChecked(true);
 			}
+			ignored_tv.setText(array.get(i));
+			
+			ignoredSitesCB.add(ignored_cb);
+			ignoredSitesTV.add(ignored_tv);
+			
+			dynamic_ignoredSites_table.addView(newRow);
 		}
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		db.close();

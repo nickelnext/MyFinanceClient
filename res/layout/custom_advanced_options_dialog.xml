@@ -53,4 +53,25 @@
         </TableRow>
     </TableLayout>
     
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+        <TableRow >
+            <Button 
+                android:id="@+id/canc_adv_sett_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"/>
+            <Button 
+                android:id="@+id/save_adv_sett_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save"/>
+        </TableRow>
+    </TableLayout>
+    
+    
 </LinearLayout>
