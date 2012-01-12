@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -249,10 +250,38 @@ public class MyFinanceActivity extends Activity
 
 		ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
 		ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.update_language_array, android.R.layout.simple_spinner_item);
+		
 		timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		updateTimeSpinner.setAdapter(timeAdapter);
 		updateLanguageSpinner.setAdapter(languageAdapter);
+		updateLanguageSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		updateTimeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		
 		
 		//checks which are the user preferences
@@ -274,16 +303,16 @@ public class MyFinanceActivity extends Activity
 		}
 		System.out.println("prima del for");
 		
-//		for(int i=0; i<timeAdapter.getCount();i++)
-//		{
-//			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
-//				updateTimeSpinner.setSelection(i);
-//		}
-//		for(int i=0; i<languageAdapter.getCount();i++)
-//		{
-//			if(languageAdapter.getItem(i).toString()==userSelectedLanguage)
-//				updateTimeSpinner.setSelection(i);
-//		}
+		for(int i=0; i<timeAdapter.getCount();i++)
+		{
+			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
+				updateTimeSpinner.setSelection(i);
+		}
+		for(int i=0; i<languageAdapter.getCount();i++)
+		{
+			if(languageAdapter.getItem(i).toString()==userSelectedLanguage)
+				updateLanguageSpinner.setSelection(i);
+		}
 		
 		
 		System.out.println("dopo il for, prima della setlistener");
@@ -305,13 +334,13 @@ public class MyFinanceActivity extends Activity
 			public void onClick(View view) { 
 
 
-//				switch(view.getId()){
-//				case R.id.undoSavePreferencesButton:
-//					System.out.println("case1");
-//					supportDatabase.close();
-//					updateOptionDialog.dismiss();   	    	
-//					break;
-//				case R.id.saveUpdatePreferencesButton:
+				switch(view.getId()){
+				case R.id.undoSavePreferencesButton:
+					System.out.println("case1");
+					supportDatabase.close();
+					updateOptionDialog.dismiss();   	    	
+					break;
+				case R.id.saveUpdatePreferencesButton:
 					System.out.println("case2");
 					int newUpdateTime = Integer.valueOf(updateTimeSpinner.getSelectedItem().toString());
 					boolean newAutoUpdate = enableAutoUpdateCheckBox.isChecked();
@@ -324,19 +353,16 @@ public class MyFinanceActivity extends Activity
 					//TODO
 					supportDatabase.close();
 					updateOptionDialog.dismiss();
-//					break;  
-//				}
+					break;  
+				}
 				
 			}
 		};
 		System.out.println("setto gestore1");
 		undoSavePreferencesButton.setOnClickListener(gestore);
-//		System.out.println("setto gestore2");
-//		saveUpdatePreferencesButton.setOnClickListener(gestore);
+		System.out.println("setto gestore2");
+		saveUpdatePreferencesButton.setOnClickListener(gestore);
 		System.out.println("enable buttons");
-		
-//		saveUpdatePreferencesButton.setEnabled(true);
-//		undoSavePreferencesButton.setEnabled(true);
 		System.out.println("show");
 		updateOptionDialog.show();
 		

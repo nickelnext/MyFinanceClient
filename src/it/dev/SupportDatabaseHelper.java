@@ -224,7 +224,7 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 		cv.put("_id", 1);
 		cv.put("language", language);
 		cv.put("autoUpdate", autoUpdate);
-		myDataBase.insert("Config", null, cv);
+		myDataBase.update("Config", cv, null, null);
 	}
 	
 	public Cursor getInfoInLanguage(String tableName, String language)
