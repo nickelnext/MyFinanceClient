@@ -280,6 +280,7 @@ public class MyFinanceActivity extends Activity
 		try 
 		{
 			supportDatabase.createDataBase();
+			supportDatabase.openDataBase();
 
 		} catch (IOException ioe) 
 		{
@@ -371,19 +372,6 @@ public class MyFinanceActivity extends Activity
 		String pkg = getPackageName();
 		i.putExtra(pkg+".portfolioName", portfolioName);		
 		startActivity(i);
-	}
-
-	private void saveInConfigTable()
-	{
-		try 
-		{
-			supportDatabase.createDataBase();
-
-		} catch (IOException ioe) 
-		{
-			throw new Error("Unable to create database");
-		}
-		//    	supportDatabase.
 	}
 
 	private void deleteSelectedPortfolio(String name)
