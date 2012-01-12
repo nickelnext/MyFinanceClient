@@ -83,6 +83,7 @@ public class MyFinanceDatabase
 		static final String BOND_MINROUNDLOT_KEY = "lottoMinimo";
 		static final String BOND_LASTUPDATE_KEY = "dataUltimoAggiornamento";
 		static final String BOND_SOURCESITE_KEY = "sitoSorgente";
+		static final String BOND_SOURCESITEURL_KEY = "sitoSorgenteUrl";
 		static final String BOND_PREFERREDSITE_KEY = "sitoPreferito";
 		static final String BOND_IGNOREDSITES_KEY = "sitiIgnorati";
 	}
@@ -108,6 +109,7 @@ public class MyFinanceDatabase
 		static final String FUND_PERFORMANCE3YEAR = "performance3Year";
 		static final String FUND_LASTUPDATE_KEY = "ultimoAggiornamento";
 		static final String FUND_SOURCESITE_KEY = "sitoSorgente";
+		static final String FUND_SOURCESITEURL_KEY = "sitoSorgenteUrl";
 		static final String FUND_PREFERREDSITE_KEY = "sitoPreferito";
 		static final String FUND_IGNOREDSITES_KEY = "sitiIgnorati";
 	}
@@ -140,6 +142,7 @@ public class MyFinanceDatabase
 		static final String SHARE_LASTCLOSE_KEY = "chiusuraPrecedente";
 		static final String SHARE_LASTUPDATE_KEY = "dataUltimoAggiornamento";
 		static final String SHARE_SOURCESITE_KEY = "sitoSorgente";
+		static final String SHARE_SOURCESITEURL_KEY = "sitoSorgenteUrl";
 		static final String SHARE_PREFERREDSITE_KEY = "sitoPreferito";
 		static final String SHARE_IGNOREDSITES_KEY = "sitiIgnorati";
 	}
@@ -222,6 +225,7 @@ public class MyFinanceDatabase
 			BondMetaData.BOND_MINROUNDLOT_KEY +" INTEGER, " +
 			BondMetaData.BOND_LASTUPDATE_KEY +" TEXT, " +
 			BondMetaData.BOND_SOURCESITE_KEY +" TEXT, " +
+			BondMetaData.BOND_SOURCESITEURL_KEY +" TEXT, " +
 			BondMetaData.BOND_PREFERREDSITE_KEY +" TEXT, " +
 			BondMetaData.BOND_IGNOREDSITES_KEY +" TEXT);";
 	
@@ -244,6 +248,7 @@ public class MyFinanceDatabase
 			FundMetaData.FUND_PERFORMANCE3YEAR +" REAL, " +
 			FundMetaData.FUND_LASTUPDATE_KEY +" TEXT, " +
 			FundMetaData.FUND_SOURCESITE_KEY +" TEXT, " +
+			FundMetaData.FUND_SOURCESITEURL_KEY +" TEXT, " +
 			FundMetaData.FUND_PREFERREDSITE_KEY +" TEXT, " +
 			FundMetaData.FUND_IGNOREDSITES_KEY +" TEXT);";
 	
@@ -273,6 +278,7 @@ public class MyFinanceDatabase
 			ShareMetaData.SHARE_LASTCLOSE_KEY +" REAL, " +
 			ShareMetaData.SHARE_LASTUPDATE_KEY +" TEXT, " +
 			ShareMetaData.SHARE_SOURCESITE_KEY +" TEXT, " +
+			ShareMetaData.SHARE_SOURCESITEURL_KEY +" TEXT, " +
 			ShareMetaData.SHARE_PREFERREDSITE_KEY +" TEXT, " +
 			ShareMetaData.SHARE_IGNOREDSITES_KEY +" TEXT);";
 	
@@ -390,46 +396,46 @@ public class MyFinanceDatabase
 		database.insert(PortfolioMetaData.PORTFOLIO_TABLE, null, cv);
 	}
 	
-	public void addNewBond(int _id, String isin, String name, String currency, String market, String marketPhase, float lastContractPrice, 
-			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
-			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
-			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
-			int minRoundLot, String lastUpdate, String sourceSite, String preferredSite, String ignoredSites)
-	{
-		ContentValues cv = new ContentValues();
-		cv.put(BondMetaData.ID, _id);
-		cv.put(BondMetaData.BOND_ISIN, isin);
-		cv.put(BondMetaData.BOND_NAME_KEY, name);
-		cv.put(BondMetaData.BOND_CURRENCY_KEY, currency);
-		cv.put(BondMetaData.BOND_MARKET_KEY, market);
-		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, marketPhase);
-		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, lastContractPrice);
-		cv.put(BondMetaData.BOND_PERCVAR_KEY, percVariation);
-		cv.put(BondMetaData.BOND_VARIATION_KEY, variation);
-		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, lastContractDate);
-		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, lastVolume);
-		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, buyVolume);
-		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, sellVolume);
-		cv.put(BondMetaData.BOND_TOTALVOLUME_KEY, totalVolume);
-		cv.put(BondMetaData.BOND_BUYPRICE_KEY, buyPrice);
-		cv.put(BondMetaData.BOND_SELLPRICE_KEY, sellPrice);
-		cv.put(BondMetaData.BOND_MAXTODAY_KEY, maxToday);
-		cv.put(BondMetaData.BOND_MINTODAY_KEY, minToday);
-		cv.put(BondMetaData.BOND_MAXYEAR_KEY, maxYear);
-		cv.put(BondMetaData.BOND_MINYEAR_KEY, minYear);
-		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, maxYearDate);
-		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, minYearDate);
-		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, lastClose);
-		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, expirationDate);
-		cv.put(BondMetaData.BOND_COUPONDATE_KEY, couponDate);
-		cv.put(BondMetaData.BOND_COUPON_KEY, coupon);
-		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, minRoundLot);
-		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
-		cv.put(BondMetaData.BOND_SOURCESITE_KEY, sourceSite);
-		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, preferredSite);
-		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
-		database.insert(BondMetaData.BOND_TABLE, null, cv);
-	}
+//	public void addNewBond(int _id, String isin, String name, String currency, String market, String marketPhase, float lastContractPrice, 
+//			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
+//			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
+//			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
+//			int minRoundLot, String lastUpdate, String sourceSite, String preferredSite, String ignoredSites)
+//	{
+//		ContentValues cv = new ContentValues();
+//		cv.put(BondMetaData.ID, _id);
+//		cv.put(BondMetaData.BOND_ISIN, isin);
+//		cv.put(BondMetaData.BOND_NAME_KEY, name);
+//		cv.put(BondMetaData.BOND_CURRENCY_KEY, currency);
+//		cv.put(BondMetaData.BOND_MARKET_KEY, market);
+//		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, marketPhase);
+//		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, lastContractPrice);
+//		cv.put(BondMetaData.BOND_PERCVAR_KEY, percVariation);
+//		cv.put(BondMetaData.BOND_VARIATION_KEY, variation);
+//		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, lastContractDate);
+//		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, lastVolume);
+//		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, buyVolume);
+//		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, sellVolume);
+//		cv.put(BondMetaData.BOND_TOTALVOLUME_KEY, totalVolume);
+//		cv.put(BondMetaData.BOND_BUYPRICE_KEY, buyPrice);
+//		cv.put(BondMetaData.BOND_SELLPRICE_KEY, sellPrice);
+//		cv.put(BondMetaData.BOND_MAXTODAY_KEY, maxToday);
+//		cv.put(BondMetaData.BOND_MINTODAY_KEY, minToday);
+//		cv.put(BondMetaData.BOND_MAXYEAR_KEY, maxYear);
+//		cv.put(BondMetaData.BOND_MINYEAR_KEY, minYear);
+//		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, maxYearDate);
+//		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, minYearDate);
+//		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, lastClose);
+//		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, expirationDate);
+//		cv.put(BondMetaData.BOND_COUPONDATE_KEY, couponDate);
+//		cv.put(BondMetaData.BOND_COUPON_KEY, coupon);
+//		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, minRoundLot);
+//		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
+//		cv.put(BondMetaData.BOND_SOURCESITE_KEY, sourceSite);
+//		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, preferredSite);
+//		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
+//		database.insert(BondMetaData.BOND_TABLE, null, cv);
+//	}
 	
 	public void addNewBondByQuotationObject(Quotation_Bond newBond, String lastUpdate)
 	{
@@ -463,39 +469,40 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
 		cv.put(BondMetaData.BOND_SOURCESITE_KEY, newBond.getSite());
+		cv.put(BondMetaData.BOND_SOURCESITEURL_KEY, newBond.getSiteUrl());
 		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
 		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
 		database.insert(BondMetaData.BOND_TABLE, null, cv);
 	}
 	
-	public void addNewFund(int _id, String isin, String name, String manager, String category, String benchmark, 
-			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
-			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate, 
-			String sourceSite, String preferredSite, String ignoredSites)
-	{
-		ContentValues cv = new ContentValues();
-		cv.put(FundMetaData.ID, _id);
-		cv.put(FundMetaData.FUND_ISIN, isin);
-		cv.put(FundMetaData.FUND_NAME_KEY, name);
-		cv.put(FundMetaData.FUND_MANAGER_KEY, manager);
-		cv.put(FundMetaData.FUND_CATEGORY_KEY, category);
-		cv.put(FundMetaData.FUND_BENCHMARK_KEY, benchmark);
-		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, lastPrize);
-		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, lastPrizeDate);
-		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, precPrize);
-		cv.put(FundMetaData.FUND_CURRENCY_KEY, currency);
-		cv.put(FundMetaData.FUND_PERCVAR_KEY, percVariation);
-		cv.put(FundMetaData.FUND_VARIATION_KEY, variation);
-		cv.put(FundMetaData.FUND_PERFORMANCE1MONTH, performance1Month);
-		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, performance3Month);
-		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
-		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
-		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
-		cv.put(FundMetaData.FUND_SOURCESITE_KEY, sourceSite);
-		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, preferredSite);
-		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, ignoredSites);
-		database.insert(FundMetaData.FUND_TABLE, null, cv);
-	}
+//	public void addNewFund(int _id, String isin, String name, String manager, String category, String benchmark, 
+//			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
+//			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate, 
+//			String sourceSite, String preferredSite, String ignoredSites)
+//	{
+//		ContentValues cv = new ContentValues();
+//		cv.put(FundMetaData.ID, _id);
+//		cv.put(FundMetaData.FUND_ISIN, isin);
+//		cv.put(FundMetaData.FUND_NAME_KEY, name);
+//		cv.put(FundMetaData.FUND_MANAGER_KEY, manager);
+//		cv.put(FundMetaData.FUND_CATEGORY_KEY, category);
+//		cv.put(FundMetaData.FUND_BENCHMARK_KEY, benchmark);
+//		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, lastPrize);
+//		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, lastPrizeDate);
+//		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, precPrize);
+//		cv.put(FundMetaData.FUND_CURRENCY_KEY, currency);
+//		cv.put(FundMetaData.FUND_PERCVAR_KEY, percVariation);
+//		cv.put(FundMetaData.FUND_VARIATION_KEY, variation);
+//		cv.put(FundMetaData.FUND_PERFORMANCE1MONTH, performance1Month);
+//		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, performance3Month);
+//		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
+//		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
+//		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
+//		cv.put(FundMetaData.FUND_SOURCESITE_KEY, sourceSite);
+//		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, preferredSite);
+//		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, ignoredSites);
+//		database.insert(FundMetaData.FUND_TABLE, null, cv);
+//	}
 	
 	public void addNewFundByQuotationObject(Quotation_Fund newFund, String lastUpdate)
 	{
@@ -518,47 +525,48 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, newFund.getPerformance3Anni());
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
 		cv.put(FundMetaData.FUND_SOURCESITE_KEY, newFund.getSite());
+		cv.put(FundMetaData.FUND_SOURCESITEURL_KEY, newFund.getSiteUrl());
 		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
 		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
 		database.insert(FundMetaData.FUND_TABLE, null, cv);
 	}
 	
-	public void addNewShare(int _id, String code, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
-			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
-			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
-			String maxYearDate, String minYearDate, float lastClose, String lastUpdate, 
-			String sourceSite, String preferredSite, String ignoredSites)
-	{
-		ContentValues cv = new ContentValues();
-		cv.put(ShareMetaData.ID, _id);
-		cv.put(ShareMetaData.SHARE_CODE, code);
-		cv.put(ShareMetaData.SHARE_ISIN, isin);
-		cv.put(ShareMetaData.SHARE_NAME_KEY, name);
-		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
-		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
-		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, lastContractPrice);
-		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, percVariation);
-		cv.put(ShareMetaData.SHARE_VARIATION_KEY, variation);
-		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, lastContractDate);
-		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, buyPrice);
-		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, sellPrice);
-		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, lastAmount);
-		cv.put(ShareMetaData.SHARE_BUYAMOUNT_KEY, buyAmount);
-		cv.put(ShareMetaData.SHARE_SELLAMOUNT_KEY, sellAmount);
-		cv.put(ShareMetaData.SHARE_TOTALAMOUNT_KEY, totalAmount);
-		cv.put(ShareMetaData.SHARE_MAXTODAY_KEY, maxToday);
-		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, minToday);
-		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, maxYear);
-		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, minYear);
-		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, maxYearDate);
-		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
-		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
-		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
-		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, sourceSite);
-		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, preferredSite);
-		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
-		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
-	}
+//	public void addNewShare(int _id, String code, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
+//			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
+//			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
+//			String maxYearDate, String minYearDate, float lastClose, String lastUpdate, 
+//			String sourceSite, String preferredSite, String ignoredSites)
+//	{
+//		ContentValues cv = new ContentValues();
+//		cv.put(ShareMetaData.ID, _id);
+//		cv.put(ShareMetaData.SHARE_CODE, code);
+//		cv.put(ShareMetaData.SHARE_ISIN, isin);
+//		cv.put(ShareMetaData.SHARE_NAME_KEY, name);
+//		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
+//		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
+//		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, lastContractPrice);
+//		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, percVariation);
+//		cv.put(ShareMetaData.SHARE_VARIATION_KEY, variation);
+//		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, lastContractDate);
+//		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, buyPrice);
+//		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, sellPrice);
+//		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, lastAmount);
+//		cv.put(ShareMetaData.SHARE_BUYAMOUNT_KEY, buyAmount);
+//		cv.put(ShareMetaData.SHARE_SELLAMOUNT_KEY, sellAmount);
+//		cv.put(ShareMetaData.SHARE_TOTALAMOUNT_KEY, totalAmount);
+//		cv.put(ShareMetaData.SHARE_MAXTODAY_KEY, maxToday);
+//		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, minToday);
+//		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, maxYear);
+//		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, minYear);
+//		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, maxYearDate);
+//		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
+//		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
+//		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
+//		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, sourceSite);
+//		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, preferredSite);
+//		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
+//		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
+//	}
 	
 	public void addNewShareByQuotationObject(Quotation_Share newShare, String lastUpdate)
 	{
@@ -588,6 +596,7 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSite());
+		cv.put(ShareMetaData.SHARE_SOURCESITEURL_KEY, newShare.getSiteUrl());
 		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
 		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
@@ -628,8 +637,6 @@ public class MyFinanceDatabase
 		cv.put(PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, roundLot);
 		database.insert(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, cv);
 	}
-	
-	//.........
 	
 	
 	
