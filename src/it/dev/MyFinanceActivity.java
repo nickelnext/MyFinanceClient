@@ -300,22 +300,38 @@ public class MyFinanceActivity extends Activity
 		final Button saveUpdatePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.saveUpdatePreferencesButton);
 		final Spinner updateLanguageSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateLanguageSpinner);
 
-		//checks which are the user preferences
-		if(supportDatabase.getUserSelectedAutoUpdate()==0)
-		{
-			enableAutoUpdateCheckBox.setChecked(false);
-			updateTimeSpinner.setEnabled(false);
-		}	
-
-		saveUpdatePreferencesButton.setEnabled(true);
-
-
 		ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
 		ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.update_language_array, android.R.layout.simple_spinner_item);
 		timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		updateTimeSpinner.setAdapter(timeAdapter);
 		updateLanguageSpinner.setAdapter(languageAdapter);
+		
+		
+		//checks which are the user preferences
+		int userSelectedAutoUpdate = supportDatabase.getUserSelectedAutoUpdate();
+		
+		if(supportDatabase.getUserSelectedAutoUpdate()==0)
+		{
+			enableAutoUpdateCheckBox.setChecked(false);
+			updateTimeSpinner.setEnabled(false);
+		}
+		else
+		{
+			enableAutoUpdateCheckBox.setChecked(true);
+			updateTimeSpinner.setEnabled(false);
+		}
+		
+		for(int i=0; i<timeAdapter.getCount();i++)
+		{
+			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
+				updateTimeSpinner.setSelection(i);
+		}
+		
+		saveUpdatePreferencesButton.setEnabled(true);
+
+
+		
 
 		enableAutoUpdateCheckBox.setOnClickListener(new View.OnClickListener() 
 		{
@@ -343,16 +359,10 @@ public class MyFinanceActivity extends Activity
 					String newLanguage =  (String)updateLanguageSpinner.getSelectedItem();
 					if(newAutoUpdate==false)
 						newUpdateTime = 0; //0 is for NoAutoUpdate
-
 					supportDatabase.setConfigParameters(newLanguage, newUpdateTime);
 
 					//Se necessario,attivare i pannula timers!
 					//TODO
-
-
-
-
-
 					updateOptionDialog.dismiss();
 					break;  
 				}
