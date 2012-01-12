@@ -231,5 +231,15 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 	{
 		return myDataBase.query(tableName, null, "language = '"+language+"'", null, null, null, null);
 	}
+	
+	public Cursor getAutoUpdates()
+	{
+		return myDataBase.query("AutoUpdates", null, null, null, null, null, "Minutes");
+	}
+	
+	public Cursor getLanguages()
+	{
+		return myDataBase.query("Languages", null, null, null, null, null, null);
+	}
 
 }

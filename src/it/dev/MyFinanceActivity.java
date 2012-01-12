@@ -254,34 +254,7 @@ public class MyFinanceActivity extends Activity
 		timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		updateTimeSpinner.setAdapter(timeAdapter);
-		updateLanguageSpinner.setAdapter(languageAdapter);
-		updateLanguageSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		updateTimeSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
+		updateLanguageSpinner.setAdapter(languageAdapter);		
 		
 		
 		//checks which are the user preferences
