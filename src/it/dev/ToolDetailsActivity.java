@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
@@ -288,6 +289,12 @@ public class ToolDetailsActivity extends Activity
 		
 		Button canc_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.canc_adv_sett_btn);
 		Button save_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.save_adv_sett_btn);
+		
+		canc_adv_sett_btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				
+			}
+		});
 		
 		db.open();
 		
