@@ -34,7 +34,7 @@ public class Splashscreen extends Activity
 				   synchronized (this) 
 				   {
 					   try {
-							String jsonReq = "SHAMALAYAAAA";
+							String jsonReq = "SHAMALAYAAAA";	
 							System.out.println(""+jsonReq);
 							
 							String jsonResponse = ConnectionUtils.getSites(jsonReq);
@@ -47,9 +47,14 @@ public class Splashscreen extends Activity
 								
 								db.open();
 								
-								for (TypeSiteObject o : typeSiteList) {
-									for (String s : o.getSites()) {
-										//inserisci la coppia (o.getType(), s) 										
+								for (TypeSiteObject o : typeSiteList) 
+								{
+									for (String s : o.getSites()) 
+									{
+										//inserisci la coppia (o.getType(), s)
+										
+										db.addNewSiteForType(1, o.getType(), s);
+										
 									}
 								}								
 								

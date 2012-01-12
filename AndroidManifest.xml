@@ -14,8 +14,7 @@
         android:debuggable="true">
         <activity
             android:label="@string/app_name"
-            android:name=".MyFinanceActivity" 
-            android:configChanges="orientation|keyboardHidden">
+            android:name=".Splashscreen" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,9 +22,7 @@
             </intent-filter>
         </activity>
         <activity 
-            android:name=".Splashscreen"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleInstance">
+            android:name=".MyFinanceActivity">
         </activity>
         <activity android:name=".ToolListActivity"></activity>
         <activity android:name=".ToolDetailsActivity"></activity>
