@@ -204,74 +204,44 @@ public class ToolDetailsActivity extends Activity
 		{
 			qType = QuotationType.BOND;
 			details = db.getBondDetails(toolIsin);
-			
-			startManagingCursor(details);
-			if(details.getCount()==1)
-			{
-				details.moveToFirst();
-				
-				//add preferred site...
-				preferredSite = details.getString(29);
-				
-				//add ignored sites already saved in database...
-				String[] array = details.getString(30).split(" ");
-				
-				for (String string : array) 
-				{
-					ignoredSites.add(string);
-				}
-				
-				//add source site...
-				ignoredSites.add(details.getString(28));
-			}
 		}
 		else if(toolType.equals("fund"))
 		{
 			qType = QuotationType.FUND;
 			details = db.getFundDetails(toolIsin);
-			
-			startManagingCursor(details);
-			if(details.getCount()==1)
-			{
-				details.moveToFirst();
-				
-				preferredSite = details.getString(18);
-				
-				String[] array = details.getString(19).split(" ");
-				
-				for (String string : array) 
-				{
-					ignoredSites.add(string);
-				}
-				
-				ignoredSites.add(details.getString(17));
-			}
 		}
 		else if(toolType.equals("share"))
 		{
 			qType = QuotationType.SHARE;
 			details = db.getShareDetails(toolIsin);
-			
-			startManagingCursor(details);
-			if(details.getCount()==1)
-			{
-				details.moveToFirst();
-				
-				preferredSite = details.getString(25);
-				
-				String[] array = details.getString(26).split(" ");
-				
-				for (String string : array) 
-				{
-					ignoredSites.add(string);
-				}
-				
-				ignoredSites.add(details.getString(24));
-			}
 		}
 		else
 		{
 			return;
+		}
+		
+		startManagingCursor(details);
+		if(details.getCount()==1)
+		{
+			details.moveToFirst();
+			
+			//add preferred site...
+			preferredSite = details.getString(details.getColumnIndex("sitoPreferito"));
+			
+			//add ignored sites already saved in database...
+			String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
+			
+			for (String string : array) 
+			{
+				if(!string.equals(""))
+				{
+					ignoredSites.add(string);
+					System.out.println("sito ignorato: "+string);
+				}
+			}
+			
+			//add source site...
+			ignoredSites.add(details.getString(details.getColumnIndex("sitoSorgente")));
 		}
 		
 		//1. create arrayList of Quotation Request....
@@ -489,9 +459,6 @@ public class ToolDetailsActivity extends Activity
 				String jsonReq = converter.toJson(params[0]);
 				System.out.println(""+jsonReq);
 				String jsonResponse = ConnectionUtils.postData(jsonReq);
-				
-				
-				
 				if(jsonResponse != null)
 				{
 					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
@@ -568,7 +535,7 @@ public class ToolDetailsActivity extends Activity
 					}
 					
 					
-					String ignoredSitesString = "";
+					String ignoredSitesString = null;
 					for (int i = 0; i < ignoredSites.size(); i++) 
 					{
 						if(i==0)

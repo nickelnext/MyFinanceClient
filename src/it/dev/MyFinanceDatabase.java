@@ -858,45 +858,45 @@ public class MyFinanceDatabase
 		database.update(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, cv, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+shareIsin+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+oldPurchaseDate+"'", null);
 	}
 	
-	public void updateSelectedBond(String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 
-			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
-			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
-			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
-			int minRoundLot, String lastUpdate, String sourceSite, String preferredSite, String ignoredSites)
-	{
-		ContentValues cv = new ContentValues();
-		cv.put(BondMetaData.BOND_ISIN, ISIN); //no perché serve per identificare la tupla
-		cv.put(BondMetaData.BOND_NAME_KEY, name); //il nome potrebbe cambiare...
-		cv.put(BondMetaData.BOND_CURRENCY_KEY, currency);
-		cv.put(BondMetaData.BOND_MARKET_KEY, market);
-		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, marketPhase);
-		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, lastContractPrice);
-		cv.put(BondMetaData.BOND_PERCVAR_KEY, percVariation);
-		cv.put(BondMetaData.BOND_VARIATION_KEY, variation);
-		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, lastContractDate);
-		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, lastVolume);
-		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, buyVolume);
-		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, sellVolume);
-		cv.put(BondMetaData.BOND_TOTALVOLUME_KEY, totalVolume);
-		cv.put(BondMetaData.BOND_BUYPRICE_KEY, buyPrice);
-		cv.put(BondMetaData.BOND_SELLPRICE_KEY, sellPrice);
-		cv.put(BondMetaData.BOND_MAXTODAY_KEY, maxToday);
-		cv.put(BondMetaData.BOND_MINTODAY_KEY, minToday);
-		cv.put(BondMetaData.BOND_MAXYEAR_KEY, maxYear);
-		cv.put(BondMetaData.BOND_MINYEAR_KEY, minYear);
-		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, maxYearDate);
-		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, minYearDate);
-		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, lastClose);
-		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, expirationDate);
-		cv.put(BondMetaData.BOND_COUPONDATE_KEY, couponDate);
-		cv.put(BondMetaData.BOND_COUPON_KEY, coupon);
-		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, minRoundLot);
-		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
-		cv.put(BondMetaData.BOND_SOURCESITE_KEY, sourceSite);
-		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, preferredSite);
-		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
-		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null);
-	}
+//	public void updateSelectedBond(String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 
+//			float percVariation, float variation, String lastContractDate, int lastVolume, int buyVolume, int sellVolume, 
+//			int totalVolume, float buyPrice, float sellPrice, float maxToday, float minToday, float maxYear, float minYear, 
+//			String maxYearDate, String minYearDate, float lastClose, String expirationDate, String couponDate, float coupon, 
+//			int minRoundLot, String lastUpdate, String sourceSite, String preferredSite, String ignoredSites)
+//	{
+//		ContentValues cv = new ContentValues();
+//		cv.put(BondMetaData.BOND_ISIN, ISIN); //no perché serve per identificare la tupla
+//		cv.put(BondMetaData.BOND_NAME_KEY, name); //il nome potrebbe cambiare...
+//		cv.put(BondMetaData.BOND_CURRENCY_KEY, currency);
+//		cv.put(BondMetaData.BOND_MARKET_KEY, market);
+//		cv.put(BondMetaData.BOND_MARKETPHASE_KEY, marketPhase);
+//		cv.put(BondMetaData.BOND_LASTCONTRACTPRICE_KEY, lastContractPrice);
+//		cv.put(BondMetaData.BOND_PERCVAR_KEY, percVariation);
+//		cv.put(BondMetaData.BOND_VARIATION_KEY, variation);
+//		cv.put(BondMetaData.BOND_LASTCONTRACTDATE_KEY, lastContractDate);
+//		cv.put(BondMetaData.BOND_LASTVOLUME_KEY, lastVolume);
+//		cv.put(BondMetaData.BOND_BUYVOLUME_KEY, buyVolume);
+//		cv.put(BondMetaData.BOND_SELLVOLUME_KEY, sellVolume);
+//		cv.put(BondMetaData.BOND_TOTALVOLUME_KEY, totalVolume);
+//		cv.put(BondMetaData.BOND_BUYPRICE_KEY, buyPrice);
+//		cv.put(BondMetaData.BOND_SELLPRICE_KEY, sellPrice);
+//		cv.put(BondMetaData.BOND_MAXTODAY_KEY, maxToday);
+//		cv.put(BondMetaData.BOND_MINTODAY_KEY, minToday);
+//		cv.put(BondMetaData.BOND_MAXYEAR_KEY, maxYear);
+//		cv.put(BondMetaData.BOND_MINYEAR_KEY, minYear);
+//		cv.put(BondMetaData.BOND_MAXYEARDATE_KEY, maxYearDate);
+//		cv.put(BondMetaData.BOND_MINYEARDATE_KEY, minYearDate);
+//		cv.put(BondMetaData.BOND_LASTCLOSE_KEY, lastClose);
+//		cv.put(BondMetaData.BOND_EXPIRATIONDATE_KEY, expirationDate);
+//		cv.put(BondMetaData.BOND_COUPONDATE_KEY, couponDate);
+//		cv.put(BondMetaData.BOND_COUPON_KEY, coupon);
+//		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, minRoundLot);
+//		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
+//		cv.put(BondMetaData.BOND_SOURCESITE_KEY, sourceSite);
+//		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, preferredSite);
+//		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
+//		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+ISIN+"'", null);
+//	}
 	
 	public void updateSelectedBondByQuotationObject(Quotation_Bond newBond, String lastUpdate)
 	{
@@ -930,39 +930,40 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
 		cv.put(BondMetaData.BOND_SOURCESITE_KEY, newBond.getSite());
+		cv.put(BondMetaData.BOND_SOURCESITEURL_KEY, newBond.getSiteUrl());
 //		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
 //		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+newBond.getISIN()+"'", null);
 	}
 	
-	public void updateSelectedFund(String ISIN, String name, String manager, String category, String benchmark, 
-			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
-			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate, 
-			String sourceSite, String preferredSite, String ignoredSites)
-	{
-		ContentValues cv = new ContentValues();
-		cv.put(FundMetaData.FUND_ISIN, ISIN);// no serve per la ricerca
-		cv.put(FundMetaData.FUND_NAME_KEY, name);// no potrebbe cambiare
-		cv.put(FundMetaData.FUND_MANAGER_KEY, manager);
-		cv.put(FundMetaData.FUND_CATEGORY_KEY, category);
-		cv.put(FundMetaData.FUND_BENCHMARK_KEY, benchmark);
-		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, lastPrize);
-		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, lastPrizeDate);
-		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, precPrize);
-		cv.put(FundMetaData.FUND_CURRENCY_KEY, currency);
-		cv.put(FundMetaData.FUND_PERCVAR_KEY, percVariation);
-		cv.put(FundMetaData.FUND_VARIATION_KEY, variation);
-		cv.put(FundMetaData.FUND_PERFORMANCE1MONTH, performance1Month);
-		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, performance3Month);
-		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
-		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
-		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
-		cv.put(FundMetaData.FUND_SOURCESITE_KEY, sourceSite);
-		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, preferredSite);
-		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, ignoredSites);
-		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null);
-
-	}
+//	public void updateSelectedFund(String ISIN, String name, String manager, String category, String benchmark, 
+//			float lastPrize, String lastPrizeDate, float precPrize, String currency, float percVariation, float variation, 
+//			float performance1Month, float performance3Month, float performance1Year, float performance3Year, String lastUpdate, 
+//			String sourceSite, String preferredSite, String ignoredSites)
+//	{
+//		ContentValues cv = new ContentValues();
+//		cv.put(FundMetaData.FUND_ISIN, ISIN);// no serve per la ricerca
+//		cv.put(FundMetaData.FUND_NAME_KEY, name);// no potrebbe cambiare
+//		cv.put(FundMetaData.FUND_MANAGER_KEY, manager);
+//		cv.put(FundMetaData.FUND_CATEGORY_KEY, category);
+//		cv.put(FundMetaData.FUND_BENCHMARK_KEY, benchmark);
+//		cv.put(FundMetaData.FUND_LASTPRIZE_KEY, lastPrize);
+//		cv.put(FundMetaData.FUND_LASTPRIZEDATE_KEY, lastPrizeDate);
+//		cv.put(FundMetaData.FUND_PRECPRIZE_KEY, precPrize);
+//		cv.put(FundMetaData.FUND_CURRENCY_KEY, currency);
+//		cv.put(FundMetaData.FUND_PERCVAR_KEY, percVariation);
+//		cv.put(FundMetaData.FUND_VARIATION_KEY, variation);
+//		cv.put(FundMetaData.FUND_PERFORMANCE1MONTH, performance1Month);
+//		cv.put(FundMetaData.FUND_PERFORMANCE3MONTH, performance3Month);
+//		cv.put(FundMetaData.FUND_PERFORMANCE1YEAR, performance1Year);
+//		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, performance3Year);
+//		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
+//		cv.put(FundMetaData.FUND_SOURCESITE_KEY, sourceSite);
+//		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, preferredSite);
+//		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, ignoredSites);
+//		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null);
+//
+//	}
 	
 	public void updateSelectedFundByQuotationObject(Quotation_Fund newFund, String lastUpdate)
 	{
@@ -984,46 +985,47 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, newFund.getPerformance3Anni());
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
 		cv.put(FundMetaData.FUND_SOURCESITE_KEY, newFund.getSite());
+		cv.put(FundMetaData.FUND_SOURCESITEURL_KEY, newFund.getSiteUrl());
 //		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
 //		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
 	}
 	
-	public void updateSelectedShare(String CODE, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
-			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
-			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
-			String maxYearDate, String minYearDate, float lastClose, String lastUpdate, 
-			String sourceSite, String preferredSite, String ignoredSites)
-	{
-		ContentValues cv = new ContentValues();
-		cv.put(ShareMetaData.SHARE_CODE, CODE); //no serve per ricerca
-		cv.put(ShareMetaData.SHARE_ISIN, isin); //
-		cv.put(ShareMetaData.SHARE_NAME_KEY, name); //no potrebbe cambiare
-		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
-		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
-		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, lastContractPrice);
-		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, percVariation);
-		cv.put(ShareMetaData.SHARE_VARIATION_KEY, variation);
-		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, lastContractDate);
-		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, buyPrice);
-		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, sellPrice);
-		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, lastAmount);
-		cv.put(ShareMetaData.SHARE_BUYAMOUNT_KEY, buyAmount);
-		cv.put(ShareMetaData.SHARE_SELLAMOUNT_KEY, sellAmount);
-		cv.put(ShareMetaData.SHARE_TOTALAMOUNT_KEY, totalAmount);
-		cv.put(ShareMetaData.SHARE_MAXTODAY_KEY, maxToday);
-		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, minToday);
-		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, maxYear);
-		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, minYear);
-		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, maxYearDate);
-		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
-		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
-		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
-		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, sourceSite);
-		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, preferredSite);
-		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
-		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null);
-	}
+//	public void updateSelectedShare(String CODE, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
+//			float percVariation, float variation, String lastContractDate, float buyPrice, float sellPrice, int lastAmount, 
+//			int buyAmount, int sellAmount, int totalAmount, float maxToday, float minToday, float maxYear, float minYear, 
+//			String maxYearDate, String minYearDate, float lastClose, String lastUpdate, 
+//			String sourceSite, String preferredSite, String ignoredSites)
+//	{
+//		ContentValues cv = new ContentValues();
+//		cv.put(ShareMetaData.SHARE_CODE, CODE); //no serve per ricerca
+//		cv.put(ShareMetaData.SHARE_ISIN, isin); //
+//		cv.put(ShareMetaData.SHARE_NAME_KEY, name); //no potrebbe cambiare
+//		cv.put(ShareMetaData.SHARE_MINROUNDLOT_KEY, minRoundLot);
+//		cv.put(ShareMetaData.SHARE_MARKETPHASE_KEY, marketPhase);
+//		cv.put(ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY, lastContractPrice);
+//		cv.put(ShareMetaData.SHARE_PERCVAR_KEY, percVariation);
+//		cv.put(ShareMetaData.SHARE_VARIATION_KEY, variation);
+//		cv.put(ShareMetaData.SHARE_LASTCONTRACTDATE_KEY, lastContractDate);
+//		cv.put(ShareMetaData.SHARE_BUYPRICE_KEY, buyPrice);
+//		cv.put(ShareMetaData.SHARE_SELLPRICE_KEY, sellPrice);
+//		cv.put(ShareMetaData.SHARE_LASTAMOUNT_KEY, lastAmount);
+//		cv.put(ShareMetaData.SHARE_BUYAMOUNT_KEY, buyAmount);
+//		cv.put(ShareMetaData.SHARE_SELLAMOUNT_KEY, sellAmount);
+//		cv.put(ShareMetaData.SHARE_TOTALAMOUNT_KEY, totalAmount);
+//		cv.put(ShareMetaData.SHARE_MAXTODAY_KEY, maxToday);
+//		cv.put(ShareMetaData.SHARE_MINTODAY_KEY, minToday);
+//		cv.put(ShareMetaData.SHARE_MAXYEAR_KEY, maxYear);
+//		cv.put(ShareMetaData.SHARE_MINYEAR_KEY, minYear);
+//		cv.put(ShareMetaData.SHARE_MAXYEARDATE_KEY, maxYearDate);
+//		cv.put(ShareMetaData.SHARE_MINYEARDATE_KEY, minYearDate);
+//		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, lastClose);
+//		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
+//		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, sourceSite);
+//		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, preferredSite);
+//		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
+//		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null);
+//	}
 	
 	public void updateSelectedShareByQuotationObject(Quotation_Share newShare, String lastUpdate)
 	{
@@ -1052,9 +1054,32 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSite());
+		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSiteUrl());
 //		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
 //		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
 		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+newShare.getISIN()+"'", null);
+	}
+
+	//managment of preferred and ignored sites......
+	public void updateSelectedBondPreferredSite(String bondIsin, String PreferredSite)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, PreferredSite);
+		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+bondIsin+"'", null);
+	}
+	
+	public void updateSelectedFundPreferredSite(String fundIsin, String PreferredSite)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, PreferredSite);
+		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+fundIsin+"'", null);
+	}
+	
+	public void updateSelectedSharePreferredSite(String shareCode, String PreferredSite)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, PreferredSite);
+		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+shareCode+"'", null);
 	}
 	
 	public void updateSelectedBondIgnoredSites(String bondIsin, String ignoredSites)
@@ -1062,6 +1087,20 @@ public class MyFinanceDatabase
 		ContentValues cv = new ContentValues();
 		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, ignoredSites);
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+bondIsin+"'", null);
+	}
+	
+	public void updateSelectedFundIgnoredSites(String fundIsin, String ignoredSites)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, ignoredSites);
+		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+fundIsin+"'", null);
+	}
+	
+	public void updateSelectedShareIgnoredSites(String shareCode, String ignoredSites)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
+		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+shareCode+"'", null);
 	}
 	
 	
