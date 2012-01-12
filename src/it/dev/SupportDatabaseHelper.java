@@ -174,5 +174,32 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 		cv.put("Actives", active);
 		myDataBase.update("autoUpdates", cv, "_id = 0", null);
 	}
+	
+	public String getUserSelectedLanguage()
+	{
+		String result;
+		
+		Cursor config =	myDataBase.query("Config", new String[] {"language"}, null, null, null, null, null);
+		
+		if(config.getCount()==1)
+		{
+			config.moveToFirst();
+			result = config.getString(0);
+		}
+		else
+		{
+			result = "italiano";
+		}
+		
+		config.close();
+		
+		return result;
+		
+	}
+	
+	public Cursor getInfoInLanguage(String tableName, String language)
+	{
+		return myDataBase.query(tableName, null, "language = '"+language+"'", null, null, null, null);
+	}
 
 }

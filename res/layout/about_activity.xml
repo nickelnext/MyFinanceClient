@@ -10,7 +10,7 @@
         android:id="@+id/aboutHeaderTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ABOUT"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge" />
      <View
         android:layout_height="2dip"
@@ -21,22 +21,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="MyFinance: v.1.0.0"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
 	<TextView
         android:id="@+id/copyrightTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Copyright © Pannula Inc.
-        All Rights Reserved
-        For more info visit http://www.pannula.com"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
 	<TextView
         android:id="@+id/creditsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Credits: Francesco Marconi, Michele Giani, Luigi Oliveto, Roberto Mangano"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
 </LinearLayout>
