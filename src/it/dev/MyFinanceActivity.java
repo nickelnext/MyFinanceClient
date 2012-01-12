@@ -299,7 +299,7 @@ public class MyFinanceActivity extends Activity
 		final Button saveUpdatePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.saveUpdatePreferencesButton);
 		final Spinner updateLanguageSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateLanguageSpinner);
 
-
+		//checks which are the user preferences
 		if(supportDatabase.getUserSelectedAutoUpdate()==0)
 		{
 			enableAutoUpdateCheckBox.setChecked(false);
