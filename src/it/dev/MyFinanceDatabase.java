@@ -651,6 +651,16 @@ public class MyFinanceDatabase
 		database.insert(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, cv);
 	}
 	
+	public void addNewSiteForType(int version, String type, String site)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put(SiteTypeMetadata.ID, 1);
+		cv.put(SiteTypeMetadata.VERSION, version);
+		cv.put(SiteTypeMetadata.TYPE, type);
+		cv.put(SiteTypeMetadata.SITE, site);
+		database.insert(SiteTypeMetadata.SITE_TYPE_TABLE, null, cv);
+	}
+	
 	
 	
 	//--------------------------------SELECT methods----------------------------//
@@ -720,6 +730,11 @@ public class MyFinanceDatabase
 				"S."+ShareMetaData.SHARE_VARIATION_KEY, "S."+ShareMetaData.SHARE_PERCVAR_KEY, "S."+ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY+" as 'prezzo'"}, 
 				"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"'", 
 				null, null, null, null);
+	}
+	
+	public Cursor getSitesForType(String type)
+	{
+		return database.query(SiteTypeMetadata.SITE_TYPE_TABLE, null, SiteTypeMetadata.TYPE+" = '"+type+"'", null, null, null, null);
 	}
 	
 	//--------------------------------boolean control methods----------------------------//

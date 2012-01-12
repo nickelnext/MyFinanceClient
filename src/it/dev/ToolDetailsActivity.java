@@ -226,7 +226,16 @@ public class ToolDetailsActivity extends Activity
 			details.moveToFirst();
 			
 			//add preferred site...
-			preferredSite = details.getString(details.getColumnIndex("sitoPreferito"));
+			String tmp = details.getString(details.getColumnIndex("sitoPreferito"));
+			if(tmp.equals(""))
+			{
+				preferredSite = "__NONE__";
+			}
+			else
+			{
+				preferredSite = details.getString(details.getColumnIndex("sitoPreferito"));;
+			}
+			 
 			
 			//add ignored sites already saved in database...
 			String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
