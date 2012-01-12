@@ -4,11 +4,11 @@
     <string name="add_portfolio">Add a new Portfolio</string>
     <string name="update_option">Update Options</string>
 	<string-array name="update_time_array">
-        <item>30\'</item>
-        <item>60\'</item>
-        <item>120\'</item>
-        <item>240\'</item>
-        <item>360\'</item>        
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>240</item>
+        <item>360</item>        
     </string-array>
     <string-array name="update_language_array">
         <item>Italiano</item>

@@ -307,7 +307,7 @@ public class MyFinanceActivity extends Activity
 			updateTimeSpinner.setEnabled(false);
 		}	
 
-		//        saveUpdatePreferencesButton.setEnabled(true);
+		saveUpdatePreferencesButton.setEnabled(true);
 
 
 		ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
@@ -344,18 +344,19 @@ public class MyFinanceActivity extends Activity
 					if(newAutoUpdate==false)
 						newUpdateTime = 0; //0 is for NoAutoUpdate
 
-						supportDatabase.setConfigParameters(newLanguage, newUpdateTime);
+					supportDatabase.setConfigParameters(newLanguage, newUpdateTime);
 
-						//Se necessario,attivare i pannula timers!
-						//TODO
-
-
+					//Se necessario,attivare i pannula timers!
+					//TODO
 
 
 
-						updateOptionDialog.dismiss();
-						break;  
-				}	
+
+
+					updateOptionDialog.dismiss();
+					break;  
+				}
+				supportDatabase.close();
 			}
 		};
 
@@ -363,7 +364,7 @@ public class MyFinanceActivity extends Activity
 		saveUpdatePreferencesButton.setOnClickListener(gestore);
 
 		updateOptionDialog.show();
-		supportDatabase.close();
+		
 	}
 
 	private void goToToolListActivity(String portfolioName)

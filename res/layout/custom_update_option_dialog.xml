@@ -45,7 +45,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="6"
-                android:text="Update every: " />
+                android:text="Update every (Min): " />
 
             <Spinner
                 android:id="@+id/updateTimeSpinner"
