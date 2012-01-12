@@ -157,8 +157,6 @@ public class MyFinanceDatabase
 		static final String BOND_BUYDATE_KEY = "dataAcquisto";
 		static final String BOND_BUYPRICE_KEY = "prezzoAcquisto";
 		static final String BOND_ROUNDLOT_KEY = "lotto";
-		static final String BOND_CAPITALGAINTAX_KEY = "tassaCapitalGain";
-		static final String BOND_COUPONTAX_KEY = "tassaCedola";
 	}
 	
 	static class PortfolioFundMetadata
@@ -170,8 +168,6 @@ public class MyFinanceDatabase
 		static final String FUND_BUYDATE_KEY = "dataAcquisto";
 		static final String FUND_BUYPRICE_KEY = "prezzoAcquisto";
 		static final String FUND_ROUNDLOT_KEY = "lotto";
-		static final String FUND_CAPITALGAINTAX_KEY = "tassaCapitalGain";
-		static final String FUND_COUPONTAX_KEY = "tassaCedola";
 	}
 	
 	static class PortfolioShareMetadata
@@ -183,9 +179,18 @@ public class MyFinanceDatabase
 		static final String SHARE_BUYDATE_KEY = "dataAcquisto";
 		static final String SHARE_BUYPRICE_KEY = "prezzoAcquisto";
 		static final String SHARE_ROUNDLOT_KEY = "lotto";
-		static final String SHARE_CAPITALGAINTAX_KEY = "tassaCapitalGain";
-		static final String SHARE_COUPONTAX_KEY = "tassaCedola";
 	}
+	
+	//-----------------------------------METADATA tabella Siti/Tipologia-------------------------------//
+	static class SiteTypeMetadata
+	{
+		static final String SITE_TYPE_TABLE = "Table_Site_Type";
+		static final String ID = "_id";
+		static final String VERSION = "versione";
+		static final String TYPE = "tipologia";
+		static final String SITE = "sito";
+	}
+	
 	
 	//-------------------------------------STRING per creazione tabelle-------------------------------//
 	private static final String TABLE_PORTFOLIO_CREATE = "CREATE TABLE "+PortfolioMetaData.PORTFOLIO_TABLE+ " (" +
@@ -316,6 +321,14 @@ public class MyFinanceDatabase
 			"FOREIGN KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+") REFERENCES "+PortfolioMetaData.PORTFOLIO_TABLE+"("+PortfolioMetaData.PORTFOLIO_NAME_KEY+")" +
 			"FOREIGN KEY (" +PortfolioShareMetadata.SHARE_CODE_KEY+") REFERENCES "+ShareMetaData.SHARE_TABLE+"("+ShareMetaData.SHARE_CODE+"));";
 	
+	//-------------------------------------STRING per creazione tabella Siti/Type-------------------//
+	private static final String TABLE_SITE_TYPE_CREATE = "CREATE TABLE "+SiteTypeMetadata.SITE_TYPE_TABLE+" (" +
+			SiteTypeMetadata.ID +" INTEGER NOT NULL, " +
+			SiteTypeMetadata.VERSION +" INTEGER NOT NULL, " +
+			SiteTypeMetadata.TYPE +" TEXT NOT NULL, " +
+			SiteTypeMetadata.SITE +" TEXT NOT NULL, " +
+			"PRIMARY KEY (" +SiteTypeMetadata.VERSION+", " +SiteTypeMetadata.TYPE+", " +SiteTypeMetadata.SITE+"));";
+	
 	//-------------------------------------HELPER class---------------------------------------//
 	private class DatabaseHelper extends SQLiteOpenHelper
 	{
@@ -326,7 +339,6 @@ public class MyFinanceDatabase
 		
 		public void onCreate(SQLiteDatabase _db) 
 		{ 
-			Log.d(DB_NAME, TABLE_PORTFOLIO_CREATE);
 			//per ogni tabella nel database facciamo una execSQL con la relativa stringa di ceazione
             _db.execSQL(TABLE_PORTFOLIO_CREATE);
             _db.execSQL(TABLE_BOND_CREATE);            
@@ -335,6 +347,7 @@ public class MyFinanceDatabase
             _db.execSQL(TABLE_PORTFOLIO_BOND_CREATE);
             _db.execSQL(TABLE_PORTFOLIO_FUND_CREATE);
             _db.execSQL(TABLE_PORTFOLIO_SHARE_CREATE);
+            _db.execSQL(TABLE_SITE_TYPE_CREATE);
             
 /*            _db.execSQL("CREATE TRIGGER deleteBond"+ 
 					" BEFORE DELETE ON "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
