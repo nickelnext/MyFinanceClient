@@ -319,7 +319,18 @@ public class MyFinanceActivity extends Activity
 	    	    	updateOptionDialog.dismiss();   	    	
 	    	        break;
 	    	    case R.id.saveUpdatePreferencesButton:
-	    	    	//save preferences....
+	    	    	
+	    	    	String newUpdateTime = (String)updateTimeSpinner.getSelectedItem();
+	    	    	boolean newAutoUpdate = enableAutoUpdateCheckBox.isChecked();
+	    	    	String newLanguage =  (String)updateLanguageSpinner.getSelectedItem();
+	    	    	if(newAutoUpdate==false)
+	    	    		newUpdateTime = "0"; //0 is for NoAutoUpdate
+	    	    	//TODO finire roby
+	    	    	
+	    	    	
+	    	    	
+	    	    	
+	    	    	
 	    	    	updateOptionDialog.dismiss();
 	    	        break;  
 	    	    }	

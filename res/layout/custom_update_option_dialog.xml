@@ -2,66 +2,80 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:minWidth="300dp">    
-    <CheckBox
-        android:id="@+id/enableAutoUpdateCheckBox"
+    android:minWidth="300dp"
+    android:orientation="vertical" >
+
+    <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Enable automatic update" 
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="5dp"
+        android:weightSum="10" >
+
+        <TableRow>
+
+            <TextView
+                 android:id="@+id/updateLanguageTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="4"
+                android:text="Language: " />
+
+            <Spinner
+                android:id="@+id/updateLanguageSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6" />
+        </TableRow>
+
+        <TableRow>
+
+            <CheckBox
+                android:id="@+id/enableAutoUpdateCheckBox"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Enable automatic update" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="6"
+                android:text="Update every: " />
+
+            <Spinner
+                android:id="@+id/updateTimeSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4" />
+        </TableRow>
+    </TableLayout>
+
     <TableLayout
-    		android:layout_width="fill_parent"
-    		android:layout_height="wrap_content"
-    		android:layout_marginTop="5dp"    		
-    		android:weightSum="10">
-    		 <TableRow>
-        		<TextView
-        			android:layout_width="0dp"
-        			android:layout_height="wrap_content"
-        			android:layout_marginLeft="5dp"
-        			android:layout_gravity="center_vertical"
-        			android:layout_weight="4"
-        			android:text="Language: " />
-        		<Spinner 
-        		    android:id="@+id/updateLanguageSpinner"
-        		    android:layout_width="0dp"
-        		    android:layout_weight="6"
-        		    android:layout_height="wrap_content"/>
-    		</TableRow>
-    	    <TableRow>
-        		<TextView
-        			android:layout_width="0dp"
-        			android:layout_height="wrap_content"
-        			android:layout_marginLeft="5dp"
-        			android:layout_gravity="center_vertical"
-        			android:layout_weight="6"
-        			android:text="Update every: " />
-        		<Spinner 
-        		    android:id="@+id/updateTimeSpinner"
-        		    android:layout_width="0dp"
-        		    android:layout_weight="4"
-        		    android:layout_height="wrap_content"/>
-    		</TableRow>
-	</TableLayout>
-	<TableLayout
-    		android:layout_width="fill_parent"
-    		android:layout_height="wrap_content"
-    		android:layout_marginTop="10dp"
-    		android:weightSum="2">       	
-    	    <TableRow>
-        		<Button
-        		    android:id="@+id/undoSavePreferencesButton"
-        		    android:layout_width="0dp"
-        		    android:layout_height="fill_parent"
-        		    android:layout_weight="1"
-        		    android:text="Back"/>
-        		<Button
-        		    android:id="@+id/saveUpdatePreferencesButton"
-        		    android:layout_width="0dp"
-        		    android:layout_height="fill_parent"
-        		    android:layout_weight="1"
-        		    android:text="Save preferences"/>
-    		</TableRow>
-	</TableLayout>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:weightSum="2" >
+
+        <TableRow>
+
+            <Button
+                android:id="@+id/undoSavePreferencesButton"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="Back" />
+
+            <Button
+                android:id="@+id/saveUpdatePreferencesButton"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:text="Save preferences" />
+        </TableRow>
+    </TableLayout>
+
 </LinearLayout>

@@ -76,17 +76,17 @@ public class HelpActivity extends Activity {
 			help_info.moveToFirst();
 			helpHeaderTextView.setText(help_info.getString(help_info.getColumnIndex("helpHeader")));
 			addPortfolioHeaderTextView.setText(help_info.getString(help_info.getColumnIndex("addPortfolioHeader")));
-			addPortfolioTextView.setText(help_info.getString(help_info.getColumnIndex("addPortfolio")));
+			addPortfolioTextView.setText(help_info.getString(help_info.getColumnIndex("addPortfolioText")));
 			modifyPortfolioHeaderTextView.setText(help_info.getString(help_info.getColumnIndex("modifyPortfolioHeader")));
-			modifyPortfolioTextView.setText(help_info.getString(help_info.getColumnIndex("modifyPortfolio")));
+			modifyPortfolioTextView.setText(help_info.getString(help_info.getColumnIndex("modifyPortfolioText")));
 			viewPortfolioHeaderTextView.setText(help_info.getString(help_info.getColumnIndex("viewPortfolioHeader")));
-			viewPortfolioTextView.setText(help_info.getString(help_info.getColumnIndex("viewPortfolio")));
+			viewPortfolioTextView.setText(help_info.getString(help_info.getColumnIndex("viewPortfolioText")));
 			addTitleHeaderTextView.setText(help_info.getString(help_info.getColumnIndex("addTitleHeader")));
-			addTitleTextView.setText(help_info.getString(help_info.getColumnIndex("addTitle")));
+			addTitleTextView.setText(help_info.getString(help_info.getColumnIndex("addTitleText")));
 			modifyTitleHeaderTextView.setText(help_info.getString(help_info.getColumnIndex("modifyTitleHeader")));
-			modifyTitleTextView.setText(help_info.getString(help_info.getColumnIndex("modifyTitle")));
+			modifyTitleTextView.setText(help_info.getString(help_info.getColumnIndex("modifyTitleText")));
 			detailsTitleHeaderTextView.setText(help_info.getString(help_info.getColumnIndex("detailsTitleHeader")));
-			detailsTitleTextView.setText(help_info.getString(help_info.getColumnIndex("detailsTitle")));
+			detailsTitleTextView.setText(help_info.getString(help_info.getColumnIndex("detailsTitleText")));
 			
 		}
 //TODO			
