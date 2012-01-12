@@ -196,6 +196,36 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 		return result;
 		
 	}
+	public int getUserSelectedAutoUpdate()
+	{
+		int oldAutoUpdate;
+		
+		Cursor config =	myDataBase.query("Config", new String[] {"autoUpdate"}, null, null, null, null, null);
+		
+		if(config.getCount()==1)
+		{
+			config.moveToFirst();
+			oldAutoUpdate = config.getInt(0);
+		}
+		else
+		{
+			oldAutoUpdate = 0;
+		}
+		
+		config.close();
+		return oldAutoUpdate;
+	}
+	
+	
+	
+	public void setConfigParameters(String language, int autoUpdate)
+	{
+		ContentValues cv = new ContentValues();
+		cv.put("_id", 1);
+		cv.put("language", language);
+		cv.put("autoUpdate", autoUpdate);
+		myDataBase.insert("Config", null, cv);
+	}
 	
 	public Cursor getInfoInLanguage(String tableName, String language)
 	{
