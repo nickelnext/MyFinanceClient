@@ -57,18 +57,13 @@ public class AboutActivity extends Activity
 		{
 			about_info.moveToFirst();
 			aboutHeaderTextView.setText(about_info.getString(about_info.getColumnIndex("aboutHeader")));
-			
+		    versionTextView.setText(about_info.getString(about_info.getColumnIndex("version")));
+	        copyrightTextView.setText(about_info.getString(about_info.getColumnIndex("copyright")));
+	        creditsTextView.setText(about_info.getString(about_info.getColumnIndex("credits")));
 			
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		supportDatabase.close();
+//TODO			
+			supportDatabase.close();
 		
 	}
 }
