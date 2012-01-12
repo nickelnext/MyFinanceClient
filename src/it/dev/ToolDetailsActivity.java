@@ -292,7 +292,56 @@ public class ToolDetailsActivity extends Activity
 		
 		canc_adv_sett_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				advancedOptionsDialog.dismiss();
+			}
+		});
+		
+		save_adv_sett_btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				db.open();
 				
+				if(prefSite_CB.isChecked())
+				{
+					if(toolType.equals("bond"))
+					{
+						db.updateSelectedBondPreferredSite(toolIsin, preferredSite);
+					}
+					else if(toolType.equals("fund"))
+					{
+						db.updateSelectedFundPreferredSite(toolIsin, preferredSite);
+					}
+					else if(toolType.equals("share"))
+					{
+						db.updateSelectedSharePreferredSite(toolIsin, preferredSite);
+					}	
+				}
+				
+				String stringTmp = null;
+				
+				for (int i = 0; i < ignoredSitesCB.size(); i++) 
+				{
+					if(ignoredSitesCB.get(i).isChecked())
+					{
+						stringTmp = ignoredSitesTV.get(i).getText().toString()+" ";
+					}
+				}
+				
+				if(toolType.equals("bond"))
+				{
+					db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
+				}
+				else if(toolType.equals("fund"))
+				{
+					db.updateSelectedFundIgnoredSites(toolIsin, stringTmp);
+				}
+				else if(toolType.equals("share"))
+				{
+					db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
+				}
+				
+				db.close();
+				
+				advancedOptionsDialog.dismiss();
 			}
 		});
 		
@@ -384,6 +433,11 @@ public class ToolDetailsActivity extends Activity
 			dynamic_ignoredSites_table.addView(newRow);
 		}
 		
+		advancedOptionsDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			public void onDismiss(DialogInterface dialog) {
+				updateView();
+			}
+		});
 		
 		db.close();
 		advancedOptionsDialog.show();
