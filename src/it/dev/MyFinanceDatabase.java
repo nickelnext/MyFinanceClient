@@ -732,6 +732,11 @@ public class MyFinanceDatabase
 				null, null, null, null);
 	}
 	
+	public Cursor getAllSitesForType()
+	{
+		return database.query(SiteTypeMetadata.SITE_TYPE_TABLE, null, null, null, null, null, null);
+	}
+	
 	public Cursor getSitesForType(String type)
 	{
 		return database.query(SiteTypeMetadata.SITE_TYPE_TABLE, null, SiteTypeMetadata.TYPE+" = '"+type+"'", null, null, null, null);
@@ -1118,7 +1123,6 @@ public class MyFinanceDatabase
 		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+shareCode+"'", null);
 	}
 	
-	
 	//--------------------------------DELETE methods----------------------------//
 	
 	public void deletePortfolioByName(String name)
@@ -1157,4 +1161,8 @@ public class MyFinanceDatabase
 		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
 	}
 	
+	public void deleteAllSitesForTypes()
+	{
+		database.delete(SiteTypeMetadata.SITE_TYPE_TABLE, null, null);
+	}
 }
