@@ -11,8 +11,8 @@
         <item>360</item>        
     </string-array>
     <string-array name="update_language_array">
-        <item>Italiano</item>
-        <item>English</item>   
+        <item>italiano</item>
+        <item>english</item>   
     </string-array>
 	<string name="add_share">Add a new Tool</string>
 	<string name="manual_update">Update Tools</string>

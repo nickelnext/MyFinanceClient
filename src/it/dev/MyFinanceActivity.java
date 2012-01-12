@@ -243,8 +243,8 @@ public class MyFinanceActivity extends Activity
 
 		final CheckBox enableAutoUpdateCheckBox = (CheckBox) updateOptionDialog.findViewById(R.id.enableAutoUpdateCheckBox);
 		final Spinner updateTimeSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateTimeSpinner);
-		final Button undoSavePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.undoSavePreferencesButton);
-		final Button saveUpdatePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.saveUpdatePreferencesButton);
+		Button undoSavePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.undoSavePreferencesButton);
+		Button saveUpdatePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.saveUpdatePreferencesButton);
 		final Spinner updateLanguageSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateLanguageSpinner);
 
 		ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
@@ -257,10 +257,10 @@ public class MyFinanceActivity extends Activity
 		
 		//checks which are the user preferences
 		int userSelectedAutoUpdate = supportDatabase.getUserSelectedAutoUpdate();
-		String userSelectedAutoUpdateLanguage = supportDatabase.getUserSelectedAutoUpdateLanguage();
+		String userSelectedLanguage = supportDatabase.getUserSelectedLanguage();
 		
 		System.out.println("userSelectedAutoUpdate " + userSelectedAutoUpdate);
-		System.out.println("userSelectedAutoUpdateLanguage " + userSelectedAutoUpdateLanguage);
+		System.out.println("userSelectedAutoUpdateLanguage " + userSelectedLanguage);
 		
 		if(supportDatabase.getUserSelectedAutoUpdate()==0)
 		{
@@ -274,16 +274,16 @@ public class MyFinanceActivity extends Activity
 		}
 		System.out.println("prima del for");
 		
-		for(int i=0; i<timeAdapter.getCount();i++)
-		{
-			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
-				updateTimeSpinner.setSelection(i);
-		}
-		for(int i=0; i<languageAdapter.getCount();i++)
-		{
-			if(languageAdapter.getItem(i).toString()==userSelectedAutoUpdateLanguage)
-				updateTimeSpinner.setSelection(i);
-		}
+//		for(int i=0; i<timeAdapter.getCount();i++)
+//		{
+//			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
+//				updateTimeSpinner.setSelection(i);
+//		}
+//		for(int i=0; i<languageAdapter.getCount();i++)
+//		{
+//			if(languageAdapter.getItem(i).toString()==userSelectedLanguage)
+//				updateTimeSpinner.setSelection(i);
+//		}
 		
 		
 		System.out.println("dopo il for, prima della setlistener");

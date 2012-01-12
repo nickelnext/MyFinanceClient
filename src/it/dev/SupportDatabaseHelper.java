@@ -214,25 +214,7 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 		config.close();
 		return oldAutoUpdate;
 	}
-	public String getUserSelectedAutoUpdateLanguage()
-	{
-		String oldLanguage;
-		
-		Cursor config =	myDataBase.query("Config", new String[] {"language"}, null, null, null, null, null);
-		
-		if(config.getCount()==1)
-		{
-			config.moveToFirst();
-			oldLanguage = config.getString(0);
-		}
-		else
-		{
-			oldLanguage = "italiano";
-		}
-		
-		config.close();
-		return oldLanguage;
-	}
+
 	
 	
 	
