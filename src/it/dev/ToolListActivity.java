@@ -1126,6 +1126,7 @@ public class ToolListActivity extends Activity
 		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
 		today.add(Calendar.MINUTE, -30);
 		Cursor c = db.getDetailsOfPortfolio(portfolioName);
+		c.moveToFirst();
 		String updateDate = c.getString(4);
 		c.close();
 		String[] updateString	= updateDate.split("[/: ]");
