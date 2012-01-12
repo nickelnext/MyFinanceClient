@@ -890,10 +890,36 @@ public class ToolListActivity extends Activity
 					}
 				}
 				
+				System.out.println("total to add: "+toolTmpToAddInDatabase.size());
 				
 				//6. save all returned BOND/FUND/SHARE in transition table...
 				for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
 				{
+					for(Quotation_Bond qb : container.getBondList())
+					{
+						if(toolTmpToAddInDatabase.get(i).getISIN().equals(qb.getISIN()))
+						{
+							toolTmpToAddInDatabase.get(i).setType("bond");
+						}
+					}
+					
+					for(Quotation_Fund qf : container.getFundList())
+					{
+						if(toolTmpToAddInDatabase.get(i).getISIN().equals(qf.getISIN()))
+						{
+							toolTmpToAddInDatabase.get(i).setType("fund");
+						}
+					}
+					
+					for(Quotation_Share qs : container.getShareList())
+					{
+						if(toolTmpToAddInDatabase.get(i).getISIN().equals(qs.getISIN()))
+						{
+							toolTmpToAddInDatabase.get(i).setType("share");
+						}
+					}
+					
+					
 					if(toolTmpToAddInDatabase.get(i).getType().equals("bond"))
 					{
 						db.addNewBondInTransitionTable(portfolioName, toolTmpToAddInDatabase.get(i).getISIN(), toolTmpToAddInDatabase.get(i).getPurchaseDate(), 
@@ -909,6 +935,11 @@ public class ToolListActivity extends Activity
 						db.addNewShareInTransitionTable(portfolioName, toolTmpToAddInDatabase.get(i).getISIN(), toolTmpToAddInDatabase.get(i).getPurchaseDate(), 
 								Float.parseFloat(toolTmpToAddInDatabase.get(i).getPurchasePrice()), Integer.parseInt(toolTmpToAddInDatabase.get(i).getRoundLot()));
 					}
+					else
+					{
+						System.out.println("non dovrebbe mai accadere che non trovo il tipo...");
+					}
+					
 				}
 				
 			}

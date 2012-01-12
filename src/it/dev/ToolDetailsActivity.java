@@ -297,10 +297,89 @@ public class ToolDetailsActivity extends Activity
 		advancedOptionsDialog.setCancelable(true);
 		
 		final CheckBox prefSite_CB = (CheckBox) advancedOptionsDialog.findViewById(R.id.prefSite_CB);
-		final TextView preferredSiteRef = (TextView) findViewById(R.id.preferredSiteRef);
+		final TextView preferredSiteRef = (TextView) advancedOptionsDialog.findViewById(R.id.preferredSiteRef);
+		final TableLayout dynamic_ignoredSites_table = (TableLayout) advancedOptionsDialog.findViewById(R.id.dynamic_ignoredSites_table);
+		
+		db.open();
+		
+		Cursor toolDetails;
+		if(toolType.equals("bond"))
+		{
+			toolDetails = db.getBondDetails(toolIsin);
+		}
+		else if(toolType.equals("fund"))
+		{
+			toolDetails = db.getFundDetails(toolIsin);
+		}
+		else if(toolType.equals("share"))
+		{
+			toolDetails = db.getShareDetails(toolIsin);
+		}
+		else
+		{
+			toolDetails = null;
+		}
+		startManagingCursor(toolDetails);
+		
+		
+		//add preferred site...
+		if(toolDetails!=null)
+		{
+			if(toolDetails.getCount()==1)
+			{
+				toolDetails.moveToFirst();
+				preferredSiteRef.setText(toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente")));
+			}
+		}
 		
 		
 		
+		//add rows for ignored sites...
+		//1. all sites that do not find this type of tools...
+		
+		
+		
+		
+		//2. all sites saved in database for this tool...
+		
+		String[] array = null;
+		
+		if(toolDetails!=null)
+		{
+			if(toolDetails.getCount()==1)
+			{
+				toolDetails.moveToFirst();
+				array = toolDetails.getString(toolDetails.getColumnIndex("sitiIgnorati")).split(" ");
+			}
+		}
+		
+		if(array!=null)
+		{
+			for (String string : array) 
+			{
+				LayoutInflater inflater = getLayoutInflater();
+				
+				TableRow newRow = (TableRow) inflater.inflate(R.layout.advanced_options_row, dynamic_ignoredSites_table, false);
+				
+				CheckBox ignored_cb = (CheckBox) newRow.findViewById(R.id.ignoredSite_CB);
+				TextView ignored_tv = (TextView) newRow.findViewById(R.id.ignoredSite_TV);
+				
+				ignored_tv.setText(string);
+				
+				
+				dynamic_ignoredSites_table.addView(newRow);
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		db.close();
 		advancedOptionsDialog.show();
 	}
 	

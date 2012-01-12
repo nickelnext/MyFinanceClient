@@ -910,8 +910,8 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_MINROUNDLOT_KEY, newBond.getLottoMinimo());
 		cv.put(BondMetaData.BOND_LASTUPDATE_KEY, lastUpdate);
 		cv.put(BondMetaData.BOND_SOURCESITE_KEY, newBond.getSite());
-		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
-		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
+//		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
+//		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+newBond.getISIN()+"'", null);
 	}
 	
@@ -964,8 +964,8 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PERFORMANCE3YEAR, newFund.getPerformance3Anni());
 		cv.put(FundMetaData.FUND_LASTUPDATE_KEY, lastUpdate);
 		cv.put(FundMetaData.FUND_SOURCESITE_KEY, newFund.getSite());
-		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
-		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
+//		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
+//		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
 	}
 	
@@ -1032,8 +1032,8 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSite());
-		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
-		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
+//		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
+//		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
 		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+newShare.getISIN()+"'", null);
 	}
 	
