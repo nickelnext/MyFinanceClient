@@ -68,7 +68,7 @@ public class HelpActivity extends Activity {
 		
 		String language = supportDatabase.getUserSelectedLanguage();
 		
-		Cursor help_info = supportDatabase.getInfoInLanguage("Help_About", language);
+		Cursor help_info = supportDatabase.getInfoInLanguage("Activity_Help", language);
 		startManagingCursor(help_info);
 		
 		if(help_info.getCount()==1)
