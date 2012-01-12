@@ -8,15 +8,4 @@
         android:layout_height="wrap_content" 
         android:layout_centerInParent="true"
         android:src="@drawable/logo"/>
-
-  	<ProgressBar
-  	    android:id="@+id/splash_bar"
-  	    style="@android:style/Widget.ProgressBar.Horizontal"
-  	    android:layout_width="150dp"
-  	    android:layout_height="wrap_content"
-  	    android:layout_centerHorizontal="true"
-  	    android:layout_centerVertical="true"
-  	    android:max="100"
-  	    android:paddingTop="5dp" />
-
 </RelativeLayout>

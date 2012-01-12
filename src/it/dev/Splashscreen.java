@@ -1,72 +1,91 @@
 package it.dev;
 
+import it.util.ConnectionUtils;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.KeyEvent;
-import android.widget.ProgressBar;
 
 public class Splashscreen extends Activity 
 {
-	private static Handler mHandler ;
-    private static Handler mainHandler ;
-    private ProgressBar mBar ;
-    
-    protected static final int CLOSE_SPLASH = 0 ;
-    protected static final int SET_PROGRESS = 1 ;
-    
+	private Thread splashTread;
+	private MyFinanceDatabase db;
+	
    public void onCreate(Bundle savedInstanceState) {
 	   super.onCreate(savedInstanceState);
 	   setContentView(R.layout.splashscreen);
-    
-	   mBar = (ProgressBar)findViewById(R.id.splash_bar);
-    
-	   mHandler = new Handler()
+	   
+	   db = new MyFinanceDatabase(this);
+	   
+	   final Splashscreen sPlashScreen = this;
+	   
+	   splashTread = new Thread() 
 	   {
-		   public void handleMessage(Message msg)
+		   public void run() 
 		   {
-			   switch(msg.what)
+			   try 
 			   {
-            		case CLOSE_SPLASH:
-            			finish();
-            			break;
-            		case SET_PROGRESS:
-            			mBar.setProgress((msg.arg1 / 10));
+				   synchronized (this) 
+				   {
+					   try {
+							String jsonReq = null;
+							System.out.println(""+jsonReq);
+							
+							String jsonResponse = ConnectionUtils.getSites(jsonReq);
+							if(jsonResponse != null)
+							{
+								//quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+								
+								//write in database sites/types....
+								
+								db.open();
+								
+								
+								
+								
+								
+								db.close();
+								
+								
+							}
+						} catch (Exception e) {
+							System.out.println("connection ERROR");
+							showMessage("Error", "No connection with Server.");						
+						}
+				   }
 			   }
-            
+			   catch (Exception e) 
+			   {
+				   
+			   }
+			   finally 
+			   {
+				   finish();
+				   Intent i = new Intent();
+				   i.setClass(sPlashScreen, MyFinanceActivity.class);
+				   startActivity(i);
+			   }
 		   }
-	   }; 
+	   };
+	   
+	   splashTread.start();
    }
    
-   public void onStart()
+   private void showMessage(String type, String message)
    {
-	   super.onStart();
-	   if(mainHandler != null)
-	   {
-            mainHandler.sendEmptyMessage(MyFinanceActivity.START_LOAD);
-	   }
-   }
-
-   public boolean onKeyDown (int keyCode, KeyEvent  event)
-   {
-	   if(keyCode == KeyEvent .KEYCODE_BACK)
-	   {
-		   mainHandler.sendEmptyMessage(MyFinanceActivity.ABORT_LOAD);
-	   }
-	   return super.onKeyDown(keyCode, event) ;
-   }
-   public static void setMainHandler(Handler h)
-   {
-	   mainHandler = h ;
-   }
-   
-   public static void sendMessage(Message msg)
-   {
-	   mHandler.sendMessage(msg);
-   }
-   
-   public static void sendMessage(int w){
-	   mHandler.sendEmptyMessage(w);
-   }
+	   AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+	   alert_builder.setTitle(type);
+	   alert_builder.setMessage(message);
+	   alert_builder.setCancelable(false);
+	   alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			
+		   public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+		   }
+	   });
+	   AlertDialog message_empty = alert_builder.create();
+	   message_empty.show();
+	}
 }
+
