@@ -72,16 +72,14 @@ public class ConnectionUtils {
 	    }
 	}
 	
-	public static String getSites(String jsonReq) {
+	public static String getSites(String version) {
 	    // Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpPost httppost = new HttpPost(URL2);
 	    try {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-//	        nameValuePairs.add(new BasicNameValuePair("username", "12345"));
-//	        nameValuePairs.add(new BasicNameValuePair("password", "PINO"));
-	        nameValuePairs.add(new BasicNameValuePair("json", jsonReq));	        	        
+	        nameValuePairs.add(new BasicNameValuePair("clientVersion", version));	        	        
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	        // Execute HTTP Post Request	        
 	        HttpResponse response = httpclient.execute(httppost);
