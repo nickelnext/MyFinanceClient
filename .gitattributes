@@ -47,6 +47,7 @@ serverside/Requests/Request.java -text
 serverside/Requests/RequestContainer.java -text
 serverside/Requests/RequestType.java -text
 serverside/myUtils/UtilFuncs.java -text
+serverside/other/TypeSiteObject.java -text
 src/it/dev/AboutActivity.java -text
 src/it/dev/HelpActivity.java -text
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain

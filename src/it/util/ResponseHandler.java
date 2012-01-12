@@ -1,6 +1,10 @@
 package it.util;
 
 import java.lang.reflect.Type;
+import java.sql.Types;
+import java.util.ArrayList;
+
+import other.TypeSiteObject;
 
 import Quotes.QuotationContainer;
 
@@ -19,5 +23,16 @@ public class ResponseHandler {
 	res = converter.fromJson(json, typeOfT);	
 	return res;
 	}
+
+	
+	public static ArrayList<TypeSiteObject> decodeDBSiteType(String json) throws IllegalStateException{
+		//TODO modificare a seconda di come decideremo di comprimere/convertire le  richieste
+		ArrayList<TypeSiteObject> res;
+		Gson converter = new Gson();	
+		Type typeOfT = new TypeToken<ArrayList<TypeSiteObject>>(){}.getType();
+		res = converter.fromJson(json, typeOfT);	
+		return res;
+		}
+
 
 }

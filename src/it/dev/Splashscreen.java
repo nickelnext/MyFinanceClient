@@ -1,6 +1,11 @@
 package it.dev;
 
+import java.util.ArrayList;
+
+import other.TypeSiteObject;
+
 import it.util.ConnectionUtils;
+import it.util.ResponseHandler;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -29,19 +34,24 @@ public class Splashscreen extends Activity
 				   synchronized (this) 
 				   {
 					   try {
-							String jsonReq = null;
+							String jsonReq = "SHAMALAYAAAA";
 							System.out.println(""+jsonReq);
 							
 							String jsonResponse = ConnectionUtils.getSites(jsonReq);
 							if(jsonResponse != null)
 							{
-								//quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+								ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(jsonResponse);
+								
 								
 								//write in database sites/types....
 								
 								db.open();
 								
-								
+								for (TypeSiteObject o : typeSiteList) {
+									for (String s : o.getSites()) {
+										//inserisci la coppia (o.getType(), s) 										
+									}
+								}								
 								
 								
 								
