@@ -257,6 +257,10 @@ public class MyFinanceActivity extends Activity
 		
 		//checks which are the user preferences
 		int userSelectedAutoUpdate = supportDatabase.getUserSelectedAutoUpdate();
+		String userSelectedAutoUpdateLanguage = supportDatabase.getUserSelectedAutoUpdateLanguage();
+		
+		System.out.println("userSelectedAutoUpdate " + userSelectedAutoUpdate);
+		System.out.println("userSelectedAutoUpdateLanguage " + userSelectedAutoUpdateLanguage);
 		
 		if(supportDatabase.getUserSelectedAutoUpdate()==0)
 		{
@@ -266,19 +270,23 @@ public class MyFinanceActivity extends Activity
 		else
 		{
 			enableAutoUpdateCheckBox.setChecked(true);
-			updateTimeSpinner.setEnabled(false);
+			updateTimeSpinner.setEnabled(true);
 		}
+		System.out.println("prima del for");
 		
 		for(int i=0; i<timeAdapter.getCount();i++)
 		{
 			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
 				updateTimeSpinner.setSelection(i);
 		}
+		for(int i=0; i<languageAdapter.getCount();i++)
+		{
+			if(languageAdapter.getItem(i).toString()==userSelectedAutoUpdateLanguage)
+				updateTimeSpinner.setSelection(i);
+		}
 		
-		saveUpdatePreferencesButton.setEnabled(true);
-
-
 		
+		System.out.println("dopo il for, prima della setlistener");
 
 		enableAutoUpdateCheckBox.setOnClickListener(new View.OnClickListener() 
 		{
@@ -290,17 +298,21 @@ public class MyFinanceActivity extends Activity
 					updateTimeSpinner.setEnabled(false);
 			}
 		});
-
+		
+		System.out.println("costruzione del gestore");
+		
 		View.OnClickListener gestore = new View.OnClickListener() {
 			public void onClick(View view) { 
 
 
-				switch(view.getId()){
-				case R.id.undoSavePreferencesButton:
-					updateOptionDialog.dismiss();   	    	
-					break;
-				case R.id.saveUpdatePreferencesButton:
-
+//				switch(view.getId()){
+//				case R.id.undoSavePreferencesButton:
+//					System.out.println("case1");
+//					supportDatabase.close();
+//					updateOptionDialog.dismiss();   	    	
+//					break;
+//				case R.id.saveUpdatePreferencesButton:
+					System.out.println("case2");
 					int newUpdateTime = Integer.valueOf(updateTimeSpinner.getSelectedItem().toString());
 					boolean newAutoUpdate = enableAutoUpdateCheckBox.isChecked();
 					String newLanguage =  (String)updateLanguageSpinner.getSelectedItem();
@@ -310,16 +322,22 @@ public class MyFinanceActivity extends Activity
 
 					//Se necessario,attivare i pannula timers!
 					//TODO
+					supportDatabase.close();
 					updateOptionDialog.dismiss();
-					break;  
-				}
-				supportDatabase.close();
+//					break;  
+//				}
+				
 			}
 		};
-
+		System.out.println("setto gestore1");
 		undoSavePreferencesButton.setOnClickListener(gestore);
-		saveUpdatePreferencesButton.setOnClickListener(gestore);
-
+//		System.out.println("setto gestore2");
+//		saveUpdatePreferencesButton.setOnClickListener(gestore);
+		System.out.println("enable buttons");
+		
+//		saveUpdatePreferencesButton.setEnabled(true);
+//		undoSavePreferencesButton.setEnabled(true);
+		System.out.println("show");
 		updateOptionDialog.show();
 		
 	}
