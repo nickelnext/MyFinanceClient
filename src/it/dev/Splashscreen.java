@@ -40,6 +40,8 @@ public class Splashscreen extends Activity
 	   Cursor version = db.getAllSitesForType();
 	   startManagingCursor(version);
 	   
+	   db.close();
+	   
 	   if(version.getCount()!=0)
 	   {
 		   version.moveToFirst();
@@ -65,8 +67,6 @@ public class Splashscreen extends Activity
 		   
 		   emptyRequestTread.start();
 	   }
-	   
-	   db.close();
 	   
    }
    
