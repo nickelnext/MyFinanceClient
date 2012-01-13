@@ -89,12 +89,15 @@ public class Splashscreen extends Activity
 							String jsonReq = "empty";	
 							System.out.println(""+jsonReq);
 							
-							String jsonResponse = ConnectionUtils.getSites(jsonReq);
-							if(jsonResponse != null)
+							String serverResponse = ConnectionUtils.getSites(jsonReq);
+							if(serverResponse != null)
 							{
-								int version = jsonResponse.hashCode();
-								
-								ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(jsonResponse);
+								//int version = jsonResponse.hashCode();
+								String[] arrResp = serverResponse.split("__PULITO__");
+								String json = arrResp[1];
+								int version = Integer.parseInt(arrResp[0]);
+								System.out.println("version:"+version+" - json:"+json);
+								ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(arrResp[1]);
 								
 								
 								//write in database sites/types....
@@ -156,11 +159,11 @@ public class Splashscreen extends Activity
 							String jsonReq = String.valueOf(version);	
 							System.out.println(""+jsonReq);
 							
-							String jsonResponse = ConnectionUtils.getSites(jsonReq);
-							if(jsonResponse != null)
+							String serverResponse = ConnectionUtils.getSites(jsonReq);
+							if(serverResponse != null)
 							{
 								//version is up to date...
-								if(jsonResponse.equals("OK"))
+								if(serverResponse.equals("OK"))
 								{
 									//don't write in db...
 									System.out.println("okkkkkkkkkkkkkkkkkkk");
@@ -169,9 +172,13 @@ public class Splashscreen extends Activity
 								{
 									System.out.println("scrivo nel DB");
 									
-									int version = jsonResponse.hashCode();
+									//int version = jsonResponse.hashCode();
+									String[] arrResp = serverResponse.split("__PULITO__");
+									String json = arrResp[1];
+									int version = Integer.parseInt(arrResp[0]);
+									System.out.println("version:"+version+" - json:"+json);
 									
-									ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(jsonResponse);
+									ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(json);
 									
 									
 									//write in database sites/types....
