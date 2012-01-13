@@ -5,16 +5,18 @@
 	android:layout_height="fill_parent"
 	android:minWidth="300dp" >
 	<TextView
+	    android:id="@+id/addISIN_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:text="Insert Isin or Code" />
     <EditText
-        android:id="@+id/shareISINEditText"
+        android:id="@+id/addISIN_ET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:hint="ISIN or Code"/>
     <TextView
+        android:id="@+id/date_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -35,12 +37,13 @@
     		android:weightSum="2">
     	    <TableRow>
         		<TextView
+        		    android:id="@+id/price_TV"
         		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:layout_weight="1"
         		    android:text="Purchase Price"/>
         		<EditText
-        		    android:id="@+id/buyPriceEditText"
+        		    android:id="@+id/price_ET"
         		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:inputType="number|numberDecimal" 
@@ -49,12 +52,13 @@
     		</TableRow>
     		<TableRow>
         		<TextView
+        		    android:id="@+id/lot_TV"
         		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:layout_weight="1"
         		    android:text="Round Lot"/>
         		<EditText
-        		    android:id="@+id/roundLotEditText"
+        		    android:id="@+id/lot_ET"
         		    android:layout_width="0dp"
         		    android:layout_height="wrap_content"
         		    android:inputType="number" 
@@ -71,7 +75,7 @@
         	
     	    <TableRow>
         		<Button
-        		    android:id="@+id/undoNewToolButton"
+        		    android:id="@+id/cancelButton"
         		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"
@@ -83,7 +87,7 @@
         		    android:layout_weight="1"
         		    android:text="Add other Tools"/>
         		<Button
-        		    android:id="@+id/finishAddToolsButton"
+        		    android:id="@+id/finishButton"
         		    android:layout_width="0dp"
         		    android:layout_height="fill_parent"
         		    android:layout_weight="1"

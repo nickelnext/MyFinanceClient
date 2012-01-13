@@ -24,14 +24,7 @@
         	    android:id="@+id/IV"
         		android:layout_width="0dp"
         		android:layout_height="wrap_content"
-        		android:layout_weight="2"/>
-        	<Button 
-        	    android:id="@+id/btn"
-        		android:layout_width="0dp"
-        		android:layout_height="35dp"
-        		android:layout_marginRight="5dp"
-        		android:text="update"
-        		android:layout_weight="3"/>
+        		android:layout_weight="5"/>
  		</TableRow>   
     </TableLayout>
 
@@ -41,16 +34,16 @@
     	android:layout_marginLeft="5dp"
     	android:orientation="horizontal">
         <TextView
+            android:id="@+id/portfolioLastUpdate_TV"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:textColor="#000000"
         	android:text="Last Update: "/>
        	<TextView
-       	    android:id="@+id/portfolioLastUpdate_TV"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:textColor="#000000"
-        	android:text="12/21/2012 12:34"/>
+        	android:text="12/21/2012 12:34 def"/>
     </LinearLayout>
     
     <View
@@ -59,6 +52,7 @@
        	android:background="#FF909090" />
 
     <TextView
+        android:id="@+id/addTitle_TV"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -93,7 +87,7 @@
                 	android:textColor="#000000"
         			android:gravity="center_horizontal"
                 	android:layout_weight="3"
-    	            android:text="Bought"/>
+    	            android:text="Date"/>
 				<TextView               
                 	android:id="@+id/variationCol"
                 	android:layout_width="0dp"
@@ -115,7 +109,7 @@
         			android:layout_weight="2"
     	            android:text="Var%"/>
         		<TextView 
-        		    android:id="@+id/prizeCol"
+        		    android:id="@+id/priceCol"
                 	android:layout_width="0dp"
                 	android:layout_height="wrap_content"
                 	android:textSize="15dp"
@@ -123,7 +117,7 @@
                 	android:gravity="center_horizontal"
                 	android:textColor="#000000"
         			android:layout_weight="2"
-    	            android:text="Prize"/>
+    	            android:text="Price"/>
     		</TableRow>
 		</TableLayout>
 		

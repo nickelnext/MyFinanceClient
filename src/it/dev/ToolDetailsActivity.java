@@ -284,7 +284,7 @@ public class ToolDetailsActivity extends Activity
 		advancedOptionsDialog.setCancelable(true);
 		
 		final CheckBox prefSite_CB = (CheckBox) advancedOptionsDialog.findViewById(R.id.prefSite_CB);
-		final TextView preferredSiteRef = (TextView) advancedOptionsDialog.findViewById(R.id.preferredSiteRef);
+		final TextView preferredSiteRef = (TextView) advancedOptionsDialog.findViewById(R.id.preferredSite_TV);
 		final TableLayout dynamic_ignoredSites_table = (TableLayout) advancedOptionsDialog.findViewById(R.id.dynamic_ignoredSites_table);
 		
 		Button canc_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.canc_adv_sett_btn);

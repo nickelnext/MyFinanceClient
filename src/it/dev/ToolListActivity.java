@@ -28,11 +28,11 @@ import android.database.MergeCursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
@@ -317,13 +317,13 @@ public class ToolListActivity extends Activity
 		addToolDialog.setContentView(R.layout.custom_add_new_tool);
 		addToolDialog.setTitle("Add a new Tool");
 		addToolDialog.setCancelable(true);
-		final EditText shareISINEditText = (EditText) addToolDialog.findViewById(R.id.shareISINEditText);
+		final EditText shareISINEditText = (EditText) addToolDialog.findViewById(R.id.addISIN_ET);
 		final DatePicker purchaseDateDatePicker = (DatePicker) addToolDialog.findViewById(R.id.purchaseDateDatePicker);
-		final EditText buyPriceEditText = (EditText) addToolDialog.findViewById(R.id.buyPriceEditText);
-		final EditText roundLotEditText = (EditText) addToolDialog.findViewById(R.id.roundLotEditText);
-		Button undoNewShareButton = (Button) addToolDialog.findViewById(R.id.undoNewToolButton);
+		final EditText buyPriceEditText = (EditText) addToolDialog.findViewById(R.id.price_ET);
+		final EditText roundLotEditText = (EditText) addToolDialog.findViewById(R.id.lot_ET);
+		Button undoNewShareButton = (Button) addToolDialog.findViewById(R.id.cancelButton);
 		Button saveNewToolButton = (Button) addToolDialog.findViewById(R.id.saveNewToolButton);
-		Button finishAddToolsButton = (Button) addToolDialog.findViewById(R.id.finishAddToolsButton);
+		Button finishAddToolsButton = (Button) addToolDialog.findViewById(R.id.finishButton);
 		
 		undoNewShareButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {

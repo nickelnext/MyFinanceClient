@@ -6,6 +6,7 @@
     android:minWidth="300dp">
 
     <TextView
+        android:id="@+id/preferredSite_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -18,22 +19,8 @@
         <CheckBox
             android:id="@+id/prefSite_CB"
             android:layout_width="35dp"
-        	android:layout_height="35dp"/>
-        <TextView
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:layout_marginLeft="5dp"
-        	android:text="Set " />
-        <TextView
-            android:id="@+id/preferredSiteRef"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:textStyle="bold"
-        	android:text="Borsa Italiana" />
-        <TextView
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text=" as Preferred Site" />
+        	android:layout_height="35dp"
+      		android:text=""/>
     </LinearLayout>
     
     <View
@@ -43,6 +30,7 @@
        	android:background="#FF909090" />
     
     <TextView
+        android:id="@+id/ignoredSites_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"

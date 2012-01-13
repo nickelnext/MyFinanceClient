@@ -180,7 +180,7 @@ public class MyFinanceActivity extends Activity
 		addPortfolioDialog.setCancelable(true);
 		final EditText portfolioName_ET = (EditText) addPortfolioDialog.findViewById(R.id.portfolioName_ET);
 		final EditText portfolioDescription_ET = (EditText) addPortfolioDialog.findViewById(R.id.portfolioDescription_ET);
-		Button cancelAddPortfolio_btn = (Button) addPortfolioDialog.findViewById(R.id.cancelAddPortfolio_btn);
+		Button cancelAddPortfolio_btn = (Button) addPortfolioDialog.findViewById(R.id.cancelPortfolio_btn);
 		Button addPortfolio_btn = (Button) addPortfolioDialog.findViewById(R.id.addPortfolio_btn);
 
 		cancelAddPortfolio_btn.setOnClickListener(new View.OnClickListener() {
@@ -238,7 +238,8 @@ public class MyFinanceActivity extends Activity
 
 		final Dialog updateOptionDialog = new Dialog(MyFinanceActivity.this);
 		updateOptionDialog.setContentView(R.layout.custom_update_option_dialog);
-		updateOptionDialog.setTitle("Automatic update");
+		//TODO
+		updateOptionDialog.setTitle("Options");
 		updateOptionDialog.setCancelable(true);
 
 

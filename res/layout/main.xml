@@ -5,6 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/addPortfolioTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Click Menu to add a new Portfolio" />
@@ -16,12 +17,14 @@
     	android:weightSum="10">
 		<TableRow >
 			<TextView
+			    android:id="@+id/portfolioNameTextView"
     			android:layout_width="0dp"
 				android:layout_height="wrap_content"
     	    	android:text="Portfolio Name"
     	    	android:textStyle="bold"
     	    	android:layout_weight="4"/>
-			<TextView               
+			<TextView              
+			    android:id="@+id/portfolioDescription" 
         		android:layout_width="0dp"
         		android:layout_height="wrap_content"
             	android:text="Description"

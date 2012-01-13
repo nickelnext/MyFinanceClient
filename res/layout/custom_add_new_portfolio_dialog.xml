@@ -5,6 +5,7 @@
 	android:layout_height="fill_parent"
 	android:minWidth="300dp" >
     <TextView
+        android:id="@+id/portfolioNameTextView"
     	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -16,6 +17,7 @@
         android:layout_height="wrap_content"
         android:hint="name"/>
     <TextView
+        android:id="@+id/portfolioDescriptionTextView"
     	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -35,7 +37,7 @@
 
         <TableRow>
             <Button
-    			android:id="@+id/cancelAddPortfolio_btn"
+    			android:id="@+id/cancelPortfolio_btn"
         		android:layout_width="fill_parent"
         		android:layout_height="wrap_content"
         		android:layout_weight="1"
