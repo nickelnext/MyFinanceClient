@@ -97,7 +97,7 @@ public class Splashscreen extends Activity
 								String json = arrResp[1];
 								int version = Integer.parseInt(arrResp[0]);
 								System.out.println("version:"+version+" - json:"+json);
-								ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(arrResp[1]);
+								ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(json);
 								
 								
 								//write in database sites/types....
