@@ -435,6 +435,9 @@ public class ToolDetailsActivity extends Activity
 		
 		advancedOptionsDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			public void onDismiss(DialogInterface dialog) {
+				
+				dynamic_detail_table.removeAllViews();
+				
 				updateView();
 			}
 		});
