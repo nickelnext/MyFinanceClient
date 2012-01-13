@@ -187,15 +187,17 @@ public class ToolListActivity extends Activity
 	public boolean onCreateOptionsMenu(Menu menu)
     {
 		supportDatabase.openDataBase();
+		getMenuInflater().inflate(R.menu.add_share_menu, menu);
 		
 		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
 		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
+		MenuItem menuAddShare = menu.findItem(R.id.menu_add_share);
+		MenuItem menuManualUpdate = menu.findItem(R.id.menu_manual_update);
 		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
 		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
+		menuAddShare.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_add_tool", language));
+		menuManualUpdate.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_update_tools", language));
 		
-		
-    	getMenuInflater().inflate(R.menu.add_share_menu, menu);
-    	
     	
     	
     	supportDatabase.close();
