@@ -41,6 +41,10 @@ public class ToolDetailsActivity extends Activity
 	private MyFinanceDatabase db;
 	private SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(this);
 
+	private TextView tool_purchaseDate_label;
+	private TextView tool_purchasePrize_label;
+	private TextView tool_roundLot_label;
+	
 	private TextView toolReferenceTextView;
 	private TextView tool_purchaseDate_TV;
 	private TextView tool_purchasePrize_TV;
@@ -88,7 +92,14 @@ public class ToolDetailsActivity extends Activity
         {
         	throw new Error("Unable to create database");
         }
+		
+		initializeLabels();
 
+	}
+	
+	private void initializeLabels()
+	{
+		
 	}
 
 	public void onResume()
