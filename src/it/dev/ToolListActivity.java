@@ -6,6 +6,7 @@ import it.util.ConnectionUtils;
 import it.util.ResponseHandler;
 import it.util.UpdateTimeTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -25,6 +26,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
+import android.database.SQLException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -47,6 +49,8 @@ import com.google.gson.Gson;
 public class ToolListActivity extends Activity 
 {
 	private MyFinanceDatabase db;
+	private SupportDatabaseHelper supportDatabase;
+	private String language;
 	
 	private String portfolioName;
 	
@@ -63,6 +67,9 @@ public class ToolListActivity extends Activity
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.tool_list_activity);
         
+        
+        
+        
         portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
         portfolioLastUpdate_TV = (TextView) findViewById(R.id.portfolioLastUpdate_TV);
         toolListView = (ListView) findViewById(R.id.toolListView);
@@ -75,6 +82,16 @@ public class ToolListActivity extends Activity
         portfolioReferenceTextView.setText(portfolioName);
         
         db = new MyFinanceDatabase(this);
+        supportDatabase = new SupportDatabaseHelper(this);
+        try
+        {
+        	supportDatabase.createDataBase();
+        	supportDatabase.openDataBase();
+        }
+        catch (SQLException e) {
+		} catch (IOException e) {
+		}
+        language= supportDatabase.getUserSelectedLanguage();
         
         setPortfolioLastUpdate();
         
