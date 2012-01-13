@@ -148,7 +148,7 @@ public class ToolListActivity extends Activity
 			portfolioLastUpdate.setText(portfolio.getString(4));
 		}
 		
-		
+		supportDatabase.close();
 		db.close();
 	}
 	
@@ -186,7 +186,19 @@ public class ToolListActivity extends Activity
 	
 	public boolean onCreateOptionsMenu(Menu menu)
     {
+		supportDatabase.openDataBase();
+		
+		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
+		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
+		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
+		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
+		
+		
     	getMenuInflater().inflate(R.menu.add_share_menu, menu);
+    	
+    	
+    	
+    	supportDatabase.close();
     	return true;
     }
 	
@@ -203,6 +215,16 @@ public class ToolListActivity extends Activity
     			updateToolsInPortfolio();
     		}
     		break;
+    	case R.id.menu_about_page:
+    		showAddNewToolDialog();
+    		break;
+    	case R.id.menu_help_page:
+    		//manual update...
+    		if(portfolioToUpdated(portfolioName)){
+    			updateToolsInPortfolio();
+    		}
+    		break;
+    		
     	}
     	return super.onOptionsItemSelected(item);
     }
