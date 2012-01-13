@@ -300,6 +300,10 @@ public class ToolDetailsActivity extends Activity
 	//this method open the dialog for advanced settings...
 	private void showAdvancedSettingsDialog()
 	{
+		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
 		ignoredSitesCB.clear();
 		ignoredSitesTV.clear();
 		
@@ -310,10 +314,17 @@ public class ToolDetailsActivity extends Activity
 		
 		final CheckBox prefSite_CB = (CheckBox) advancedOptionsDialog.findViewById(R.id.prefSite_CB);
 		final TextView preferredSiteRef = (TextView) advancedOptionsDialog.findViewById(R.id.preferredSite_TV);
+		final TextView ignoredSites_TV = (TextView) advancedOptionsDialog.findViewById(R.id.ignoredSites_TV);
 		final TableLayout dynamic_ignoredSites_table = (TableLayout) advancedOptionsDialog.findViewById(R.id.dynamic_ignoredSites_table);
 		
 		Button canc_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.canc_adv_sett_btn);
 		Button save_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.save_adv_sett_btn);
+		
+		preferredSiteRef.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_TV", language));
+		ignoredSites_TV.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "ignoredSites_TV", language));
+		
+		canc_adv_sett_btn.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "canc_advanced_settings_btn", language));
+		save_adv_sett_btn.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "save_advanced_settings_btn", language));
 		
 		canc_adv_sett_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -398,7 +409,7 @@ public class ToolDetailsActivity extends Activity
 			if(toolDetails.getCount()==1)
 			{
 				toolDetails.moveToFirst();
-				preferredSiteRef.setText(toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente")));
+				prefSite_CB.setText(toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente")));
 			}
 		}
 		
@@ -466,7 +477,7 @@ public class ToolDetailsActivity extends Activity
 				updateView();
 			}
 		});
-		
+		supportDatabase.close();
 		db.close();
 		advancedOptionsDialog.show();
 	}
