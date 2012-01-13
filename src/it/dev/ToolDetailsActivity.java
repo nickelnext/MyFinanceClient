@@ -349,6 +349,8 @@ public class ToolDetailsActivity extends Activity
 		canc_adv_sett_btn.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "canc_advanced_settings_btn", language));
 		save_adv_sett_btn.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "save_advanced_settings_btn", language));
 		
+		prefSite_CB.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_CB", language));
+		
 		canc_adv_sett_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				advancedOptionsDialog.dismiss();
@@ -432,7 +434,14 @@ public class ToolDetailsActivity extends Activity
 			if(toolDetails.getCount()==1)
 			{
 				toolDetails.moveToFirst();
-				prefSite_CB.setText(toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente")));
+				
+				String label = supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_CB", language);
+				String prefSiteFromDB = toolDetails.getString(toolDetails.getColumnIndex("sitoSorgenteUrl"));
+				
+				label = label.replaceAll("__NAME__", prefSiteFromDB);
+				
+				
+				prefSite_CB.setText(label);
 			}
 		}
 		
