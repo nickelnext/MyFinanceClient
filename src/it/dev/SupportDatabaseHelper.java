@@ -250,7 +250,7 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 		row.moveToFirst();
 		
 		result = row.getString(0);
-		
+		row.close();
 		
 		return result;
 	}

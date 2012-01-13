@@ -60,28 +60,20 @@ public class ToolListActivity extends Activity
 	
 	private TextView portfolioReferenceTextView;
 	private TextView portfolioLastUpdate_TV;
+	private TextView portfolioLastUpdate;
 	private ListView toolListView;
+	private TextView nameColTextView;
+	private TextView dateColTextView;
+	private TextView variationColTextView;
+	private TextView percVarTextView;
+	private TextView priceColTextView;
+	private TextView addTitleTextView;
+	
 	
 	public void onCreate(Bundle savedInstanceState) 
     {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.tool_list_activity);
-        
-        
-        
-        
-        portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
-        portfolioLastUpdate_TV = (TextView) findViewById(R.id.portfolioLastUpdate_TV);
-        toolListView = (ListView) findViewById(R.id.toolListView);
-        registerForContextMenu(toolListView);
-        
-        Intent intent = getIntent();
-        String pkg = getPackageName();
-        
-        portfolioName = (String) intent.getStringExtra(pkg+".portfolioName");
-        portfolioReferenceTextView.setText(portfolioName);
-        
-        db = new MyFinanceDatabase(this);
         supportDatabase = new SupportDatabaseHelper(this);
         try
         {
@@ -92,6 +84,39 @@ public class ToolListActivity extends Activity
 		} catch (IOException e) {
 		}
         language= supportDatabase.getUserSelectedLanguage();
+        
+        addTitleTextView = (TextView) findViewById(R.id.addTitle_TV);
+        nameColTextView  = (TextView) findViewById(R.id.nameCol);
+    	dateColTextView  = (TextView) findViewById(R.id.dateCol);
+    	variationColTextView  = (TextView) findViewById(R.id.variationCol);
+    	percVarTextView  = (TextView) findViewById(R.id.percVarCol);
+    	priceColTextView  = (TextView) findViewById(R.id.priceCol);
+        portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
+        portfolioLastUpdate_TV = (TextView) findViewById(R.id.portfolioLastUpdate_TV);
+        portfolioLastUpdate = (TextView) findViewById(R.id.portfolioLastUpdate);
+        toolListView = (ListView) findViewById(R.id.toolListView);
+        
+        addTitleTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "addTitle", language));
+        portfolioLastUpdate_TV.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "portfolioLastUpdate_TV", language));
+        nameColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "nameCol", language));
+        dateColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "dateCol", language));
+        variationColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "variationCol", language));
+        percVarTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "percVariationCol", language));
+        priceColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "price", language));
+        
+        
+        
+        
+        registerForContextMenu(toolListView);
+        
+        Intent intent = getIntent();
+        String pkg = getPackageName();
+        
+        portfolioName = (String) intent.getStringExtra(pkg+".portfolioName");
+        portfolioReferenceTextView.setText(portfolioName);
+        
+        db = new MyFinanceDatabase(this);
+        
         
         setPortfolioLastUpdate();
         
@@ -120,7 +145,7 @@ public class ToolListActivity extends Activity
 		if(portfolio.getCount()==1)
 		{
 			portfolio.moveToFirst();
-			portfolioLastUpdate_TV.setText(portfolio.getString(4));
+			portfolioLastUpdate.setText(portfolio.getString(4));
 		}
 		
 		
