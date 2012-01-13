@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,27 +31,59 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class MyFinanceActivity extends Activity 
 {
 	private MyFinanceDatabase db;
-
+	private SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(this);
+	
+	private TextView addPortfolioTextView;
+	private TextView portfolioNameTextView;
+	private TextView portfolioDescription;
 	private ListView portfolioListView;
+	
 	private ArrayList<String> portfolioNameArrayList = new ArrayList<String>();
 	private ArrayList<String> portfolioDescriptionArrayList = new ArrayList<String>();
-	private SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(this);
-
+	
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		addPortfolioTextView = (TextView) findViewById(R.id.addPortfolioTextView);
+		portfolioNameTextView = (TextView) findViewById(R.id.portfolioNameTextView);
+		portfolioDescription = (TextView) findViewById(R.id.portfolioDescription);
 		portfolioListView = (ListView) findViewById(R.id.portfolioListView);
 		registerForContextMenu(portfolioListView);
 
 		db = new MyFinanceDatabase(this);
+		
+		try 
+        {
+        	supportDatabase.createDataBase();
+ 
+        } catch (IOException ioe) 
+        {
+        	throw new Error("Unable to create database");
+        }
+		
+		initializeLabels();
 
 		System.out.println(ConnectivityManager.EXTRA_EXTRA_INFO);
+	}
+	
+	private void initializeLabels()
+	{
+		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
+		addPortfolioTextView.setText(supportDatabase.getTextFromTable("Label_MyFinanceActivity", "addPortfolio", language));
+		portfolioNameTextView.setText(supportDatabase.getTextFromTable("Label_MyFinanceActivity", "portfolioName", language));
+		portfolioDescription.setText(supportDatabase.getTextFromTable("Label_MyFinanceActivity", "portfolioDescription", language));
+		
+		supportDatabase.close();
 	}
 
 	public void onResume()
@@ -89,7 +120,47 @@ public class MyFinanceActivity extends Activity
 
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
+		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
 		getMenuInflater().inflate(R.menu.add_portfolio_menu, menu);
+		MenuItem addPortfolio = menu.findItem(R.id.menu_add_portfolio);
+		MenuItem updateOptions = menu.findItem(R.id.menu_update_option);
+		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
+		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
+		
+		addPortfolio.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_add_portfolio", language));
+		updateOptions.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_update_option", language));
+		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
+		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
+		
+		supportDatabase.close();
+		
+		return true;
+	}
+	
+	public boolean onPrepareOptionsMenu(Menu menu) 
+	{
+		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
+		menu.clear();
+		
+		getMenuInflater().inflate(R.menu.add_portfolio_menu, menu);
+		MenuItem addPortfolio = menu.findItem(R.id.menu_add_portfolio);
+		MenuItem updateOptions = menu.findItem(R.id.menu_update_option);
+		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
+		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
+		
+		addPortfolio.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_add_portfolio", language));
+		updateOptions.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_update_option", language));
+		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
+		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
+		
+		supportDatabase.close();
+		
 		return true;
 	}
 
@@ -332,6 +403,14 @@ public class MyFinanceActivity extends Activity
 				
 			}
 		};
+		
+		updateOptionDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+			public void onDismiss(DialogInterface dialog) {
+				initializeLabels();
+			}
+		});
+		
+		
 		System.out.println("setto gestore1");
 		undoSavePreferencesButton.setOnClickListener(gestore);
 		System.out.println("setto gestore2");
