@@ -122,7 +122,22 @@ public class ToolDetailsActivity extends Activity
 
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
+		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
 		getMenuInflater().inflate(R.menu.tool_detail_menu, menu);
+		MenuItem forcedUpdate = menu.findItem(R.id.menu_forced_update);
+		MenuItem advancedSettings = menu.findItem(R.id.menu_advanced_settings);
+		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
+		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
+		
+		forcedUpdate.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_forced_update", language));
+		advancedSettings.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_advanced_settings", language));
+		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
+		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
+		
+		supportDatabase.close();
 		return true;
 	}
 
