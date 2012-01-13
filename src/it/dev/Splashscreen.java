@@ -38,7 +38,7 @@ public class Splashscreen extends Activity
 	   Cursor version = db.getAllSitesForType();
 	   startManagingCursor(version);
 	   
-	   db.close();
+	   System.out.println("numero di elementi VERSION: "+version.getCount());
 	   
 	   if(version.getCount()!=0)
 	   {
@@ -65,7 +65,7 @@ public class Splashscreen extends Activity
 		   
 		   emptyRequestTread.start();
 	   }
-	   
+	   db.close();
    }
    
    private void initializeThreads(Splashscreen splashscreen)
