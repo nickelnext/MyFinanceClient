@@ -99,7 +99,7 @@ public class Splashscreen extends Activity
 								System.out.println("version:"+version+" - json:"+json);
 								ArrayList<TypeSiteObject> typeSiteList = ResponseHandler.decodeDBSiteType(json);
 								
-								
+								System.out.println("mi appresto a scrivere nel db");
 								//write in database sites/types....
 								
 								db.open();
@@ -120,8 +120,8 @@ public class Splashscreen extends Activity
 								
 							}
 						} catch (Exception e) {
-							System.out.println("connection ERROR");
-							showMessage("Error", "No connection with Server.");						
+							e.printStackTrace();
+							//showMessage("Error", "No connection with Server.");						
 						}
 				   }
 			   }
@@ -162,15 +162,18 @@ public class Splashscreen extends Activity
 							String serverResponse = ConnectionUtils.getSites(jsonReq);
 							if(serverResponse != null)
 							{
+								
+								System.out.println("risposta: <"+serverResponse+">");
+								
+								
 								//version is up to date...
-								if(serverResponse.equals("OK"))
+								if(serverResponse.startsWith("OK"))
 								{
 									//don't write in db...
-									System.out.println("okkkkkkkkkkkkkkkkkkk");
 								}
 								else
 								{
-									System.out.println("scrivo nel DB");
+									System.out.println("scrivo nel DB, perché la versione del server è più aggiornata");
 									
 									//int version = jsonResponse.hashCode();
 									String[] arrResp = serverResponse.split("__PULITO__");
@@ -203,9 +206,13 @@ public class Splashscreen extends Activity
 								}
 								
 							}
+							else
+							{
+								System.out.println("response null");
+							}
 						} catch (Exception e) {
-							System.out.println("connection ERROR");
-							showMessage("Error", "No connection with Server.");						
+							e.printStackTrace();
+							//showMessage("Error", "No connection with Server.");						
 						}
 					   
 					   
@@ -215,7 +222,7 @@ public class Splashscreen extends Activity
 			   }
 			   catch (Exception e) 
 			   {
-				   showMessage("Error", "Error during comunication with server.");	
+				   //showMessage("Error", "Error during comunication with server.");	
 			   }
 			   finally 
 			   {
