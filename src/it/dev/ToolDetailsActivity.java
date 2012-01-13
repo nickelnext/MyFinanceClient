@@ -65,6 +65,10 @@ public class ToolDetailsActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.tool_details);
 
+		tool_purchaseDate_label = (TextView) findViewById(R.id.tool_purchaseDate_label);
+		tool_purchasePrize_label = (TextView) findViewById(R.id.tool_purchasePrize_label);
+		tool_roundLot_label = (TextView) findViewById(R.id.tool_roundLot_label);
+		
 		toolReferenceTextView = (TextView) findViewById(R.id.toolReferenceTextView);
 		tool_purchaseDate_TV = (TextView) findViewById(R.id.tool_purchaseDate_TV);
 		tool_purchasePrize_TV = (TextView) findViewById(R.id.tool_purchasePrize_TV);
@@ -99,7 +103,15 @@ public class ToolDetailsActivity extends Activity
 	
 	private void initializeLabels()
 	{
+		supportDatabase.openDataBase();
 		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
+		tool_purchaseDate_label.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language)+": ");
+		tool_purchasePrize_label.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "price_TV", language)+": ");
+		tool_roundLot_label.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_TV", language)+": ");
+		
+		supportDatabase.close();
 	}
 
 	public void onResume()
@@ -133,6 +145,8 @@ public class ToolDetailsActivity extends Activity
 	{
 		db.open();
 		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
 
 		Cursor toolDetails;
 		Cursor toolTranslate;
@@ -140,17 +154,17 @@ public class ToolDetailsActivity extends Activity
 		if(toolType.equals("bond"))
 		{
 			toolDetails = db.getBondDetails(toolIsin);
-			toolTranslate = supportDatabase.getBondTranslation("italiano");
+			toolTranslate = supportDatabase.getBondTranslation(language);
 		}
 		else if(toolType.equals("fund"))
 		{
 			toolDetails = db.getFundDetails(toolIsin);
-			toolTranslate = supportDatabase.getFundTranslation("italiano");
+			toolTranslate = supportDatabase.getFundTranslation(language);
 		}
 		else if(toolType.equals("share"))
 		{
 			toolDetails = db.getShareDetails(toolIsin);
-			toolTranslate = supportDatabase.getShareTranslation("italiano");
+			toolTranslate = supportDatabase.getShareTranslation(language);
 		}
 		else
 		{

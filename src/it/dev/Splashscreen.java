@@ -7,9 +7,7 @@ import java.util.ArrayList;
 
 import other.TypeSiteObject;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -188,12 +186,13 @@ public class Splashscreen extends Activity
 									
 									db.open();
 									
+									//elimino tutti i record presenti...
+									db.deleteAllSitesForTypes();
+									
 									for (TypeSiteObject o : typeSiteList) 
 									{
 										for (String s : o.getSites()) 
 										{
-											//elimino tutti i record presenti...
-											db.deleteAllSitesForTypes();
 											
 											//inserisci la coppia (o.getType(), s)
 											
@@ -240,20 +239,20 @@ public class Splashscreen extends Activity
 	   };
    }
    
-   private void showMessage(String type, String message)
-   {
-	   AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
-	   alert_builder.setTitle(type);
-	   alert_builder.setMessage(message);
-	   alert_builder.setCancelable(false);
-	   alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			
-		   public void onClick(DialogInterface dialog, int id) {
-				dialog.cancel();
-		   }
-	   });
-	   AlertDialog message_empty = alert_builder.create();
-	   message_empty.show();
-	}
+//   private void showMessage(String type, String message)
+//   {
+//	   AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
+//	   alert_builder.setTitle(type);
+//	   alert_builder.setMessage(message);
+//	   alert_builder.setCancelable(false);
+//	   alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//			
+//		   public void onClick(DialogInterface dialog, int id) {
+//				dialog.cancel();
+//		   }
+//	   });
+//	   AlertDialog message_empty = alert_builder.create();
+//	   message_empty.show();
+//	}
 }
 

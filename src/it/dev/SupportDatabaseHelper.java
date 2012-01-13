@@ -241,9 +241,18 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 	{
 		return myDataBase.query("Languages", null, null, null, null, null, null);
 	}
+	
 	public String getTextFromTable(String tableName, String columnName, String language)
 	{
-		return myDataBase.query(tableName, new String[]{columnName}, "language = '"+language+"'", null, null, null, null).getString(0);
+		String result = null;
+		
+		Cursor row = myDataBase.query(tableName, new String[]{columnName}, "language = '"+language+"'", null, null, null, null);
+		row.moveToFirst();
+		
+		result = row.getString(0);
+		
+		
+		return result;
 	}
 
 }
