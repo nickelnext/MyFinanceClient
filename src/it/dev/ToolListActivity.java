@@ -222,6 +222,9 @@ public class ToolListActivity extends Activity
 	//Open the custom alert dialog where it is possible to edit a saved tool.
 	private void showEditToolDialog(String isin, String type, String purchaseDate)
 	{
+		
+		
+			
 		final Dialog editToolDialog = new Dialog(ToolListActivity.this);
 		editToolDialog.setContentView(R.layout.custom_edit_selected_tool_dialog);
 		editToolDialog.setTitle(isin);
@@ -232,14 +235,29 @@ public class ToolListActivity extends Activity
 		
 		final TextView isinRef_TV = (TextView) editToolDialog.findViewById(R.id.isinRef_TV);
 		final TextView previousDate_TV = (TextView) editToolDialog.findViewById(R.id.previousDate_TV);
+		final TextView oldPurchaseDate_TV = (TextView) editToolDialog.findViewById(R.id.oldPurchaseDate_TV);
+		final TextView newPurchasePrice_TV = (TextView) editToolDialog.findViewById(R.id.newPurchasePrice_TV);
+		final TextView newLot_TV = (TextView) editToolDialog.findViewById(R.id.newLot_TV);
+		final TextView newPurchaseDate_TV = (TextView) editToolDialog.findViewById(R.id.newPurchaseDate_TV);
+		
+		
 		final DatePicker edit_purchaseDateDatePicker = (DatePicker) editToolDialog.findViewById(R.id.edit_purchaseDateDatePicker);
 		final EditText edit_buyPriceEditText = (EditText) editToolDialog.findViewById(R.id.edit_buyPriceEditText);
 		final EditText edit_roundLotEditText = (EditText) editToolDialog.findViewById(R.id.edit_roundLotEditText);
 		Button undoEditToolButton = (Button) editToolDialog.findViewById(R.id.undoEditToolButton);
 		Button finishEditToolButton = (Button) editToolDialog.findViewById(R.id.finishEditToolButton);
 		
+		supportDatabase.openDataBase();
+		String language  = supportDatabase.getUserSelectedLanguage();
+		//TODO
 		isinRef_TV.setText(isin);
 		previousDate_TV.setText(purchaseDate);
+		oldPurchaseDate_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language));
+		newPurchaseDate_TV.setText("New " + supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language));
+		newPurchasePrice_TV.setText("New "+ supportDatabase.getTextFromTable("Label_cusom_add_new_tool_dialog", "price_TV", language));
+		newLot_TV.setText("New "+ supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_TV", language));
+		undoEditToolButton.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "cancel_btn", language));
+		finishEditToolButton.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "addPortfolio_btn", language));
 		
 		undoEditToolButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -319,7 +337,7 @@ public class ToolListActivity extends Activity
 			}
 		});
 		
-		
+		supportDatabase.close();
 		editToolDialog.show();
 		
 	}
