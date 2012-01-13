@@ -256,15 +256,33 @@ public class MyFinanceActivity extends Activity
 	//Open the custom alert dialog where it is possible to add a new portfolio.    
 	private void showAddNewPortfolioDialog()
 	{
+		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
 		final Dialog addPortfolioDialog = new Dialog(MyFinanceActivity.this);
 		addPortfolioDialog.setContentView(R.layout.custom_add_new_portfolio_dialog);
-		addPortfolioDialog.setTitle("Add new portfolio");
+		addPortfolioDialog.setTitle(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "addPortfolioTitle", language));
 		addPortfolioDialog.setCancelable(true);
+		
+		final TextView portfolioNameTextView = (TextView) addPortfolioDialog.findViewById(R.id.portfolioNameTextView);
+		final TextView portfolioDescriptionTextView = (TextView) addPortfolioDialog.findViewById(R.id.portfolioDescriptionTextView);
+		
 		final EditText portfolioName_ET = (EditText) addPortfolioDialog.findViewById(R.id.portfolioName_ET);
 		final EditText portfolioDescription_ET = (EditText) addPortfolioDialog.findViewById(R.id.portfolioDescription_ET);
 		Button cancelAddPortfolio_btn = (Button) addPortfolioDialog.findViewById(R.id.cancelPortfolio_btn);
 		Button addPortfolio_btn = (Button) addPortfolioDialog.findViewById(R.id.addPortfolio_btn);
 
+		//add labels...
+		portfolioNameTextView.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "portfolioName", language));
+		portfolioDescriptionTextView.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "porfolioDescription", language));
+		
+		portfolioName_ET.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "portfolioName_ET", language));
+		portfolioDescription_ET.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "portfolioDescription_ET", language));
+		
+		cancelAddPortfolio_btn.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "cancelPortfolio_btn", language));
+		addPortfolio_btn.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "addPortfolio_btn", language));
+		
 		cancelAddPortfolio_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				addPortfolioDialog.dismiss();
@@ -300,7 +318,9 @@ public class MyFinanceActivity extends Activity
 				updateView();
 			}
 		});
-
+		
+		supportDatabase.close();
+		
 		addPortfolioDialog.show();
 	}
 
@@ -316,21 +336,31 @@ public class MyFinanceActivity extends Activity
 		{
 			throw new Error("Unable to create database");
 		}
+		
+		String language = supportDatabase.getUserSelectedLanguage();
 
 
 		final Dialog updateOptionDialog = new Dialog(MyFinanceActivity.this);
 		updateOptionDialog.setContentView(R.layout.custom_update_option_dialog);
 		//TODO
-		updateOptionDialog.setTitle("Options");
+		updateOptionDialog.setTitle(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "dialog_title", language));
 		updateOptionDialog.setCancelable(true);
 
-
+		TextView updateLanguageTextView = (TextView) updateOptionDialog.findViewById(R.id.updateLanguageTextView);
+		TextView updateTimeTextView = (TextView) updateOptionDialog.findViewById(R.id.updateTimeTextView);
+		
 		final CheckBox enableAutoUpdateCheckBox = (CheckBox) updateOptionDialog.findViewById(R.id.enableAutoUpdateCheckBox);
 		final Spinner updateTimeSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateTimeSpinner);
 		Button undoSavePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.undoSavePreferencesButton);
 		Button saveUpdatePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.saveUpdatePreferencesButton);
 		final Spinner updateLanguageSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateLanguageSpinner);
 
+		updateLanguageTextView.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "update_language_TV", language));
+		enableAutoUpdateCheckBox.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "enable_auto_update_CB", language));
+		updateTimeTextView.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "update_time_TV", language));
+		undoSavePreferencesButton.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "undo_save_preferences_button", language));
+		saveUpdatePreferencesButton.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "save_preferences_button", language));
+		
 		ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
 		ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.update_language_array, android.R.layout.simple_spinner_item);
 		
