@@ -98,6 +98,17 @@ public class MyFinanceActivity extends Activity
 		menu.setHeaderTitle(portfolioNameArrayList.get(info.position));
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.select_portfolio_context_menu, menu);
+		MenuItem editItem = menu.findItem(R.id.edit_item);
+		MenuItem removeItem = menu.findItem(R.id.remove_item);
+		
+		supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
+		editItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "edit_item", language));
+		removeItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "remove_item", language));
+		
+		supportDatabase.close();
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
@@ -382,7 +393,6 @@ public class MyFinanceActivity extends Activity
 				switch(view.getId()){
 				case R.id.undoSavePreferencesButton:
 					System.out.println("case1");
-					supportDatabase.close();
 					updateOptionDialog.dismiss();   	    	
 					break;
 				case R.id.saveUpdatePreferencesButton:
@@ -396,7 +406,6 @@ public class MyFinanceActivity extends Activity
 
 					//Se necessario,attivare i pannula timers!
 					//TODO
-					supportDatabase.close();
 					updateOptionDialog.dismiss();
 					break;  
 				}
@@ -417,6 +426,7 @@ public class MyFinanceActivity extends Activity
 		saveUpdatePreferencesButton.setOnClickListener(gestore);
 		System.out.println("enable buttons");
 		System.out.println("show");
+		supportDatabase.close();
 		updateOptionDialog.show();
 		
 	}
