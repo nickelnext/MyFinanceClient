@@ -658,6 +658,12 @@ public class ToolDetailsActivity extends Activity
 					{
 						//4.1 control if fund already exist in database --> UPDATE
 						//UPDATE
+						try {
+							db.updateSelectedFundByQuotationObject(qf, getTodaysDate());
+							db.updateSelectedFundIgnoredSites(qf.getISIN(), ignoredSitesString);
+						} catch (Exception e) {
+							System.out.println("Database update error");
+						}
 					}
 					
 					//5. for all SHARE returned...
@@ -665,6 +671,12 @@ public class ToolDetailsActivity extends Activity
 					{
 						//5.1 control if share already exist in database --> UPDATE
 						//UPDATE
+						try {
+							db.updateSelectedShareByQuotationObject(qs, getTodaysDate());
+							db.updateSelectedShareIgnoredSites(qs.getISIN(), ignoredSitesString);
+						} catch (Exception e) {
+							System.out.println("Database update error");
+						}
 					}
 				}
 				else

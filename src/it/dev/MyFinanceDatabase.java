@@ -175,7 +175,7 @@ public class MyFinanceDatabase
 		static final String PORTFOLIO_SHARE_TABLE = "Table_Portfolio_Share";
 		static final String ID = "_id";
 		static final String PORTFOLIO_NAME_KEY = "nomePortafoglio";
-		static final String SHARE_CODE_KEY = "codiceAzione";
+		static final String SHARE_ISIN_KEY = "isinAzione";
 		static final String SHARE_BUYDATE_KEY = "dataAcquisto";
 		static final String SHARE_BUYPRICE_KEY = "prezzoAcquisto";
 		static final String SHARE_ROUNDLOT_KEY = "lotto";
@@ -259,8 +259,8 @@ public class MyFinanceDatabase
 	
 	private static final String TABLE_SHARE_CREATE = "CREATE TABLE "+ShareMetaData.SHARE_TABLE+" (" +
 			ShareMetaData.ID +" INTEGER NOT NULL, " +
-			ShareMetaData.SHARE_CODE +" TEXT PRIMARY KEY, " +
-			ShareMetaData.SHARE_ISIN +" TEXT, " +
+			ShareMetaData.SHARE_CODE +" TEXT, " +
+			ShareMetaData.SHARE_ISIN +" TEXT PRIMARY KEY, " +
 			ShareMetaData.SHARE_NAME_KEY +" TEXT, " +
 			ShareMetaData.SHARE_MINROUNDLOT_KEY +" INTEGER, " +
 			ShareMetaData.SHARE_MARKETPHASE_KEY +" TEXT, " +
@@ -313,13 +313,13 @@ public class MyFinanceDatabase
 	private static final String TABLE_PORTFOLIO_SHARE_CREATE = "CREATE TABLE "+PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+" (" +
 			PortfolioShareMetadata.ID +" INTEGER NOT NULL, " +
 			PortfolioShareMetadata.PORTFOLIO_NAME_KEY +" TEXT NOT NULL, " +
-			PortfolioShareMetadata.SHARE_CODE_KEY +" TEXT NOT NULL, " +
+			PortfolioShareMetadata.SHARE_ISIN_KEY +" TEXT NOT NULL, " +
 			PortfolioShareMetadata.SHARE_BUYDATE_KEY +" TEXT, " +
 			PortfolioShareMetadata.SHARE_BUYPRICE_KEY +" REAL, " +
 			PortfolioShareMetadata.SHARE_ROUNDLOT_KEY +" INTEGER, " +
-			"PRIMARY KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+", " +PortfolioShareMetadata.SHARE_CODE_KEY+", " +PortfolioShareMetadata.SHARE_BUYDATE_KEY+"), " +
+			"PRIMARY KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+", " +PortfolioShareMetadata.SHARE_ISIN_KEY+", " +PortfolioShareMetadata.SHARE_BUYDATE_KEY+"), " +
 			"FOREIGN KEY (" +PortfolioShareMetadata.PORTFOLIO_NAME_KEY+") REFERENCES "+PortfolioMetaData.PORTFOLIO_TABLE+"("+PortfolioMetaData.PORTFOLIO_NAME_KEY+")" +
-			"FOREIGN KEY (" +PortfolioShareMetadata.SHARE_CODE_KEY+") REFERENCES "+ShareMetaData.SHARE_TABLE+"("+ShareMetaData.SHARE_CODE+"));";
+			"FOREIGN KEY (" +PortfolioShareMetadata.SHARE_ISIN_KEY+") REFERENCES "+ShareMetaData.SHARE_TABLE+"("+ShareMetaData.SHARE_ISIN+"));";
 	
 	//-------------------------------------STRING per creazione tabella Siti/Type-------------------//
 	private static final String TABLE_SITE_TYPE_CREATE = "CREATE TABLE "+SiteTypeMetadata.SITE_TYPE_TABLE+" (" +
@@ -639,12 +639,12 @@ public class MyFinanceDatabase
 		database.insert(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, cv);
 	}
 	
-	public void addNewShareInTransitionTable(String portfolioName, String shareCODE, String buyDate, float buyPrice, int roundLot)
+	public void addNewShareInTransitionTable(String portfolioName, String shareISIN, String buyDate, float buyPrice, int roundLot)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(PortfolioShareMetadata.ID, 1);
 		cv.put(PortfolioShareMetadata.PORTFOLIO_NAME_KEY, portfolioName);
-		cv.put(PortfolioShareMetadata.SHARE_CODE_KEY, shareCODE);
+		cv.put(PortfolioShareMetadata.SHARE_ISIN_KEY, shareISIN);
 		cv.put(PortfolioShareMetadata.SHARE_BUYDATE_KEY, buyDate);
 		cv.put(PortfolioShareMetadata.SHARE_BUYPRICE_KEY, buyPrice);
 		cv.put(PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, roundLot);
@@ -691,7 +691,7 @@ public class MyFinanceDatabase
 	public Cursor getSpecificShareOverviewInPortfolio(String portfolioName, String shareIsin, String purchaseDate)
 	{
 		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, 
-				PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+shareIsin+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null, null, null, null);
+				PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+shareIsin+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null, null, null, null);
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -725,10 +725,10 @@ public class MyFinanceDatabase
 	public Cursor getAllShareOverviewInPortfolio(String portfolioName)
 	{
 		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE+" as P join "+ShareMetaData.SHARE_TABLE+" as S", 
-				new String[] {"P."+PortfolioShareMetadata.ID, "P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY, "P."+PortfolioShareMetadata.SHARE_CODE_KEY+" as 'isin'", 
+				new String[] {"P."+PortfolioShareMetadata.ID, "P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY, "P."+PortfolioShareMetadata.SHARE_ISIN_KEY+" as 'isin'", 
 				"P."+PortfolioShareMetadata.SHARE_BUYDATE_KEY, "P."+PortfolioShareMetadata.SHARE_BUYPRICE_KEY, "P."+PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, 
 				"S."+ShareMetaData.SHARE_VARIATION_KEY, "S."+ShareMetaData.SHARE_PERCVAR_KEY, "S."+ShareMetaData.SHARE_LASTCONTRACTPRICE_KEY+" as 'prezzo'"}, 
-				"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_CODE_KEY+" = S.'"+ShareMetaData.SHARE_CODE+"'", 
+				"P."+PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' and P."+PortfolioShareMetadata.SHARE_ISIN_KEY+" = S.'"+ShareMetaData.SHARE_ISIN+"'", 
 				null, null, null, null);
 	}
 	
@@ -776,7 +776,7 @@ public class MyFinanceDatabase
 	{
 		boolean result = false;
 		
-		Cursor c = database.query(ShareMetaData.SHARE_TABLE, null, ShareMetaData.SHARE_CODE+" = '"+shareIsin+"'", null, null, null, null);
+		Cursor c = database.query(ShareMetaData.SHARE_TABLE, null, ShareMetaData.SHARE_ISIN+" = '"+shareIsin+"'", null, null, null, null);
 		if(c.getCount()>0)
 		{
 			result = true;
@@ -802,9 +802,9 @@ public class MyFinanceDatabase
 		return result;
 	}
 	
-	public boolean shareAlredyInTransitionTable(String code){
+	public boolean shareAlredyInTransitionTable(String isin){
 		boolean result = false;
-		Cursor c = database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+code+"'", null, null, null, null);
+		Cursor c = database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+isin+"'", null, null, null, null);
 		if(c.getCount()>0)result = true;
 		c.close();
 		return result;
@@ -827,7 +827,7 @@ public class MyFinanceDatabase
 	
 	public Cursor getShareDetails(String CODE)
 	{
-		return database.query(ShareMetaData.SHARE_TABLE, null, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null, null, null, null);
+		return database.query(ShareMetaData.SHARE_TABLE, null, ShareMetaData.SHARE_ISIN+" = '"+CODE+"'", null, null, null, null);
 	}
 	
 	
@@ -875,7 +875,7 @@ public class MyFinanceDatabase
 		cv.put(PortfolioShareMetadata.SHARE_BUYDATE_KEY, newPurchaseDate);
 		cv.put(PortfolioShareMetadata.SHARE_BUYPRICE_KEY, newPrize);
 		cv.put(PortfolioShareMetadata.SHARE_ROUNDLOT_KEY, newLot);
-		database.update(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, cv, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+shareIsin+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+oldPurchaseDate+"'", null);
+		database.update(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, cv, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+shareIsin+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+oldPurchaseDate+"'", null);
 	}
 	
 //	public void updateSelectedBond(String ISIN, String name, String currency, String market, String marketPhase, float lastContractPrice, 
@@ -1077,7 +1077,7 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSiteUrl());
 //		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
 //		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
-		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+newShare.getISIN()+"'", null);
+		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_ISIN+" = '"+newShare.getISIN()+"'", null);
 	}
 
 	//managment of preferred and ignored sites......
@@ -1095,11 +1095,11 @@ public class MyFinanceDatabase
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+fundIsin+"'", null);
 	}
 	
-	public void updateSelectedSharePreferredSite(String shareCode, String PreferredSite)
+	public void updateSelectedSharePreferredSite(String shareIsin, String PreferredSite)
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, PreferredSite);
-		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+shareCode+"'", null);
+		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_ISIN+" = '"+shareIsin+"'", null);
 	}
 	
 	public void updateSelectedBondIgnoredSites(String bondIsin, String ignoredSites)
@@ -1120,7 +1120,7 @@ public class MyFinanceDatabase
 	{
 		ContentValues cv = new ContentValues();
 		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, ignoredSites);
-		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_CODE+" = '"+shareCode+"'", null);
+		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_ISIN+" = '"+shareCode+"'", null);
 	}
 	
 	//--------------------------------DELETE methods----------------------------//
@@ -1140,9 +1140,9 @@ public class MyFinanceDatabase
 		database.delete(FundMetaData.FUND_TABLE, FundMetaData.FUND_ISIN+" = '"+ISIN+"'", null);
 	}
 	
-	public void deleteShare(String CODE)
+	public void deleteShare(String ISIN)
 	{
-		database.delete(ShareMetaData.SHARE_TABLE, ShareMetaData.SHARE_CODE+" = '"+CODE+"'", null);
+		database.delete(ShareMetaData.SHARE_TABLE, ShareMetaData.SHARE_ISIN+" = '"+ISIN+"'", null);
 	}
 	
 	public void deleteBondInTransitionTable(String portfolioName, String ISIN, String purchaseDate) 
@@ -1158,7 +1158,7 @@ public class MyFinanceDatabase
 	
 	public void deleteShareInTransitionTable(String portfolioName, String CODE, String purchaseDate) 
 	{
-		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_CODE_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
+		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
 	}
 	
 	public void deleteAllSitesForTypes()
