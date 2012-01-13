@@ -381,7 +381,7 @@ public class ToolDetailsActivity extends Activity
 		
 		//add rows for ignored sites...
 		//1. all sites that find this type of tools...
-		Cursor sites = db.getSitesForType(toolType);
+		Cursor sites = db.getSitesForType(toolType.toUpperCase());
 		startManagingCursor(sites);
 		
 		if(sites.getCount()!=0)

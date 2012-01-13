@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import other.TypeSiteObject;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,6 +22,8 @@ public class Splashscreen extends Activity
 	private Thread versionRequestTread;
 	
 	private MyFinanceDatabase db;
+	
+	private ProgressDialog prog;
 	
    public void onCreate(Bundle savedInstanceState) {
 	   super.onCreate(savedInstanceState);
@@ -44,12 +47,22 @@ public class Splashscreen extends Activity
 		   
 		   //request con numero di versione...
 		   System.out.println("Start VERSION REQUEST....");
+		   
+		   prog = new ProgressDialog(sPlashScreen);
+		   prog.setMessage("Loading...");
+		   prog.show();
+		   
 		   versionRequestTread.start();
 	   }
 	   else
 	   {
 		   //request vuota...
 		   System.out.println("Start EMPTY REQUEST....");
+		   
+		   prog = new ProgressDialog(sPlashScreen);
+		   prog.setMessage("Loading...");
+		   prog.show();
+		   
 		   emptyRequestTread.start();
 	   }
 	   
@@ -115,6 +128,11 @@ public class Splashscreen extends Activity
 			   }
 			   finally 
 			   {
+				   if(prog.isShowing())
+				   {
+					   prog.dismiss();
+				   }
+				   
 				   finish();
 				   Intent i = new Intent();
 				   i.setClass(splash, MyFinanceActivity.class);
@@ -194,6 +212,11 @@ public class Splashscreen extends Activity
 			   }
 			   finally 
 			   {
+				   if(prog.isShowing())
+				   {
+					   prog.dismiss();
+				   }
+				   
 				   finish();
 				   Intent i = new Intent();
 				   i.setClass(splash, MyFinanceActivity.class);
