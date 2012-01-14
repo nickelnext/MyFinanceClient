@@ -248,6 +248,12 @@ public class ToolDetailsActivity extends Activity
 	@SuppressWarnings("unchecked")
 	private void callForcedUpdate()
 	{
+		
+		
+		
+		
+		
+		
 		ignoredSites.clear();
 		db.open();
 		QuotationType qType;
@@ -291,16 +297,29 @@ public class ToolDetailsActivity extends Activity
 			 
 			
 			//add ignored sites already saved in database...
-			String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
 			
-			for (String string : array) 
+			try 
 			{
-				if(!string.equals(""))
+				if(details.getString(details.getColumnIndex("sitiIgnorati"))!=null)
 				{
-					ignoredSites.add(string);
-					System.out.println("sito ignorato: "+string);
+					String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
+					
+					for (String string : array) 
+					{
+						if(!string.equals(""))
+						{
+							ignoredSites.add(string);
+							System.out.println("sito ignorato: "+string);
+						}
+					}
 				}
+				
+				
+			} catch (StringIndexOutOfBoundsException e) 
+			{
+				e.printStackTrace();
 			}
+			
 			
 			//add source site...
 			ignoredSites.add(details.getString(details.getColumnIndex("sitoSorgente")));
@@ -329,6 +348,9 @@ public class ToolDetailsActivity extends Activity
 		
 		ignoredSitesCB.clear();
 		ignoredSitesTV.clear();
+		
+		String prefSiteFromDB = null;
+		final TextView tmp = new TextView(ToolDetailsActivity.this);
 		
 		final Dialog advancedOptionsDialog = new Dialog(ToolDetailsActivity.this);
 		advancedOptionsDialog.setContentView(R.layout.custom_advanced_options_dialog);
@@ -364,66 +386,93 @@ public class ToolDetailsActivity extends Activity
 				//controlli:
 				
 				//1. deve esserci almeno una checkbox dei siti ignorati non checkata
-				
-				
-				
-				
-				
-				
-				//2. se la checkbox del sito preferito è checkata, la corrispondente checkbox nei
-				//   siti ignorsti deve essere non checkata
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				if(prefSite_CB.isChecked())
-				{
-					if(toolType.equals("bond"))
-					{
-						db.updateSelectedBondPreferredSite(toolIsin, preferredSite);
-					}
-					else if(toolType.equals("fund"))
-					{
-						db.updateSelectedFundPreferredSite(toolIsin, preferredSite);
-					}
-					else if(toolType.equals("share"))
-					{
-						db.updateSelectedSharePreferredSite(toolIsin, preferredSite);
-					}	
-				}
-				
-				String stringTmp = null;
+				boolean allIgnoredSitesCBChecked = true;
 				
 				for (int i = 0; i < ignoredSitesCB.size(); i++) 
 				{
-					if(ignoredSitesCB.get(i).isChecked())
+					if(!ignoredSitesCB.get(i).isChecked())
 					{
-						stringTmp = ignoredSitesTV.get(i).getText().toString()+" ";
+						allIgnoredSitesCBChecked = false;
+						break;
 					}
 				}
 				
-				if(toolType.equals("bond"))
+				if(allIgnoredSitesCBChecked)
 				{
-					db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
+					//error!
+					showMessage("Error", "You can't ignore all sites for this tool.");
 				}
-				else if(toolType.equals("fund"))
+				else
 				{
-					db.updateSelectedFundIgnoredSites(toolIsin, stringTmp);
-				}
-				else if(toolType.equals("share"))
-				{
-					db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
+					//2. se la checkbox del sito preferito è checkata, la corrispondente checkbox nei
+					//   siti ignorati deve essere non checkata
+					int index = 0;
+					for (int i = 0; i < ignoredSitesCB.size(); i++) 
+					{
+						System.out.println("STRINGA CONFRONTO: "+ignoredSitesTV.get(i).getText().toString()+" - "+tmp.getText().toString());
+						if(ignoredSitesTV.get(i).getText().toString().equals(tmp.getText().toString()))
+						{
+							index = i;
+						}
+					}
+					
+					System.out.println("INDEX = "+index);
+					
+					if(prefSite_CB.isChecked() && ignoredSitesCB.get(index).isChecked())
+					{
+						//error
+						showMessage("Error", "You can't ignore the preferred site");
+					}
+					else
+					{
+						System.out.println("PROCEDO A SALVARE NEL DB...");
+						//procedo a salvare nel DB...
+						if(prefSite_CB.isChecked())
+						{
+							if(toolType.equals("bond"))
+							{
+								db.updateSelectedBondPreferredSite(toolIsin, tmp.getText().toString());
+							}
+							else if(toolType.equals("fund"))
+							{
+								db.updateSelectedFundPreferredSite(toolIsin, tmp.getText().toString());
+							}
+							else if(toolType.equals("share"))
+							{
+								db.updateSelectedSharePreferredSite(toolIsin, tmp.getText().toString());
+							}	
+							
+							String stringTmp = null;
+							
+							for (int i = 0; i < ignoredSitesCB.size(); i++) 
+							{
+								if(ignoredSitesCB.get(i).isChecked())
+								{
+									stringTmp = ignoredSitesTV.get(i).getText().toString()+" ";
+								}
+							}
+							
+							if(toolType.equals("bond"))
+							{
+								db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
+							}
+							else if(toolType.equals("fund"))
+							{
+								db.updateSelectedFundIgnoredSites(toolIsin, stringTmp);
+							}
+							else if(toolType.equals("share"))
+							{
+								db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
+							}
+							
+							advancedOptionsDialog.dismiss();
+						}
+					}
+					
 				}
 				
 				db.close();
 				
-				advancedOptionsDialog.dismiss();
 			}
 		});
 		
@@ -457,7 +506,8 @@ public class ToolDetailsActivity extends Activity
 				toolDetails.moveToFirst();
 				
 				String label = supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_CB", language);
-				String prefSiteFromDB = toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente"));
+				prefSiteFromDB = toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente"));
+				tmp.setText(prefSiteFromDB);
 				
 				label = label.replaceAll("__NAME__", prefSiteFromDB);
 				
