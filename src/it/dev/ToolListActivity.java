@@ -1284,15 +1284,21 @@ public class ToolListActivity extends Activity
 				//4. for all FUND returned...
 				for(Quotation_Fund qf : container.getFundList())
 				{
-//					//4.1 control if fund already exist in database --> UPDATE
-//					//UPDATE
+					try {
+						db.updateSelectedFundByQuotationObject(qf, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
 				}
 				
 				//5. for all SHARE returned...
 				for(Quotation_Share qs : container.getShareList())
 				{
-//					//5.1 control if share already exist in database --> UPDATE
-//					//UPDATE
+					try {
+						db.updateSelectedShareByQuotationObject(qs, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
 				}
 				
 				//update portfolio lastupdate field...
