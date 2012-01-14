@@ -125,9 +125,7 @@ public class ToolListActivity extends Activity
 		//CALL ASYNCTASK FOR UPDATE REQUEST...(when activity starts)
 		if(toolLoadedByDatabase.size()!=0)
 		{
-			if(portfolioToUpdated(portfolioName)){
-				updateToolsInPortfolio();
-			}
+			updateToolsInPortfolio();
 			
 			UpdateTimeTask.add(portfolioName);
 		}
@@ -225,6 +223,10 @@ public class ToolListActivity extends Activity
     		//manual update...
     		if(portfolioToUpdated(portfolioName)){
     			updateToolsInPortfolio();
+    		}
+    		else
+    		{
+    			showMessage("Info", "You have to wait 30 minutes between one update and another.");
     		}
     		break;
     	case R.id.menu_about_page:
@@ -455,15 +457,23 @@ public class ToolListActivity extends Activity
 					// String -> Uppercase -> cut spaces and get first element
 					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
 					
-					toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
-							"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
+					if(toolAlreadySelected(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], purchaseDate))
+					{
+						showMessage("Error", "Tool and purchase date already selected for this Portfolio. If you want you can edit it by long pressing it in the Tool list.");
+					}
+					else
+					{
+						toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
+								"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
+						
+						final Calendar c = Calendar.getInstance();
+						shareISINEditText.setText("");
+						purchaseDateDatePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), null);
+						buyPriceEditText.setText("");
+						roundLotEditText.setText("");
 					
-					//initialize view...
-					final Calendar c = Calendar.getInstance();
-					shareISINEditText.setText("");
-					purchaseDateDatePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), null);
-					buyPriceEditText.setText("");
-					roundLotEditText.setText("");
+					}
+					
 				}
 				else
 				{
@@ -482,22 +492,30 @@ public class ToolListActivity extends Activity
 					// String -> Uppercase -> cut spaces and get first element
 					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()+1) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
 					
-					toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
-							"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
-					
-					//1. create arrayList of Quotation Request....
-					ArrayList<Request> array = new ArrayList<Request>();
-					for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
+					if(toolAlreadySelected(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], purchaseDate))
 					{
-						array.add(new Request(toolTmpToAddInDatabase.get(i).getISIN()));
+						showMessage("Error", "Tool and purchase date already selected for this Portfolio. If you want you can edit it by long pressing it in the Tool list.");
+					}
+					else
+					{
+						toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
+								"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
+						
+						//1. create arrayList of Quotation Request....
+						ArrayList<Request> array = new ArrayList<Request>();
+						for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
+						{
+							array.add(new Request(toolTmpToAddInDatabase.get(i).getISIN()));
+						}
+						
+						//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
+						QuotationRequestAsyncTask asyncTask1 = new QuotationRequestAsyncTask(ToolListActivity.this);
+						asyncTask1.execute(array);
+						
+						//3.dismiss dialog...
+						addToolDialog.dismiss();
 					}
 					
-					//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
-					QuotationRequestAsyncTask asyncTask1 = new QuotationRequestAsyncTask(ToolListActivity.this);
-					asyncTask1.execute(array);
-					
-					//3.dismiss dialog...
-					addToolDialog.dismiss();
 				}
 				else
 				{
@@ -507,6 +525,32 @@ public class ToolListActivity extends Activity
 		});
 		supportDatabase.close();
 		addToolDialog.show();
+	}
+	
+	private boolean toolAlreadySelected(String isin, String purchaseDate)
+	{
+		boolean result = false;
+		
+		//1. control in temporary list of toolObject....
+		for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
+		{
+			if(toolTmpToAddInDatabase.get(i).getISIN().equals(isin) && toolTmpToAddInDatabase.get(i).getPurchaseDate().equals(purchaseDate))
+			{
+				result = true;
+			}
+		}
+		
+		
+		//2. control tool saved in database....
+		for (int i = 0; i < toolLoadedByDatabase.size(); i++) 
+		{
+			if(toolLoadedByDatabase.get(i).getISIN().equals(isin) && toolLoadedByDatabase.get(i).getPurchaseDate().equals(purchaseDate))
+			{
+				result = true;
+			}
+		}
+		
+		return result;
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////
