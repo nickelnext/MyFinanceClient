@@ -249,11 +249,6 @@ public class ToolDetailsActivity extends Activity
 	private void callForcedUpdate()
 	{
 		
-		
-		
-		
-		
-		
 		ignoredSites.clear();
 		db.open();
 		QuotationType qType;
@@ -294,7 +289,15 @@ public class ToolDetailsActivity extends Activity
 			{
 				preferredSite = details.getString(details.getColumnIndex("sitoPreferito"));;
 			}
-			 
+			
+			if(preferredSite!=null)
+			{
+				if(preferredSite.equals(details.getString(details.getColumnIndex("sitoSorgente"))))
+				{
+					showMessage("Error", "You can't discard the preferred site for next search. Open the Advanced Settings Menu to resolve the problem.");
+					return;
+				}
+			}
 			
 			//add ignored sites already saved in database...
 			
@@ -440,33 +443,48 @@ public class ToolDetailsActivity extends Activity
 							else if(toolType.equals("share"))
 							{
 								db.updateSelectedSharePreferredSite(toolIsin, tmp.getText().toString());
-							}	
-							
-							String stringTmp = null;
-							
-							for (int i = 0; i < ignoredSitesCB.size(); i++) 
-							{
-								if(ignoredSitesCB.get(i).isChecked())
-								{
-									stringTmp = ignoredSitesTV.get(i).getText().toString()+" ";
-								}
 							}
-							
+						}
+						else
+						{
 							if(toolType.equals("bond"))
 							{
-								db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
+								db.updateSelectedBondPreferredSite(toolIsin, "");
 							}
 							else if(toolType.equals("fund"))
 							{
-								db.updateSelectedFundIgnoredSites(toolIsin, stringTmp);
+								db.updateSelectedFundPreferredSite(toolIsin, "");
 							}
 							else if(toolType.equals("share"))
 							{
-								db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
+								db.updateSelectedSharePreferredSite(toolIsin, "");
 							}
-							
-							advancedOptionsDialog.dismiss();
 						}
+						
+						String stringTmp = "";
+						
+						for (int i = 0; i < ignoredSitesCB.size(); i++) 
+						{
+							if(ignoredSitesCB.get(i).isChecked())
+							{
+								stringTmp = stringTmp + ignoredSitesTV.get(i).getText().toString()+" ";
+							}
+						}
+						
+						if(toolType.equals("bond"))
+						{
+							db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
+						}
+						else if(toolType.equals("fund"))
+						{
+							db.updateSelectedFundIgnoredSites(toolIsin, stringTmp);
+						}
+						else if(toolType.equals("share"))
+						{
+							db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
+						}
+						
+						advancedOptionsDialog.dismiss();
 					}
 					
 				}
@@ -513,6 +531,12 @@ public class ToolDetailsActivity extends Activity
 				
 				
 				prefSite_CB.setText(label);
+				
+				if(prefSiteFromDB.equals(toolDetails.getString(toolDetails.getColumnIndex("sitoPreferito"))))
+				{
+					prefSite_CB.setChecked(true);
+				}
+				
 			}
 		}
 		
