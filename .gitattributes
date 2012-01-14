@@ -37,6 +37,7 @@ res/menu/add_portfolio_menu.xml -text svneol=unset#text/plain
 res/menu/add_share_menu.xml -text svneol=unset#text/plain
 res/menu/select_portfolio_context_menu.xml -text svneol=unset#text/plain
 res/menu/tool_detail_menu.xml -text
+res/menu/wishlist_menu.xml -text
 res/values/strings.xml -text svneol=unset#text/plain
 serverside/Quotes/Quotation.java -text
 serverside/Quotes/QuotationContainer.java -text
@@ -59,6 +60,7 @@ src/it/dev/SupportDatabaseHelper.java -text
 src/it/dev/ToolDetailsActivity.java -text
 src/it/dev/ToolListActivity.java -text
 src/it/dev/ToolObject.java -text
+src/it/dev/WishlistActivity.java -text
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
 src/it/util/ResponseHandler.java -text
