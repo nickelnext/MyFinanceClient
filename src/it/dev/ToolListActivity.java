@@ -104,7 +104,7 @@ public class ToolListActivity extends Activity
         percVarTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "percVariationCol", language));
         priceColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "price", language));
         
-        
+        supportDatabase.close();
         
         
         registerForContextMenu(toolListView);
@@ -164,6 +164,17 @@ public class ToolListActivity extends Activity
         menu.setHeaderTitle(toolLoadedByDatabase.get(info.position).getISIN());
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.select_portfolio_context_menu, menu);
+        MenuItem editItem = menu.findItem(R.id.edit_item);
+		MenuItem removeItem = menu.findItem(R.id.remove_item);
+        
+        supportDatabase.openDataBase();
+		
+		String language = supportDatabase.getUserSelectedLanguage();
+		
+		editItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "edit_item", language));
+		removeItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "remove_item", language));
+		
+		supportDatabase.close();
     }
 	
 	public boolean onContextItemSelected(MenuItem item) {
@@ -189,17 +200,16 @@ public class ToolListActivity extends Activity
 		supportDatabase.openDataBase();
 		getMenuInflater().inflate(R.menu.add_share_menu, menu);
 		
-		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
-		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
 		MenuItem menuAddShare = menu.findItem(R.id.menu_add_share);
 		MenuItem menuManualUpdate = menu.findItem(R.id.menu_manual_update);
-		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
-		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
+		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
+		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
+		
 		menuAddShare.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_add_tool", language));
 		menuManualUpdate.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_update_tools", language));
+		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
+		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
 		
-    	
-    	
     	supportDatabase.close();
     	return true;
     }
@@ -218,13 +228,12 @@ public class ToolListActivity extends Activity
     		}
     		break;
     	case R.id.menu_about_page:
-    		showAddNewToolDialog();
+    		Intent i = new Intent(this, AboutActivity.class);
+			startActivity(i);
     		break;
     	case R.id.menu_help_page:
-    		//manual update...
-    		if(portfolioToUpdated(portfolioName)){
-    			updateToolsInPortfolio();
-    		}
+    		Intent i1 = new Intent(this, HelpActivity.class);
+			startActivity(i1);
     		break;
     		
     	}
@@ -272,8 +281,6 @@ public class ToolListActivity extends Activity
 	private void showEditToolDialog(String isin, String type, String purchaseDate)
 	{
 		
-		
-			
 		final Dialog editToolDialog = new Dialog(ToolListActivity.this);
 		editToolDialog.setContentView(R.layout.custom_edit_selected_tool_dialog);
 		editToolDialog.setTitle(isin);
@@ -303,7 +310,7 @@ public class ToolListActivity extends Activity
 		previousDate_TV.setText(purchaseDate);
 		oldPurchaseDate_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language));
 		newPurchaseDate_TV.setText("New " + supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language));
-		newPurchasePrice_TV.setText("New "+ supportDatabase.getTextFromTable("Label_cusom_add_new_tool_dialog", "price_TV", language));
+		newPurchasePrice_TV.setText("New "+ supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "price_TV", language));
 		newLot_TV.setText("New "+ supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_TV", language));
 		undoEditToolButton.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "cancel_btn", language));
 		finishEditToolButton.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "addPortfolio_btn", language));
@@ -394,6 +401,11 @@ public class ToolListActivity extends Activity
 	//Open the custom alert dialog where it is possible to add a new tool.
 	private void showAddNewToolDialog()
 	{
+		supportDatabase.openDataBase();
+		
+		String language  = supportDatabase.getUserSelectedLanguage();
+		
+		
 		//initilize arraylists...
 		toolTmpToAddInDatabase.clear();
 		
@@ -401,6 +413,12 @@ public class ToolListActivity extends Activity
 		addToolDialog.setContentView(R.layout.custom_add_new_tool);
 		addToolDialog.setTitle("Add a new Tool");
 		addToolDialog.setCancelable(true);
+		
+		final TextView addISIN_TV = (TextView) addToolDialog.findViewById(R.id.addISIN_TV);
+		final TextView date_TV = (TextView) addToolDialog.findViewById(R.id.date_TV);
+		final TextView price_TV = (TextView) addToolDialog.findViewById(R.id.price_TV);
+		final TextView lot_TV = (TextView) addToolDialog.findViewById(R.id.lot_TV);
+		
 		final EditText shareISINEditText = (EditText) addToolDialog.findViewById(R.id.addISIN_ET);
 		final DatePicker purchaseDateDatePicker = (DatePicker) addToolDialog.findViewById(R.id.purchaseDateDatePicker);
 		final EditText buyPriceEditText = (EditText) addToolDialog.findViewById(R.id.price_ET);
@@ -408,6 +426,20 @@ public class ToolListActivity extends Activity
 		Button undoNewShareButton = (Button) addToolDialog.findViewById(R.id.cancelButton);
 		Button saveNewToolButton = (Button) addToolDialog.findViewById(R.id.saveNewToolButton);
 		Button finishAddToolsButton = (Button) addToolDialog.findViewById(R.id.finishButton);
+		
+		//add labels...
+		addISIN_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "addIsin_TV", language));
+		date_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language));
+		price_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "price_TV", language));
+		lot_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_TV", language));
+		
+		shareISINEditText.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "addIsin_ET", language));
+		buyPriceEditText.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "price_ET", language));
+		roundLotEditText.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_ET", language));
+		
+		undoNewShareButton.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "cancel_btn", language));
+		saveNewToolButton.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "addOtherTools_btn", language));
+		finishAddToolsButton.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "finish_btn", language));
 		
 		undoNewShareButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {

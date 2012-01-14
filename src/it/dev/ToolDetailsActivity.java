@@ -361,6 +361,27 @@ public class ToolDetailsActivity extends Activity
 			public void onClick(View v) {
 				db.open();
 				
+				//controlli:
+				
+				//1. deve esserci almeno una checkbox dei siti ignorati non checkata
+				
+				
+				
+				
+				
+				
+				//2. se la checkbox del sito preferito è checkata, la corrispondente checkbox nei
+				//   siti ignorsti deve essere non checkata
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				if(prefSite_CB.isChecked())
 				{
 					if(toolType.equals("bond"))
@@ -436,7 +457,7 @@ public class ToolDetailsActivity extends Activity
 				toolDetails.moveToFirst();
 				
 				String label = supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_CB", language);
-				String prefSiteFromDB = toolDetails.getString(toolDetails.getColumnIndex("sitoSorgenteUrl"));
+				String prefSiteFromDB = toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente"));
 				
 				label = label.replaceAll("__NAME__", prefSiteFromDB);
 				

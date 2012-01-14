@@ -9,18 +9,18 @@
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:layout_marginTop="2dp"
-    		android:weightSum="13">
+    		android:weightSum="14">
     	    <TableRow>
 
     	        <TextView
     	            android:id="@+id/isinTextView"
     	            android:layout_width="0dp"
     	            android:layout_height="wrap_content"
-    	            android:paddingLeft="5dp"
     	            android:textColor="#000000"
 					android:textSize="12dp"
-    	            android:layout_weight="4"
-    	            android:text="isin / code"/>
+    	            android:gravity="center_horizontal"
+                	android:layout_weight="4"
+    	            android:text="isin"/>
     	        <TextView               
                 	android:id="@+id/dateTextView"
                 	android:layout_width="0dp"
@@ -55,7 +55,7 @@
                 	android:textSize="12dp"
                 	android:textColor="#000000"
 					android:gravity="center_horizontal"
-                	android:layout_weight="2"
+                	android:layout_weight="3"
     	            android:text="prize"/>
     		</TableRow>
 		</TableLayout>

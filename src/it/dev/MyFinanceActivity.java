@@ -367,7 +367,9 @@ public class MyFinanceActivity extends Activity
 		timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		updateTimeSpinner.setAdapter(timeAdapter);
-		updateLanguageSpinner.setAdapter(languageAdapter);		
+		updateLanguageSpinner.setAdapter(languageAdapter);
+		
+		
 		
 		
 		//checks which are the user preferences
@@ -396,7 +398,7 @@ public class MyFinanceActivity extends Activity
 		}
 		for(int i=0; i<languageAdapter.getCount();i++)
 		{
-			if(languageAdapter.getItem(i).toString()==userSelectedLanguage)
+			if(languageAdapter.getItem(i).toString().equals(userSelectedLanguage))
 				updateLanguageSpinner.setSelection(i);
 		}
 		
@@ -426,6 +428,7 @@ public class MyFinanceActivity extends Activity
 					updateOptionDialog.dismiss();   	    	
 					break;
 				case R.id.saveUpdatePreferencesButton:
+					supportDatabase.openDataBase();
 					System.out.println("case2");
 					int newUpdateTime = Integer.valueOf(updateTimeSpinner.getSelectedItem().toString());
 					boolean newAutoUpdate = enableAutoUpdateCheckBox.isChecked();
@@ -434,6 +437,7 @@ public class MyFinanceActivity extends Activity
 						newUpdateTime = 0; //0 is for NoAutoUpdate
 					supportDatabase.setConfigParameters(newLanguage, newUpdateTime);
 
+					supportDatabase.close();
 					//Se necessario,attivare i pannula timers!
 					//TODO
 					updateOptionDialog.dismiss();
