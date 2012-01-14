@@ -10,8 +10,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 
 public class Splashscreen extends Activity 
 {
@@ -75,7 +73,7 @@ public class Splashscreen extends Activity
 				   synchronized (this) 
 				   {
 					   //wait 2 secs...
-					   wait(1500);
+					   wait(2000);
 					   
 					   try {
 							String jsonReq = "empty";	
@@ -141,7 +139,7 @@ public class Splashscreen extends Activity
 				   synchronized (this) 
 				   {
 					   //wait 2 secs...
-					   wait(1500);
+					   wait(2000);
 					   
 					   try {
 							String jsonReq = String.valueOf(version);	
