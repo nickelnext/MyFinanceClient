@@ -28,6 +28,7 @@
         <activity android:name=".ToolDetailsActivity"></activity>
         <activity android:name=".AboutActivity"></activity>
         <activity android:name=".HelpActivity"></activity>
+        <activity android:name=".WishlistActivity"></activity>
     </application>
 
 </manifest>
