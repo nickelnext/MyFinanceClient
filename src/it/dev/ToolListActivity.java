@@ -221,13 +221,21 @@ public class ToolListActivity extends Activity
     		break;
     	case R.id.menu_manual_update:
     		//manual update...
-    		if(portfolioToUpdated(portfolioName)){
-    			updateToolsInPortfolio();
+    		if(toolLoadedByDatabase.size()==0)
+    		{
+    			showMessage("Info", "No tool to update");
     		}
     		else
     		{
-    			showMessage("Info", "You have to wait 30 minutes between one update and another.");
+    			if(portfolioToUpdated(portfolioName)){
+        			updateToolsInPortfolio();
+        		}
+        		else
+        		{
+        			showMessage("Info", "You have to wait 30 minutes between one update and another.");
+        		}
     		}
+    		
     		break;
     	case R.id.menu_about_page:
     		Intent i = new Intent(this, AboutActivity.class);
