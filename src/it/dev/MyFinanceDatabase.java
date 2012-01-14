@@ -1074,7 +1074,7 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_LASTCLOSE_KEY, newShare.getChiusuraPrecedente());
 		cv.put(ShareMetaData.SHARE_LASTUPDATE_KEY, lastUpdate);
 		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSite());
-		cv.put(ShareMetaData.SHARE_SOURCESITE_KEY, newShare.getSiteUrl());
+		cv.put(ShareMetaData.SHARE_SOURCESITEURL_KEY, newShare.getSiteUrl());
 //		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
 //		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
 		database.update(ShareMetaData.SHARE_TABLE, cv, ShareMetaData.SHARE_ISIN+" = '"+newShare.getISIN()+"'", null);
