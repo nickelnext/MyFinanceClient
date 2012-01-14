@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        
+        <TableLayout
+    		android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="2dp"
+    		android:weightSum="13">
+    	    <TableRow>
+
+    	        <TextView
+    	            android:id="@+id/wishlist_isinTextView"
+    	            android:layout_width="0dp"
+    	            android:layout_height="wrap_content"
+    	            android:textColor="#000000"
+					android:textSize="12dp"
+    	            android:gravity="center_horizontal"
+                	android:layout_weight="4"
+    	            android:text="isin"/>
+    	        <TextView               
+                	android:id="@+id/wishlist_variationTextView"
+                	android:layout_width="0dp"
+                	android:layout_height="wrap_content"                
+                	android:textSize="12dp"
+                	android:textColor="#000000"
+					android:gravity="center_horizontal"
+                	android:layout_weight="3"
+    	            android:text="var"/>
+        		<TextView               
+                	android:id="@+id/wishlist_percVarTextView"
+                	android:layout_width="0dp"
+                	android:layout_height="wrap_content"
+                	android:textSize="12dp"
+                	android:textColor="#000000"
+					android:gravity="center_horizontal"
+                	android:layout_weight="3"
+    	            android:text="var %"/>
+        		<TextView 
+        		    android:id="@+id/wishlist_lastPrizeTextView"
+                	android:layout_width="0dp"
+                	android:layout_height="wrap_content"
+                	android:textSize="12dp"
+                	android:textColor="#000000"
+					android:gravity="center_horizontal"
+                	android:layout_weight="3"
+    	            android:text="prize"/>
+    		</TableRow>
+		</TableLayout>
+</LinearLayout>

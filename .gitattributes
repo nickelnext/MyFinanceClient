@@ -31,6 +31,8 @@ res/layout/tool_details.xml -text
 res/layout/tool_details_row.xml -text
 res/layout/tool_list_activity.xml -text
 res/layout/tool_listview_items.xml -text
+res/layout/wishlist_activity.xml -text
+res/layout/wishlist_listview_items.xml -text
 res/menu/add_portfolio_menu.xml -text svneol=unset#text/plain
 res/menu/add_share_menu.xml -text svneol=unset#text/plain
 res/menu/select_portfolio_context_menu.xml -text svneol=unset#text/plain

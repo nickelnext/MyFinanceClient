@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@drawable/tool_list_bkg" >
+    android:background="#FFFFFF">
     
     <TableLayout 
         android:layout_width="fill_parent"
@@ -13,18 +13,12 @@
     	android:weightSum="11">
         <TableRow >
         	<TextView
-        		android:id="@+id/portfolioReferenceTextView"
         		android:layout_width="0dp"
         		android:layout_height="wrap_content"
-        		android:text=""
+        		android:text="Wishlist"
         		android:textColor="#000000"
-        		android:layout_weight="6"
+        		android:layout_weight="11"
         		android:textAppearance="?android:attr/textAppearanceLarge" />
-        	<ImageView 
-        	    android:id="@+id/IV"
-        		android:layout_width="0dp"
-        		android:layout_height="wrap_content"
-        		android:layout_weight="5"/>
  		</TableRow>   
     </TableLayout>
 
@@ -34,13 +28,13 @@
     	android:layout_marginLeft="5dp"
     	android:orientation="horizontal">
         <TextView
-            android:id="@+id/portfolioLastUpdate_TV"
+            android:id="@+id/wishlistLastUpdate_TV"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:textColor="#000000"
         	android:text="Last Update: "/>
        	<TextView
-       	    android:id="@+id/portfolioLastUpdate"
+       	    android:id="@+id/wishlistLastUpdate"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
         	android:textColor="#000000"
@@ -64,7 +58,7 @@
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:layout_marginTop="5dp"
-    		android:weightSum="14">
+    		android:weightSum="13">
     	    <TableRow>
 
     	        <TextView
@@ -78,16 +72,6 @@
                 	android:layout_weight="4"
     	            android:textStyle="bold" />
     	        <TextView               
-                	android:id="@+id/dateCol"
-                	android:layout_width="0dp"
-                	android:layout_height="wrap_content"                
-                	android:textSize="15dp"
-                	android:textStyle="bold" 
-                	android:textColor="#000000"
-        			android:gravity="center_horizontal"
-                	android:layout_weight="3"
-    	            android:text="Date"/>
-				<TextView               
                 	android:id="@+id/variationCol"
                 	android:layout_width="0dp"
                 	android:layout_height="wrap_content"                
@@ -95,7 +79,7 @@
                 	android:textStyle="bold" 
                 	android:textColor="#000000"
         			android:gravity="center_horizontal"
-                	android:layout_weight="2"
+                	android:layout_weight="3"
     	            android:text="Var"/>
         		<TextView               
                 	android:id="@+id/percVarCol"
@@ -105,7 +89,7 @@
                 	android:textStyle="bold" 
                 	android:gravity="center_horizontal"
                 	android:textColor="#000000"
-        			android:layout_weight="2"
+        			android:layout_weight="3"
     	            android:text="Var%"/>
         		<TextView 
         		    android:id="@+id/priceCol"
@@ -121,7 +105,7 @@
 		</TableLayout>
 		
     <ListView
-        android:id="@+id/toolListView"
+        android:id="@+id/wishlist_toolListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:layout_marginTop="5dp">
