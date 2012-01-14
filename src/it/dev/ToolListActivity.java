@@ -145,7 +145,7 @@ public class ToolListActivity extends Activity
 		if(portfolio.getCount()==1)
 		{
 			portfolio.moveToFirst();
-			portfolioLastUpdate.setText(portfolio.getString(4));
+			portfolioLastUpdate.setText(getDateFromLanguage(portfolio.getString(4),language));
 		}
 		
 		supportDatabase.close();
@@ -505,7 +505,7 @@ public class ToolListActivity extends Activity
 				}
 			}
 		});
-		
+		supportDatabase.close();
 		addToolDialog.show();
 	}
 	
@@ -777,7 +777,9 @@ public class ToolListActivity extends Activity
 	
 	private String getTodaysDate() 
 	{
-	    final Calendar c = Calendar.getInstance();
+		final Calendar c = Calendar.getInstance();
+	    c.getTime();
+	    
 	    return(new StringBuilder()
 	            .append(c.get(Calendar.MONTH) + 1).append("/")
 	            .append(c.get(Calendar.DAY_OF_MONTH)).append("/")
@@ -786,6 +788,31 @@ public class ToolListActivity extends Activity
 	            .append(c.get(Calendar.MINUTE)).append(":")
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
 	}
+	private String getDateFromLanguage(String dateInEnglishFormat, String language)
+	{
+//		MM/dd/YYYY FAFSDFAS
+//		dd/MM/YYYY FAFSDFAS
+		if(language.equals("english"))
+		{
+			System.out.println("DATA IN INGLESE");
+			return dateInEnglishFormat;
+		}
+		
+		
+		try {
+			String ret = dateInEnglishFormat;
+			String [] arr = ret.split("/");
+			String days = arr[1];
+			String months = arr[0];
+			ret = days + "/" + months + "/" + arr[2];
+			
+			
+			return ret;
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
 	
 	private void deleteSelectedTool(String ISIN, String type, String purchaseDate)
 	{
