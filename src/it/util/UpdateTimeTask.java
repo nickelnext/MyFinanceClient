@@ -43,7 +43,7 @@ public class UpdateTimeTask extends TimerTask{
 			System.out.println(s);
 			today = (GregorianCalendar) Calendar.getInstance();
 			upDate = (GregorianCalendar) Calendar.getInstance();
-			today.add(Calendar.MINUTE, -30);
+		//	today.add(Calendar.MINUTE, -30);
 			
 			Cursor c = db.getDetailsOfPortfolio(s);
 			System.out.println("colonne:"+c.getColumnCount());
@@ -52,9 +52,10 @@ public class UpdateTimeTask extends TimerTask{
 			System.out.println("update data:"+updateDate);
 			c.close();
 			String[] updateString	= updateDate.split("[/: ]");
-			upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
+			upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[0])-1, Integer.parseInt(updateString[1]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
 			
-			if(today.after(upDate)){	
+			if(today.after(upDate)){
+				System.out.println("AutoUpdate portfolio: "+s);
 				ArrayList<Request> array = new ArrayList<Request>();		
 				
 				Cursor c_bond = db.getAllBondOverviewInPortfolio(s);
@@ -203,7 +204,7 @@ public class UpdateTimeTask extends TimerTask{
     }
 	
 	public static void add(String portfolioName){
-		portfolii.add(portfolioName);
+		if(!portfolii.contains(portfolioName)) portfolii.add(portfolioName);
 	}
 	
 	private boolean allIsinRequestedAreReturned(ArrayList<String> isinList, QuotationContainer container){
@@ -272,20 +273,3 @@ public class UpdateTimeTask extends TimerTask{
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
 	}		
 }
-
-
-/**
-da inserire nel codice:
-
-UpdateTimeTask upTask = new UpdateTimeTask();
-Timer timer = new Timer();
-
-//quando apro un portafolgio e quindi devo ricordarmi di aggiornarlo
-upTask.add(portfolioName);
-
-//faccio partire il timer
-timer.schedule(new UpdateTask(), 100, 200);
-
-//cancello il timer(e quindi l'update automatico)
-timer.cancel();
-**/

@@ -126,7 +126,7 @@ public class ToolListActivity extends Activity
 		//CALL ASYNCTASK FOR UPDATE REQUEST...(when activity starts)
 		if(toolLoadedByDatabase.size()!=0)
 		{
-			updateToolsInPortfolio();
+			if(portfolioToUpdated(portfolioName)) updateToolsInPortfolio();
 			
 			UpdateTimeTask.add(portfolioName);
 		}
@@ -1323,17 +1323,19 @@ public class ToolListActivity extends Activity
 	
 	private boolean portfolioToUpdated(String portfolioName)
 	{
-		db.open();
 		GregorianCalendar today = (GregorianCalendar) Calendar.getInstance();
 		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
 		today.add(Calendar.MINUTE, -30);
+		db.open();
 		Cursor c = db.getDetailsOfPortfolio(portfolioName);
 		c.moveToFirst();
-		String updateDate = c.getString(4);
+		String updateDate = c.getString(c.getColumnIndex("ultimoAggiornamento"));
 		c.close();
-		String[] updateString	= updateDate.split("[/: ]");
-		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[1])-1, Integer.parseInt(updateString[0]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
+		String[] updateString	= updateDate.split("[/ :]");
+		upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[0])-1, Integer.parseInt(updateString[1]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
 		db.close();
+		System.out.println("today: "+today.get(Calendar.DATE)+"/"+today.get(Calendar.MONTH)+"/"+today.get(Calendar.YEAR)+" "+today.get(Calendar.HOUR)+":"+today.get(Calendar.MINUTE)+":"+today.get(Calendar.SECOND));
+		System.out.println("upDate: "+upDate.get(Calendar.DATE)+"/"+upDate.get(Calendar.MONTH)+"/"+upDate.get(Calendar.YEAR)+" "+upDate.get(Calendar.HOUR)+":"+upDate.get(Calendar.MINUTE)+":"+upDate.get(Calendar.SECOND));
 		if(today.after(upDate))return true;
 		else return false;
 		
