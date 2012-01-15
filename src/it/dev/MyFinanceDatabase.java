@@ -810,6 +810,43 @@ public class MyFinanceDatabase
 		return result;
 	}
 	
+	public boolean bondUsefull(String ISIN)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"'", null, null, null, null);
+		if(c.getCount()>0)
+			result = true;
+		c.close();
+		
+		return result;
+	}
+	
+	public boolean fundUsefull(String ISIN)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+ISIN+"'", null, null, null, null);
+		if(c.getCount()>0)
+			result = true;
+		c.close();
+		
+		return result;
+	}
+	
+	public boolean shareUsefull(String ISIN)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+ISIN+"'", null, null, null, null);
+		if(c.getCount()>0)
+			result = true;
+		c.close();
+		
+		return result;
+	}
+	
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	//------------------------This 3 Methods returns all details -------------------------------------//
 	//------------------------of a tool in a specific Portfolio---------------------------------------//
