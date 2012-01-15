@@ -435,6 +435,8 @@ public class ToolDetailsActivity extends Activity
 					
 					showMessage("Info", "Please be sure to have internet connection next time you will open the application.");
 					
+					advancedOptionsDialog.dismiss();
+					
 				}
 				else
 				{

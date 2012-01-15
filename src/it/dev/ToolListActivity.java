@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
@@ -444,6 +445,7 @@ public class ToolListActivity extends Activity
 		lot_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_TV", language));
 		
 		shareISINEditText.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "addIsin_ET", language));
+		shareISINEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
 		buyPriceEditText.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "price_ET", language));
 		roundLotEditText.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_ET", language));
 		
