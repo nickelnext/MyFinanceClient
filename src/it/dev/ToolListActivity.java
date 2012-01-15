@@ -598,6 +598,8 @@ public class ToolListActivity extends Activity
     	MergeCursor c_merged = new MergeCursor(mCursor);
     	startManagingCursor(c_merged);
     	
+    	
+    	
     	if(c_merged.getCount()!=0)
     	{
     		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tool_listview_items, c_merged, 
@@ -997,8 +999,8 @@ public class ToolListActivity extends Activity
 					ArrayList<ToolObject> listaIsinNotReturned = searchIsinNotReturned(toolTmpToAddInDatabase, container);
 					for (int i = 0; i < listaIsinNotReturned.size(); i++) 
 					{
-						System.out.println(listaIsinNotReturned.get(i));
-						showMessage("Info", listaIsinNotReturned.get(i)+" is not returned by Server");
+						System.out.println(listaIsinNotReturned.get(i).getISIN());
+						showMessage("Info", listaIsinNotReturned.get(i).getISIN()+" is not returned by Server");
 					}
 					
 					//rimuovo dalla lista dei tool che devo inserire nel DB quei tool che non vengono restituiti...
@@ -1267,8 +1269,8 @@ public class ToolListActivity extends Activity
 					ArrayList<ToolObject> listaIsinNotReturned = searchIsinNotReturned(toolLoadedByDatabase, container);
 					for (int i = 0; i < listaIsinNotReturned.size(); i++) 
 					{
-						System.out.println(listaIsinNotReturned.get(i));
-						showMessage("Info", listaIsinNotReturned.get(i)+" is not returned by Server");
+						System.out.println(listaIsinNotReturned.get(i).getISIN());
+						showMessage("Info", listaIsinNotReturned.get(i).getISIN()+" is not returned by Server");
 					}
 				}
 				

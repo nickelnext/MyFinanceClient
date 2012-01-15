@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@drawable/tool_list_bkg" >
+    android:background="@drawable/finance_bkg" >
     
     <TableLayout 
         android:layout_width="fill_parent"
