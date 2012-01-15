@@ -842,8 +842,7 @@ public class ToolListActivity extends Activity
 	}
 	private String getDateFromLanguage(String dateInEnglishFormat, String language)
 	{
-//		MM/dd/YYYY FAFSDFAS
-//		dd/MM/YYYY FAFSDFAS
+
 		if(language.equals("english"))
 		{
 			System.out.println("DATA IN INGLESE");
