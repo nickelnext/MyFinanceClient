@@ -2,8 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#FFFFFF">
 
+    <ImageView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/header"/>
+    
     <TextView
         android:id="@+id/addPortfolioTextView"
         android:layout_width="fill_parent"
@@ -21,13 +27,15 @@
     			android:layout_width="0dp"
 				android:layout_height="wrap_content"
     	    	android:text="Portfolio Name"
+    	    	android:textColor="#000000"
     	    	android:textStyle="bold"
     	    	android:layout_weight="4"/>
 			<TextView              
 			    android:id="@+id/portfolioDescription" 
         		android:layout_width="0dp"
         		android:layout_height="wrap_content"
-            	android:text="Description"
+            	android:textColor="#000000"
+    	    	android:text="Description"
             	android:textStyle="bold"
     	    	android:layout_weight="6"/>
 		</TableRow>

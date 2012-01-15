@@ -3,17 +3,23 @@
 /AndroidManifest.xml -text svneol=unset#text/plain
 assets/support -text
 /project.properties -text
+res/drawable-hdpi/header.jpg -text
 res/drawable-hdpi/ic_launcher.png -text
 res/drawable-hdpi/ic_menu_refresh.png -text
 res/drawable-hdpi/logo.png -text
+res/drawable-hdpi/portfolio.png -text
 res/drawable-hdpi/tool_list_bkg.jpg -text
+res/drawable-ldpi/header.jpg -text
 res/drawable-ldpi/ic_launcher.png -text
 res/drawable-ldpi/ic_menu_refresh.png -text
 res/drawable-ldpi/logo.png -text
+res/drawable-ldpi/portfolio.png -text
 res/drawable-ldpi/tool_list_bkg.jpg -text
+res/drawable-mdpi/header.jpg -text
 res/drawable-mdpi/ic_launcher.png -text
 res/drawable-mdpi/ic_menu_refresh.png -text
 res/drawable-mdpi/logo.png -text
+res/drawable-mdpi/portfolio.png -text
 res/drawable-mdpi/tool_list_bkg.jpg -text
 res/layout/about_activity.xml -text
 res/layout/advanced_options_row.xml -text
