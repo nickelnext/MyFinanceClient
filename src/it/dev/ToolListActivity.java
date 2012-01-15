@@ -598,8 +598,6 @@ public class ToolListActivity extends Activity
     	MergeCursor c_merged = new MergeCursor(mCursor);
     	startManagingCursor(c_merged);
     	
-    	
-    	
     	if(c_merged.getCount()!=0)
     	{
     		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tool_listview_items, c_merged, 
