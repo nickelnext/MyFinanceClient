@@ -104,7 +104,10 @@ public class WishlistActivity extends Activity
     	switch(item.getItemId())
     	{
     	case R.id.menu_add_wish:
-    		//add new wish
+    		//add new wish...
+    		break;
+    	case R.id.menu_manual_update:
+    		//manual update...
     		break;
     	case R.id.menu_about_page:
     		Intent i = new Intent(this, AboutActivity.class);

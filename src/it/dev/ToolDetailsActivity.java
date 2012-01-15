@@ -400,93 +400,132 @@ public class ToolDetailsActivity extends Activity
 					}
 				}
 				
-				if(allIgnoredSitesCBChecked)
+				if(ignoredSitesCB.size()==0)
 				{
-					//error!
-					showMessage("Error", "You can't ignore all sites for this tool.");
-				}
-				else
-				{
-					//2. se la checkbox del sito preferito è checkata, la corrispondente checkbox nei
-					//   siti ignorati deve essere non checkata
-					int index = 0;
-					for (int i = 0; i < ignoredSitesCB.size(); i++) 
+					if(prefSite_CB.isChecked())
 					{
-						System.out.println("STRINGA CONFRONTO: "+ignoredSitesTV.get(i).getText().toString()+" - "+tmp.getText().toString());
-						if(ignoredSitesTV.get(i).getText().toString().equals(tmp.getText().toString()))
-						{
-							index = i;
-						}
-					}
-					
-					System.out.println("INDEX = "+index);
-					
-					if(prefSite_CB.isChecked() && ignoredSitesCB.get(index).isChecked())
-					{
-						//error
-						showMessage("Error", "You can't ignore the preferred site");
-					}
-					else
-					{
-						System.out.println("PROCEDO A SALVARE NEL DB...");
-						//procedo a salvare nel DB...
-						if(prefSite_CB.isChecked())
-						{
-							if(toolType.equals("bond"))
-							{
-								db.updateSelectedBondPreferredSite(toolIsin, tmp.getText().toString());
-							}
-							else if(toolType.equals("fund"))
-							{
-								db.updateSelectedFundPreferredSite(toolIsin, tmp.getText().toString());
-							}
-							else if(toolType.equals("share"))
-							{
-								db.updateSelectedSharePreferredSite(toolIsin, tmp.getText().toString());
-							}
-						}
-						else
-						{
-							if(toolType.equals("bond"))
-							{
-								db.updateSelectedBondPreferredSite(toolIsin, "");
-							}
-							else if(toolType.equals("fund"))
-							{
-								db.updateSelectedFundPreferredSite(toolIsin, "");
-							}
-							else if(toolType.equals("share"))
-							{
-								db.updateSelectedSharePreferredSite(toolIsin, "");
-							}
-						}
-						
-						String stringTmp = "";
-						
-						for (int i = 0; i < ignoredSitesCB.size(); i++) 
-						{
-							if(ignoredSitesCB.get(i).isChecked())
-							{
-								stringTmp = stringTmp + ignoredSitesTV.get(i).getText().toString()+" ";
-							}
-						}
-						
 						if(toolType.equals("bond"))
 						{
-							db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
+							db.updateSelectedBondPreferredSite(toolIsin, tmp.getText().toString());
 						}
 						else if(toolType.equals("fund"))
 						{
-							db.updateSelectedFundIgnoredSites(toolIsin, stringTmp);
+							db.updateSelectedFundPreferredSite(toolIsin, tmp.getText().toString());
 						}
 						else if(toolType.equals("share"))
 						{
-							db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
+							db.updateSelectedSharePreferredSite(toolIsin, tmp.getText().toString());
 						}
-						
-						advancedOptionsDialog.dismiss();
+					}
+					else
+					{
+						if(toolType.equals("bond"))
+						{
+							db.updateSelectedBondPreferredSite(toolIsin, "");
+						}
+						else if(toolType.equals("fund"))
+						{
+							db.updateSelectedFundPreferredSite(toolIsin, "");
+						}
+						else if(toolType.equals("share"))
+						{
+							db.updateSelectedSharePreferredSite(toolIsin, "");
+						}
 					}
 					
+					showMessage("Info", "Please be sure to have internet connection next time you will open the application.");
+					
+				}
+				else
+				{
+					if(allIgnoredSitesCBChecked)
+					{
+						//error!
+						showMessage("Error", "You can't ignore all sites for this tool.");
+					}
+					else
+					{
+						//2. se la checkbox del sito preferito è checkata, la corrispondente checkbox nei
+						//   siti ignorati deve essere non checkata
+						int index = 0;
+						for (int i = 0; i < ignoredSitesCB.size(); i++) 
+						{
+							System.out.println("STRINGA CONFRONTO: "+ignoredSitesTV.get(i).getText().toString()+" - "+tmp.getText().toString());
+							if(ignoredSitesTV.get(i).getText().toString().equals(tmp.getText().toString()))
+							{
+								index = i;
+							}
+						}
+						
+						System.out.println("INDEX = "+index);
+						
+						if(prefSite_CB.isChecked() && ignoredSitesCB.get(index).isChecked())
+						{
+							//error
+							showMessage("Error", "You can't ignore the preferred site");
+						}
+						else
+						{
+							System.out.println("PROCEDO A SALVARE NEL DB...");
+							//procedo a salvare nel DB...
+							if(prefSite_CB.isChecked())
+							{
+								if(toolType.equals("bond"))
+								{
+									db.updateSelectedBondPreferredSite(toolIsin, tmp.getText().toString());
+								}
+								else if(toolType.equals("fund"))
+								{
+									db.updateSelectedFundPreferredSite(toolIsin, tmp.getText().toString());
+								}
+								else if(toolType.equals("share"))
+								{
+									db.updateSelectedSharePreferredSite(toolIsin, tmp.getText().toString());
+								}
+							}
+							else
+							{
+								if(toolType.equals("bond"))
+								{
+									db.updateSelectedBondPreferredSite(toolIsin, "");
+								}
+								else if(toolType.equals("fund"))
+								{
+									db.updateSelectedFundPreferredSite(toolIsin, "");
+								}
+								else if(toolType.equals("share"))
+								{
+									db.updateSelectedSharePreferredSite(toolIsin, "");
+								}
+							}
+							
+							String stringTmp = "";
+							
+							for (int i = 0; i < ignoredSitesCB.size(); i++) 
+							{
+								if(ignoredSitesCB.get(i).isChecked())
+								{
+									stringTmp = stringTmp + ignoredSitesTV.get(i).getText().toString()+" ";
+								}
+							}
+							
+							if(toolType.equals("bond"))
+							{
+								db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
+							}
+							else if(toolType.equals("fund"))
+							{
+								db.updateSelectedFundIgnoredSites(toolIsin, stringTmp);
+							}
+							else if(toolType.equals("share"))
+							{
+								db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
+							}
+							
+							advancedOptionsDialog.dismiss();
+						}
+						
+					}
 				}
 				
 				db.close();
