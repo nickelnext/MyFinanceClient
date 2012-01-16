@@ -3,10 +3,8 @@ package it.util;
 import it.dev.MyFinanceDatabase;
 import it.dev.ToolObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimerTask;
 
@@ -29,7 +27,6 @@ public class UpdateTimeTask extends TimerTask
 	private MyFinanceDatabase db;
 	
 	private QuotationContainer quotCont = new QuotationContainer();
-	private ArrayList<String> shareIsinArrayList = new ArrayList<String>();
 	
 	private Context ctx;
 	
@@ -48,62 +45,121 @@ public class UpdateTimeTask extends TimerTask
 		for(String s : portfolii)
 		{
 			ArrayList<ToolObject> toolListForPortfolioS = new ArrayList<ToolObject>();
+			ArrayList<Request> array = new ArrayList<Request>();		
 			
 			System.out.println("Start automatic update of portfolio: "+s);
 			
-			ArrayList<Request> array = new ArrayList<Request>();		
 			
+		//1.//cursors to get all tools in selected portfolio....
 			Cursor c_bond = db.getAllBondOverviewInPortfolio(s);
 			Cursor c_fund = db.getAllFundOverviewInPortfolio(s);
 			Cursor c_share = db.getAllShareOverviewInPortfolio(s);
-		
-			c_bond.moveToFirst();
-			do {
-				
-			} while (c_bond.moveToNext());
 			
 			
 			
-			
-			
-			while(c_bond.moveToNext())
+		//2.//get all tools in selected portfolio and save them....
+			if(c_bond.getCount()!=0)
 			{
-				String[] split = c_bond.getString(c_bond.getColumnIndex("sitiIgnorati")).split(" ");
-				ArrayList<String> ignored = new ArrayList<String>();
-				for(String b : split)
-				{
-					ignored.add(b);
-				}
-//				array.add(new Request(c_bond.getString(c_bond.getColumnIndex("isin")), QuotationType.BOND, c_bond.getString(c.getColumnIndex("sitoPreferito")), ignored));
+				c_bond.moveToFirst();
+				do {
+					toolListForPortfolioS.add(new ToolObject(c_bond.getString(2), "bond", c_bond.getString(3), String.valueOf(c_bond.getFloat(4)), String.valueOf(c_bond.getInt(5))));
+				} while (c_bond.moveToNext());
 			}
+			
+			if(c_fund.getCount()!=0)
+			{
+				c_fund.moveToFirst();
+				do {
+					toolListForPortfolioS.add(new ToolObject(c_fund.getString(2), "fund", c_fund.getString(3), String.valueOf(c_fund.getFloat(4)), String.valueOf(c_fund.getInt(5))));
+				} while (c_fund.moveToNext());
+			}
+			
+			if(c_share.getCount()!=0)
+			{
+				c_share.moveToFirst();
+				do {
+					toolListForPortfolioS.add(new ToolObject(c_share.getString(2), "share", c_share.getString(3), String.valueOf(c_share.getFloat(4)), String.valueOf(c_share.getInt(5))));
+				} while (c_share.moveToNext());
+			}
+			
+			
+			
+			
+		//3.//close cursors....
 			c_bond.close();
-			
-			c_fund.moveToFirst();
-			while(c_fund.moveToNext())
-			{
-				String[] split = c_fund.getString(c_fund.getColumnIndex("sitiIgnorati")).split(" ");
-				ArrayList<String> ignored = new ArrayList<String>();
-				for(String b : split)
-				{
-					ignored.add(b);
-				}
-//				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, c_fund.getString(c.getColumnIndex("sitoPreferito")), ignored));
-			}
 			c_fund.close();
-			
-			c_share.moveToFirst();
-			while(c_share.moveToNext())
-			{
-				String[] split = c_share.getString(c_share.getColumnIndex("sitiIgnorati")).split(" ");
-				ArrayList<String> ignored = new ArrayList<String>();
-				for(String b : split)
-				{
-					ignored.add(b);
-				}
-//				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, c_share.getString(c.getColumnIndex("sitoPreferito")), ignored));
-			}
 			c_share.close();
 			
+			
+		//4.//for all tools saved get preferred site and ignored sites....
+			
+			Cursor details = null;
+			
+			ArrayList<String> ignoredSites = new ArrayList<String>();
+			
+			for (int i = 0; i < toolListForPortfolioS.size(); i++) 
+			{
+				ignoredSites.clear();
+				
+				if(toolListForPortfolioS.get(i).getType().equals("bond"))
+				{
+					details = db.getBondDetails(toolListForPortfolioS.get(i).getISIN());
+				}
+				else if(toolListForPortfolioS.get(i).getType().equals("fund"))
+				{
+					details = db.getFundDetails(toolListForPortfolioS.get(i).getISIN());
+				}
+				else if(toolListForPortfolioS.get(i).getType().equals("share"))
+				{
+					details = db.getShareDetails(toolListForPortfolioS.get(i).getISIN());
+				}
+				
+				
+				
+				if(details!=null)
+				{
+					details.moveToFirst();
+					toolListForPortfolioS.get(i).setPreferredSite(details.getString(details.getColumnIndex("sitoPreferito")));
+					String[] arraySplit = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
+					
+					for (String string : arraySplit) 
+					{
+						ignoredSites.add(string);
+					}
+					
+					toolListForPortfolioS.get(i).setIgnoredSites(ignoredSites);
+				}
+			}
+			
+			//save quotation types....
+			ArrayList<QuotationType> typeArray = new ArrayList<QuotationType>();
+			for (int i = 0; i < toolListForPortfolioS.size(); i++) 
+			{
+				if(toolListForPortfolioS.get(i).getType().equals("bond"))
+				{
+					typeArray.add(QuotationType.BOND);
+				}
+				else if(toolListForPortfolioS.get(i).getType().equals("fund"))
+				{
+					typeArray.add(QuotationType.FUND);
+				}
+				else if(toolListForPortfolioS.get(i).getType().equals("share"))
+				{
+					typeArray.add(QuotationType.SHARE);
+				}
+				else
+				{
+					System.out.println("Type error.");
+				}
+			}
+			
+			//prepare Array of Request........
+			for (int i = 0; i < toolListForPortfolioS.size(); i++) 
+			{
+				array.add(new Request(toolListForPortfolioS.get(i).getISIN(), typeArray.get(i), toolListForPortfolioS.get(i).getPreferredSite(), toolListForPortfolioS.get(i).getIgnoredSites()));
+			}
+			
+			//call server....
 			try 
 			{
 				Gson converter = new Gson();
@@ -129,16 +185,16 @@ public class UpdateTimeTask extends TimerTask
 			
 				int totalQuotationReturned = quotCont.getBondList().size() + quotCont.getFundList().size() + quotCont.getShareList().size();
 			
-				if(allIsinRequestedAreReturned(shareIsinArrayList, quotCont))
+				if(allIsinRequestedAreReturned(toolListForPortfolioS, quotCont))
 				{
-					if(totalQuotationReturned != shareIsinArrayList.size())
+					if(totalQuotationReturned != toolListForPortfolioS.size())
 					{
 						//ne ho ricevuti di più rispetto a quelli richiesti....
 						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
-						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(shareIsinArrayList, quotCont);
+						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(toolListForPortfolioS, quotCont);
 						for (int i = 0; i < listaIsinNotRequested.size(); i++)
 						{
-							System.out.println(listaIsinNotRequested.get(i));							
+							System.out.println(listaIsinNotRequested.get(i)+" NOT REQUESTED");							
 						}
 					
 						//elimino quelli non richiesti dal container...
@@ -173,10 +229,10 @@ public class UpdateTimeTask extends TimerTask
 				{
 					//alcuni di quelli richiesti non sono stati tornati....
 					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
-					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(shareIsinArrayList, quotCont);
+					ArrayList<ToolObject> listaIsinNotReturned = searchIsinNotReturned(toolListForPortfolioS, quotCont);
 					for (int i = 0; i < listaIsinNotReturned.size(); i++)
 					{
-						System.out.println(listaIsinNotReturned.get(i));
+						System.out.println(listaIsinNotReturned.get(i).getISIN()+" is not returned by Server");
 					}
 				}
 			
@@ -235,10 +291,19 @@ public class UpdateTimeTask extends TimerTask
 		}
 	}
 	
-	private boolean allIsinRequestedAreReturned(ArrayList<String> isinList, QuotationContainer container)
+	//function that control if all the isin requested are returned...
+	private boolean allIsinRequestedAreReturned(ArrayList<ToolObject> toolList, QuotationContainer container)
 	{
-		boolean result = false;		
+		boolean result = false;
+
 		ArrayList<String> support = new ArrayList<String>();
+		ArrayList<String> isinList = new ArrayList<String>();
+
+		for(ToolObject obj : toolList)
+		{
+			isinList.add(obj.getISIN());
+		}
+
 		for(Quotation_Bond qb : container.getBondList())
 		{
 			support.add(qb.getISIN());
@@ -250,21 +315,32 @@ public class UpdateTimeTask extends TimerTask
 		for(Quotation_Share qs : container.getShareList())
 		{
 			support.add(qs.getISIN());
-		}		
-		for (int i = 0; i < isinList.size(); i++)
+		}
+
+		for (int i = 0; i < isinList.size(); i++) 
 		{
 			if(support.contains(isinList.get(i)))
 			{
 				result = true;
 			}
 		}
+
 		return result;
 	}
 	
-	private ArrayList<String> searchIsinNotRequested(ArrayList<String> isinList, QuotationContainer container)
+	//function that returns an array list of the Isin returned by server but not requested by client...
+	private ArrayList<String> searchIsinNotRequested(ArrayList<ToolObject> toolList, QuotationContainer container)
 	{
-		ArrayList<String> result = new ArrayList<String>();		
+		ArrayList<String> result = new ArrayList<String>();
+
 		ArrayList<String> support = new ArrayList<String>();
+		ArrayList<String> isinList = new ArrayList<String>();
+
+		for(ToolObject obj : toolList)
+		{
+			isinList.add(obj.getISIN());
+		}
+
 		for(Quotation_Bond qb : container.getBondList())
 		{
 			support.add(qb.getISIN());
@@ -277,20 +353,26 @@ public class UpdateTimeTask extends TimerTask
 		{
 			support.add(qs.getISIN());
 		}
-		for (int i = 0; i < support.size(); i++)
+
+		for (int i = 0; i < support.size(); i++) 
 		{
 			if(!isinList.contains(support.get(i)))
 			{
 				result.add(support.get(i));
 			}
-		}		
+		}
+
 		return result;
 	}
 	
-	private ArrayList<String> searchIsinNotReturned(ArrayList<String> isinList, QuotationContainer container)
+	//function that returns an array list of the Isin not returned by server but requested by client...
+	private ArrayList<ToolObject> searchIsinNotReturned(ArrayList<ToolObject> toolList, QuotationContainer container)
 	{
-		ArrayList<String> result = new ArrayList<String>();		
+		ArrayList<ToolObject> result = new ArrayList<ToolObject>();
+
 		ArrayList<String> support = new ArrayList<String>();
+
+
 		for(Quotation_Bond qb : container.getBondList())
 		{
 			support.add(qb.getISIN());
@@ -303,14 +385,15 @@ public class UpdateTimeTask extends TimerTask
 		{
 			support.add(qs.getISIN());
 		}
-		
-		for (int i = 0; i < isinList.size(); i++)
+
+		for (int i = 0; i < toolList.size(); i++) 
 		{
-			if(!support.contains(isinList.get(i)))
+			if(!support.contains(toolList.get(i).getISIN()))
 			{
-				result.add(isinList.get(i));
+				result.add(toolList.get(i));
 			}
-		}		
+		}
+
 		return result;
 	}
 	
