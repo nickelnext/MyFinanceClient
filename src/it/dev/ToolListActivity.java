@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Pattern;
 
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
@@ -69,6 +70,7 @@ public class ToolListActivity extends Activity
 	private TextView priceColTextView;
 	private TextView addTitleTextView;
 	
+	private static final Pattern ISIN_PATTERN = Pattern.compile("[A-Z]{2}([A-Z0-9]){9}[0-9]");
 	
 	public void onCreate(Bundle savedInstanceState) 
     {
@@ -406,6 +408,40 @@ public class ToolListActivity extends Activity
 		
 	}
 	
+	private boolean checkIsinCode(String isin)
+	{
+		if (isin == null) 
+		{
+			return false;
+		}
+		if (!ISIN_PATTERN.matcher(isin).matches()) 
+		{
+			return false;
+		}
+		 
+		StringBuffer digits = new StringBuffer();
+		for (int i = 0; i < 11; i++) 
+		{
+			digits.append(Character.digit(isin.charAt(i), 36));
+		}
+		digits.reverse();
+		int sum = 0;
+		for (int i = 0; i < digits.length(); i++) 
+		{
+			int digit = Character.digit(digits.charAt(i), 36);
+		    if (i % 2 == 0) 
+		    {
+		    	digit *= 2;
+		    }
+		    sum += digit / 10;
+		    sum += digit % 10;
+		}
+		 
+		int checkDigit = Character.digit(isin.charAt(11), 36);
+		int tensComplement = (sum % 10 == 0) ? 0 : ((sum / 10) + 1) * 10 - sum;
+		return checkDigit == tensComplement;
+	}
+	
 	//Open the custom alert dialog where it is possible to add a new tool.
 	private void showAddNewToolDialog()
 	{
@@ -460,27 +496,33 @@ public class ToolListActivity extends Activity
 			public void onClick(View v) {
 				if(shareISINEditText.getText().length()!=0 && buyPriceEditText.getText().length()!=0 && roundLotEditText.getText().length()!=0)
 				{
-					//save temporary data....[USING ARRAYLIST<STRING>]
-					// String -> Uppercase -> cut spaces and get first element
-					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
-					
-					if(toolAlreadySelected(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], purchaseDate))
+					if(checkIsinCode(shareISINEditText.getText().toString().toUpperCase().trim()))
 					{
-						showMessage("Error", "Tool and purchase date already selected for this Portfolio. If you want you can edit it by long pressing it in the Tool list.");
+						//save temporary data....[USING ARRAYLIST<STRING>]
+						// String -> Uppercase -> cut spaces and get first element
+						String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
+						
+						if(toolAlreadySelected(shareISINEditText.getText().toString().toUpperCase().trim(), purchaseDate))
+						{
+							showMessage("Error", "Tool and purchase date already selected for this Portfolio. If you want you can edit it by long pressing it in the Tool list.");
+						}
+						else
+						{
+							toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().trim(), 
+									"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
+							
+							final Calendar c = Calendar.getInstance();
+							shareISINEditText.setText("");
+							purchaseDateDatePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), null);
+							buyPriceEditText.setText("");
+							roundLotEditText.setText("");
+						
+						}
 					}
 					else
 					{
-						toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
-								"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
-						
-						final Calendar c = Calendar.getInstance();
-						shareISINEditText.setText("");
-						purchaseDateDatePicker.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), null);
-						buyPriceEditText.setText("");
-						roundLotEditText.setText("");
-					
+						showMessage("Error", shareISINEditText.getText().toString().toUpperCase().trim()+" is not a valid ISIN.");
 					}
-					
 				}
 				else
 				{
@@ -495,34 +537,40 @@ public class ToolListActivity extends Activity
 				if(shareISINEditText.getText().length()!=0 && buyPriceEditText.getText().length()!=0 && roundLotEditText.getText().length()!=0)
 				{
 					
-					//0. add last tool in ArrayList<String>...
-					// String -> Uppercase -> cut spaces and get first element
-					String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()+1) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
-					
-					if(toolAlreadySelected(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], purchaseDate))
+					if(checkIsinCode(shareISINEditText.getText().toString().toUpperCase().trim()))
 					{
-						showMessage("Error", "Tool and purchase date already selected for this Portfolio. If you want you can edit it by long pressing it in the Tool list.");
+						//0. add last tool in ArrayList<String>...
+						// String -> Uppercase -> cut spaces and get first element
+						String purchaseDate = String.valueOf(purchaseDateDatePicker.getDayOfMonth()) + "/" + String.valueOf(purchaseDateDatePicker.getMonth()+1) + "/" + String.valueOf(purchaseDateDatePicker.getYear());
+						
+						if(toolAlreadySelected(shareISINEditText.getText().toString().toUpperCase().trim(), purchaseDate))
+						{
+							showMessage("Error", "Tool and purchase date already selected for this Portfolio. If you want you can edit it by long pressing it in the Tool list.");
+						}
+						else
+						{
+							toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().trim(), 
+									"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
+							
+							//1. create arrayList of Quotation Request....
+							ArrayList<Request> array = new ArrayList<Request>();
+							for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
+							{
+								array.add(new Request(toolTmpToAddInDatabase.get(i).getISIN()));
+							}
+							
+							//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
+							QuotationRequestAsyncTask asyncTask1 = new QuotationRequestAsyncTask(ToolListActivity.this);
+							asyncTask1.execute(array);
+							
+							//3.dismiss dialog...
+							addToolDialog.dismiss();
+						}
 					}
 					else
 					{
-						toolTmpToAddInDatabase.add(new ToolObject(shareISINEditText.getText().toString().toUpperCase().split(" ")[0], 
-								"", purchaseDate, buyPriceEditText.getText().toString(), roundLotEditText.getText().toString()));
-						
-						//1. create arrayList of Quotation Request....
-						ArrayList<Request> array = new ArrayList<Request>();
-						for (int i = 0; i < toolTmpToAddInDatabase.size(); i++) 
-						{
-							array.add(new Request(toolTmpToAddInDatabase.get(i).getISIN()));
-						}
-						
-						//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
-						QuotationRequestAsyncTask asyncTask1 = new QuotationRequestAsyncTask(ToolListActivity.this);
-						asyncTask1.execute(array);
-						
-						//3.dismiss dialog...
-						addToolDialog.dismiss();
+						showMessage("Error", shareISINEditText.getText().toString().toUpperCase().trim()+" is not a valid ISIN.");
 					}
-					
 				}
 				else
 				{
