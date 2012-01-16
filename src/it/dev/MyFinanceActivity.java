@@ -87,9 +87,16 @@ public class MyFinanceActivity extends Activity
 		
 		
 		if(updateTime==0)
-				stopAutomaticUpdate();
+		{
+			System.out.println("STOP AUTOMATIC UPDATE...");
+			stopAutomaticUpdate();
+		}
 		else
+		{
+			System.out.println("START AUTOMATIC UPDATE...");
 			startAutomaticUpdate(updateTime);
+		}
+			
 		supportDatabase.close();
 	}
 
@@ -362,7 +369,6 @@ public class MyFinanceActivity extends Activity
 
 		final Dialog updateOptionDialog = new Dialog(MyFinanceActivity.this);
 		updateOptionDialog.setContentView(R.layout.custom_update_option_dialog);
-		//TODO
 		updateOptionDialog.setTitle(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "dialog_title", language));
 		updateOptionDialog.setCancelable(true);
 
@@ -388,16 +394,10 @@ public class MyFinanceActivity extends Activity
 		languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		updateTimeSpinner.setAdapter(timeAdapter);
 		updateLanguageSpinner.setAdapter(languageAdapter);
-
-
-
-
+		
 		//checks which are the user preferences
 		int userSelectedAutoUpdate = supportDatabase.getUserSelectedAutoUpdate();
 		String userSelectedLanguage = supportDatabase.getUserSelectedLanguage();
-
-		System.out.println("userSelectedAutoUpdate " + userSelectedAutoUpdate);
-		System.out.println("userSelectedAutoUpdateLanguage " + userSelectedLanguage);
 
 		if(supportDatabase.getUserSelectedAutoUpdate()==0)
 		{
@@ -409,8 +409,7 @@ public class MyFinanceActivity extends Activity
 			enableAutoUpdateCheckBox.setChecked(true);
 			updateTimeSpinner.setEnabled(true);
 		}
-		System.out.println("prima del for");
-
+		
 		for(int i=0; i<timeAdapter.getCount();i++)
 		{
 			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
@@ -421,10 +420,7 @@ public class MyFinanceActivity extends Activity
 			if(languageAdapter.getItem(i).toString().equals(userSelectedLanguage))
 				updateLanguageSpinner.setSelection(i);
 		}
-
-
-		System.out.println("dopo il for, prima della setlistener");
-
+		
 		enableAutoUpdateCheckBox.setOnClickListener(new View.OnClickListener() 
 		{
 			public void onClick(View v) 
@@ -436,8 +432,6 @@ public class MyFinanceActivity extends Activity
 			}
 		});
 
-		System.out.println("costruzione del gestore");
-
 		View.OnClickListener gestore = new View.OnClickListener() {
 			public void onClick(View view) { 
 
@@ -448,24 +442,23 @@ public class MyFinanceActivity extends Activity
 					break;
 				case R.id.saveUpdatePreferencesButton:
 					supportDatabase.openDataBase();
-					System.out.println("case2");
+					
 					int newUpdateTime = Integer.valueOf(updateTimeSpinner.getSelectedItem().toString());
 					boolean newAutoUpdate = enableAutoUpdateCheckBox.isChecked();
 					String newLanguage =  (String)updateLanguageSpinner.getSelectedItem();
-					if(newAutoUpdate==false)
-						{
-							newUpdateTime = 0; //0 is for NoAutoUpdate
-							stopAutomaticUpdate();
-						}
+					
+					if(newAutoUpdate == false)
+					{
+						newUpdateTime = 0; //0 is for NoAutoUpdate
+						stopAutomaticUpdate();
+					}
 					else
 						startAutomaticUpdate(newUpdateTime);
 					
 					supportDatabase.setConfigParameters(newLanguage, newUpdateTime);
 					
-
 					supportDatabase.close();
-					//Se necessario,attivare i pannula timers!
-					//TODO
+					
 					updateOptionDialog.dismiss();
 					break;  
 				}
@@ -479,13 +472,9 @@ public class MyFinanceActivity extends Activity
 			}
 		});
 
-
-		System.out.println("setto gestore1");
 		undoSavePreferencesButton.setOnClickListener(gestore);
-		System.out.println("setto gestore2");
 		saveUpdatePreferencesButton.setOnClickListener(gestore);
-		System.out.println("enable buttons");
-		System.out.println("show");
+		
 		supportDatabase.close();
 		updateOptionDialog.show();
 
