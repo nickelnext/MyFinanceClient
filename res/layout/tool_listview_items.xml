@@ -11,6 +11,7 @@
     		android:layout_marginTop="2dp"
     		android:weightSum="12">
     	    <TableRow
+    	        android:background="@drawable/portfolio"
     	        android:layout_marginTop="2dp"
     	        android:layout_marginBottom="2dp">
 
