@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimerTask;
 
+import myUtils.UtilFuncs;
+
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
 import Quotes.Quotation_Bond;
@@ -240,7 +242,7 @@ public class UpdateTimeTask extends TimerTask
 				for(Quotation_Bond qb : quotCont.getBondList())	
 				{
 					try {
-						db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
+						db.updateSelectedBondByQuotationObject(qb, UtilFuncs.getTodaysDate());
 					} catch (Exception e) {
 						System.out.println("Database update error");
 					}
@@ -252,7 +254,7 @@ public class UpdateTimeTask extends TimerTask
 					//4.1 control if fund already exist in database --> UPDATE
 					//UPDATE
 					try {
-						db.updateSelectedFundByQuotationObject(qf, getTodaysDate());
+						db.updateSelectedFundByQuotationObject(qf, UtilFuncs.getTodaysDate());
 					} catch (Exception e) {
 						System.out.println("Database update error");
 					}
@@ -264,14 +266,14 @@ public class UpdateTimeTask extends TimerTask
 					//5.1 control if share already exist in database --> UPDATE
 					//UPDATE
 					try {
-					db.updateSelectedShareByQuotationObject(qs, getTodaysDate());
+					db.updateSelectedShareByQuotationObject(qs, UtilFuncs.getTodaysDate());
 					} catch (Exception e) {
 						System.out.println("Database update error");
 					}
 				}
 			
 				//update portfolio lastupdate field...
-				db.updateSelectedPortfolioLastUpdate(s, getTodaysDate());
+				db.updateSelectedPortfolioLastUpdate(s, UtilFuncs.getTodaysDate());
 		
 			}
 			else
@@ -397,15 +399,4 @@ public class UpdateTimeTask extends TimerTask
 		return result;
 	}
 	
-	private String getTodaysDate()
-	{
-	    final GregorianCalendar c = (GregorianCalendar) Calendar.getInstance();
-	    return(new StringBuilder()
-	            .append(c.get(Calendar.MONTH) + 1).append("/")
-	            .append(c.get(Calendar.DAY_OF_MONTH)).append("/")
-	            .append(c.get(Calendar.YEAR)).append(" ")
-	            .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
-	            .append(c.get(Calendar.MINUTE)).append(":")
-	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
-	}		
 }
