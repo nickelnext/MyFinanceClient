@@ -65,7 +65,6 @@ public class ToolListActivity extends Activity
 	private ListView toolListView;
 	private TextView nameColTextView;
 	private TextView dateColTextView;
-//	private TextView variationColTextView;
 	private TextView percVarTextView;
 	private TextView priceColTextView;
 	private TextView addTitleTextView;
@@ -89,7 +88,6 @@ public class ToolListActivity extends Activity
         addTitleTextView = (TextView) findViewById(R.id.addTitle_TV);
         nameColTextView  = (TextView) findViewById(R.id.nameCol);
     	dateColTextView  = (TextView) findViewById(R.id.dateCol);
-//    	variationColTextView  = (TextView) findViewById(R.id.variationCol);
     	percVarTextView  = (TextView) findViewById(R.id.percVarCol);
     	priceColTextView  = (TextView) findViewById(R.id.priceCol);
         portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
@@ -101,7 +99,6 @@ public class ToolListActivity extends Activity
         portfolioLastUpdate_TV.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "portfolioLastUpdate_TV", language));
         nameColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "nameCol", language));
         dateColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "dateCol", language));
-//        variationColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "variationCol", language));
         percVarTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "percVariationCol", language));
         priceColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "price", language));
         
@@ -316,7 +313,7 @@ public class ToolListActivity extends Activity
 		
 		supportDatabase.openDataBase();
 		String language  = supportDatabase.getUserSelectedLanguage();
-		//TODO
+		
 		isinRef_TV.setText(isin);
 		previousDate_TV.setText(purchaseDate);
 		oldPurchaseDate_TV.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language));
@@ -601,8 +598,8 @@ public class ToolListActivity extends Activity
     	if(c_merged.getCount()!=0)
     	{
     		SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tool_listview_items, c_merged, 
-    				new String[] {"isin", PortfolioBondMetadata.BOND_BUYDATE_KEY, ShareMetaData.SHARE_VARIATION_KEY, ShareMetaData.SHARE_PERCVAR_KEY, "prezzo"}, 
-    				new int[] {R.id.isinTextView, R.id.dateTextView, /*R.id.variationTextView,*/ R.id.percVarTextView, R.id.lastPrizeTextView});
+    				new String[] {"isin", PortfolioBondMetadata.BOND_BUYDATE_KEY, ShareMetaData.SHARE_PERCVAR_KEY, "prezzo"}, 
+    				new int[] {R.id.isinTextView, R.id.dateTextView, R.id.percVarTextView, R.id.lastPrizeTextView});
     		toolListView.setAdapter(adapter);
     		toolListView.setOnItemClickListener(new AdapterView.OnItemClickListener() 
     		{
