@@ -677,8 +677,8 @@ public class ToolListActivity extends Activity
 				if(details.getCount()==1)
 				{
 					details.moveToFirst();
-					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(29));
-					String[] array = details.getString(30).split(" ");
+					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(details.getColumnIndex("sitoPreferito")));
+					String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
 
 					for (String string : array) 
 					{
@@ -696,8 +696,8 @@ public class ToolListActivity extends Activity
 				if(details.getCount()==1)
 				{
 					details.moveToFirst();
-					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(18));
-					String[] array = details.getString(19).split(" ");
+					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(details.getColumnIndex("sitoPreferito")));
+					String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
 
 					for (String string : array) 
 					{
@@ -714,8 +714,8 @@ public class ToolListActivity extends Activity
 				if(details.getCount()==1)
 				{
 					details.moveToFirst();
-					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(25));
-					String[] array = details.getString(26).split(" ");
+					toolLoadedByDatabase.get(i).setPreferredSite(details.getString(details.getColumnIndex("sitoPreferito")));
+					String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
 
 					for (String string : array) 
 					{
@@ -937,6 +937,7 @@ public class ToolListActivity extends Activity
 
 				Gson converter = new Gson();
 				String jsonReq = converter.toJson(params[0]);
+				System.out.println("request: "+jsonReq);
 				String jsonResponse = ConnectionUtils.postData(jsonReq);
 				if(jsonResponse != null)
 				{
@@ -1208,6 +1209,7 @@ public class ToolListActivity extends Activity
 
 				Gson converter = new Gson();
 				String jsonReq = converter.toJson(params[0]);
+				System.out.println("request: "+jsonReq);
 				String jsonResponse = ConnectionUtils.postData(jsonReq);
 				if(jsonResponse != null)
 				{
