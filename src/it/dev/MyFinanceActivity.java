@@ -586,8 +586,7 @@ public class MyFinanceActivity extends Activity
 		timer = new Timer();
 //		timer.cancel();
 		up = new UpdateTimeTask(MyFinanceActivity.this);
-//		timer.schedule(up, 100, time*60000);
-		timer.schedule(up, 100, 30000);
+		timer.schedule(up, 100, time*60000);
 	}
 
 	private void stopAutomaticUpdate()
