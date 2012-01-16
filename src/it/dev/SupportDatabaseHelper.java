@@ -162,10 +162,6 @@ public class SupportDatabaseHelper extends SQLiteOpenHelper
 		return myDataBase.query("Share_Translate", null, "language = '"+language+"'", null, null, null, null);
 	}
 	
-	public Cursor getAutomaticUpdateStatus(){
-		return myDataBase.query("autoUpdates", new String[]{"Actives","Minutes"}, "_id = 0", null, null, null, null);
-	}
-	
 	public void setAutomaticUpdateStatus(boolean active, int min){
 		ContentValues cv = new ContentValues();
 		cv.put("_id", 0);

@@ -590,13 +590,10 @@ public class MyFinanceActivity extends Activity
 		SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(MyFinanceActivity.this);
 
 		timer.cancel();
-		supportDatabase.openDataBase();
-		Cursor c = supportDatabase.getAutomaticUpdateStatus();
-		startManagingCursor(c);
-
-		boolean active = Boolean.getBoolean(c.getString(c.getColumnIndex("Actives")));
-		int time = Integer.parseInt(c.getString(c.getColumnIndex("Minutes")));
-		if(active){			
+//		supportDatabase.openDataBase();
+		
+		int time = supportDatabase.getUserSelectedAutoUpdate();
+		if(time>0){			
 			UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
 			timer.schedule(up, 100, time*60000);
 		}
