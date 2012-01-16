@@ -111,6 +111,7 @@ public class UpdateTimeTask extends TimerTask
     			{
     				Gson converter = new Gson();
     				String jsonReq = converter.toJson(array);
+    				System.out.println("RICHIESTA: "+jsonReq);
     				String jsonResponse = ConnectionUtils.postData(jsonReq);
     				if(jsonResponse != null)
     				{
