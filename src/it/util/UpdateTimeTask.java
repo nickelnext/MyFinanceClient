@@ -2,8 +2,10 @@ package it.util;
 
 import it.dev.MyFinanceDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimerTask;
 
@@ -45,22 +47,10 @@ public class UpdateTimeTask extends TimerTask
 		
 		for(String s : portfolii)
 		{
-			today = (GregorianCalendar) Calendar.getInstance();
-			upDate = (GregorianCalendar) Calendar.getInstance();
 			
-			
-			Cursor c = db.getDetailsOfPortfolio(s);
-			
-			c.moveToFirst();
-			
-			String updateDate = c.getString(c.getColumnIndex("ultimoAggiornamento"));
-			System.out.println("ultimo aggiornamento portafolio: "+updateDate);
-			c.close();
-			String[] updateString = updateDate.split("[/: ]");
-			upDate.set(Integer.parseInt(updateString[2]), Integer.parseInt(updateString[0])-1, Integer.parseInt(updateString[1]), Integer.parseInt(updateString[3]), Integer.parseInt(updateString[4]), Integer.parseInt(updateString[5]));
-			
-			if(today.after(upDate))
-			{
+//			
+//			if(today.after(upDate))
+//			{
 				System.out.println("Start automatic update of portfolio: "+s);
 				ArrayList<Request> array = new ArrayList<Request>();		
 				
@@ -227,7 +217,7 @@ public class UpdateTimeTask extends TimerTask
     				System.out.println("Connection error");
     			}
 			}
-		}
+//		}
 		
 		db.close();
     }
