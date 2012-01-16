@@ -37,15 +37,18 @@ public class MyFinanceActivity extends Activity
 {
 	private MyFinanceDatabase db;
 	private SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(this);
-	
+
 	private TextView addPortfolioTextView;
 	private TextView portfolioNameTextView;
 	private TextView portfolioDescription;
 	private ListView portfolioListView;
-	
+
 	private ArrayList<String> portfolioNameArrayList = new ArrayList<String>();
 	private ArrayList<String> portfolioDescriptionArrayList = new ArrayList<String>();
-	
+
+	private static Timer timer = null;
+	private static UpdateTimeTask up = null;
+
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
@@ -58,31 +61,48 @@ public class MyFinanceActivity extends Activity
 		registerForContextMenu(portfolioListView);
 
 		db = new MyFinanceDatabase(this);
-		
+
 		try 
-        {
-        	supportDatabase.createDataBase();
- 
-        } catch (IOException ioe) 
-        {
-        	throw new Error("Unable to create database");
-        }
-		
+		{
+			supportDatabase.createDataBase();
+
+		} catch (IOException ioe) 
+		{
+			throw new Error("Unable to create database");
+		}
+
 		initializeLabels();
 
+		startCountingForAutomaticUpdates();
+		
+		
+		
 		System.out.println(ConnectivityManager.EXTRA_EXTRA_INFO);
 	}
-	
+
+	private void startCountingForAutomaticUpdates() {
+		supportDatabase.openDataBase();
+		
+		int updateTime = supportDatabase.getUserSelectedAutoUpdate();
+		
+		
+		if(updateTime==0)
+				stopAutomaticUpdate();
+		else
+			startAutomaticUpdate(updateTime);
+		supportDatabase.close();
+	}
+
 	private void initializeLabels()
 	{
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		addPortfolioTextView.setText(supportDatabase.getTextFromTable("Label_MyFinanceActivity", "addPortfolio", language));
 		portfolioNameTextView.setText(supportDatabase.getTextFromTable("Label_MyFinanceActivity", "portfolioName", language));
 		portfolioDescription.setText(supportDatabase.getTextFromTable("Label_MyFinanceActivity", "portfolioDescription", language));
-		
+
 		supportDatabase.close();
 	}
 
@@ -100,14 +120,14 @@ public class MyFinanceActivity extends Activity
 		inflater.inflate(R.menu.select_portfolio_context_menu, menu);
 		MenuItem editItem = menu.findItem(R.id.edit_item);
 		MenuItem removeItem = menu.findItem(R.id.remove_item);
-		
+
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		editItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "edit_item", language));
 		removeItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "remove_item", language));
-		
+
 		supportDatabase.close();
 	}
 
@@ -132,46 +152,46 @@ public class MyFinanceActivity extends Activity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		getMenuInflater().inflate(R.menu.add_portfolio_menu, menu);
 		MenuItem addPortfolio = menu.findItem(R.id.menu_add_portfolio);
 		MenuItem updateOptions = menu.findItem(R.id.menu_update_option);
 		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
 		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
-		
+
 		addPortfolio.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_add_portfolio", language));
 		updateOptions.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_update_option", language));
 		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
 		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
-		
+
 		supportDatabase.close();
-		
+
 		return true;
 	}
-	
+
 	public boolean onPrepareOptionsMenu(Menu menu) 
 	{
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		menu.clear();
-		
+
 		getMenuInflater().inflate(R.menu.add_portfolio_menu, menu);
 		MenuItem addPortfolio = menu.findItem(R.id.menu_add_portfolio);
 		MenuItem updateOptions = menu.findItem(R.id.menu_update_option);
 		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
 		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
-		
+
 		addPortfolio.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_add_portfolio", language));
 		updateOptions.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_update_option", language));
 		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
 		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
-		
+
 		supportDatabase.close();
-		
+
 		return true;
 	}
 
@@ -257,17 +277,17 @@ public class MyFinanceActivity extends Activity
 	private void showAddNewPortfolioDialog()
 	{
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		final Dialog addPortfolioDialog = new Dialog(MyFinanceActivity.this);
 		addPortfolioDialog.setContentView(R.layout.custom_add_new_portfolio_dialog);
 		addPortfolioDialog.setTitle(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "addPortfolioTitle", language));
 		addPortfolioDialog.setCancelable(true);
-		
+
 		final TextView portfolioNameTextView = (TextView) addPortfolioDialog.findViewById(R.id.portfolioNameTextView);
 		final TextView portfolioDescriptionTextView = (TextView) addPortfolioDialog.findViewById(R.id.portfolioDescriptionTextView);
-		
+
 		final EditText portfolioName_ET = (EditText) addPortfolioDialog.findViewById(R.id.portfolioName_ET);
 		final EditText portfolioDescription_ET = (EditText) addPortfolioDialog.findViewById(R.id.portfolioDescription_ET);
 		Button cancelAddPortfolio_btn = (Button) addPortfolioDialog.findViewById(R.id.cancelPortfolio_btn);
@@ -276,13 +296,13 @@ public class MyFinanceActivity extends Activity
 		//add labels...
 		portfolioNameTextView.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "portfolioName", language));
 		portfolioDescriptionTextView.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "porfolioDescription", language));
-		
+
 		portfolioName_ET.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "portfolioName_ET", language));
 		portfolioDescription_ET.setHint(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "portfolioDescription_ET", language));
-		
+
 		cancelAddPortfolio_btn.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "cancelPortfolio_btn", language));
 		addPortfolio_btn.setText(supportDatabase.getTextFromTable("Label_custom_add_new_portfolio_dialog", "addPortfolio_btn", language));
-		
+
 		cancelAddPortfolio_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				addPortfolioDialog.dismiss();
@@ -318,9 +338,9 @@ public class MyFinanceActivity extends Activity
 				updateView();
 			}
 		});
-		
+
 		supportDatabase.close();
-		
+
 		addPortfolioDialog.show();
 	}
 
@@ -336,7 +356,7 @@ public class MyFinanceActivity extends Activity
 		{
 			throw new Error("Unable to create database");
 		}
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
 
 
@@ -348,7 +368,7 @@ public class MyFinanceActivity extends Activity
 
 		TextView updateLanguageTextView = (TextView) updateOptionDialog.findViewById(R.id.updateLanguageTextView);
 		TextView updateTimeTextView = (TextView) updateOptionDialog.findViewById(R.id.updateTimeTextView);
-		
+
 		final CheckBox enableAutoUpdateCheckBox = (CheckBox) updateOptionDialog.findViewById(R.id.enableAutoUpdateCheckBox);
 		final Spinner updateTimeSpinner = (Spinner) updateOptionDialog.findViewById(R.id.updateTimeSpinner);
 		Button undoSavePreferencesButton = (Button) updateOptionDialog.findViewById(R.id.undoSavePreferencesButton);
@@ -360,25 +380,25 @@ public class MyFinanceActivity extends Activity
 		updateTimeTextView.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "update_time_TV", language));
 		undoSavePreferencesButton.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "undo_save_preferences_button", language));
 		saveUpdatePreferencesButton.setText(supportDatabase.getTextFromTable("Label_custom_update_option_dialog", "save_preferences_button", language));
-		
+
 		ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, R.array.update_time_array, android.R.layout.simple_spinner_item);
 		ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.update_language_array, android.R.layout.simple_spinner_item);
-		
+
 		timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		updateTimeSpinner.setAdapter(timeAdapter);
 		updateLanguageSpinner.setAdapter(languageAdapter);
-		
-		
-		
-		
+
+
+
+
 		//checks which are the user preferences
 		int userSelectedAutoUpdate = supportDatabase.getUserSelectedAutoUpdate();
 		String userSelectedLanguage = supportDatabase.getUserSelectedLanguage();
-		
+
 		System.out.println("userSelectedAutoUpdate " + userSelectedAutoUpdate);
 		System.out.println("userSelectedAutoUpdateLanguage " + userSelectedLanguage);
-		
+
 		if(supportDatabase.getUserSelectedAutoUpdate()==0)
 		{
 			enableAutoUpdateCheckBox.setChecked(false);
@@ -390,7 +410,7 @@ public class MyFinanceActivity extends Activity
 			updateTimeSpinner.setEnabled(true);
 		}
 		System.out.println("prima del for");
-		
+
 		for(int i=0; i<timeAdapter.getCount();i++)
 		{
 			if(Integer.valueOf(timeAdapter.getItem(i).toString())==userSelectedAutoUpdate)
@@ -401,8 +421,8 @@ public class MyFinanceActivity extends Activity
 			if(languageAdapter.getItem(i).toString().equals(userSelectedLanguage))
 				updateLanguageSpinner.setSelection(i);
 		}
-		
-		
+
+
 		System.out.println("dopo il for, prima della setlistener");
 
 		enableAutoUpdateCheckBox.setOnClickListener(new View.OnClickListener() 
@@ -415,16 +435,15 @@ public class MyFinanceActivity extends Activity
 					updateTimeSpinner.setEnabled(false);
 			}
 		});
-		
+
 		System.out.println("costruzione del gestore");
-		
+
 		View.OnClickListener gestore = new View.OnClickListener() {
 			public void onClick(View view) { 
 
 
 				switch(view.getId()){
 				case R.id.undoSavePreferencesButton:
-					System.out.println("case1");
 					updateOptionDialog.dismiss();   	    	
 					break;
 				case R.id.saveUpdatePreferencesButton:
@@ -434,8 +453,15 @@ public class MyFinanceActivity extends Activity
 					boolean newAutoUpdate = enableAutoUpdateCheckBox.isChecked();
 					String newLanguage =  (String)updateLanguageSpinner.getSelectedItem();
 					if(newAutoUpdate==false)
-						newUpdateTime = 0; //0 is for NoAutoUpdate
+						{
+							newUpdateTime = 0; //0 is for NoAutoUpdate
+							stopAutomaticUpdate();
+						}
+					else
+						startAutomaticUpdate(newUpdateTime);
+					
 					supportDatabase.setConfigParameters(newLanguage, newUpdateTime);
+					
 
 					supportDatabase.close();
 					//Se necessario,attivare i pannula timers!
@@ -443,17 +469,17 @@ public class MyFinanceActivity extends Activity
 					updateOptionDialog.dismiss();
 					break;  
 				}
-				
+
 			}
 		};
-		
+
 		updateOptionDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			public void onDismiss(DialogInterface dialog) {
 				initializeLabels();
 			}
 		});
-		
-		
+
+
 		System.out.println("setto gestore1");
 		undoSavePreferencesButton.setOnClickListener(gestore);
 		System.out.println("setto gestore2");
@@ -462,7 +488,7 @@ public class MyFinanceActivity extends Activity
 		System.out.println("show");
 		supportDatabase.close();
 		updateOptionDialog.show();
-		
+
 	}
 
 	private void goToToolListActivity(String portfolioName)
@@ -585,27 +611,17 @@ public class MyFinanceActivity extends Activity
 		.append(c.get(Calendar.SECOND)).append(" ")).toString();
 	}
 
-	private void automaticUpdate(){
-		Timer timer = new Timer();
-		SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(MyFinanceActivity.this);
-
-		timer.cancel();
-//		supportDatabase.openDataBase();
-		
-		int time = supportDatabase.getUserSelectedAutoUpdate();
-		if(time>0){			
-			UpdateTimeTask up = new UpdateTimeTask(MyFinanceActivity.this);
-			timer.schedule(up, 100, time*60000);
-		}
-		else{
-			timer.cancel();
-		}
+	private void startAutomaticUpdate(int time){
+		timer = new Timer();
+//		timer.cancel();
+		up = new UpdateTimeTask(MyFinanceActivity.this);
+//		timer.schedule(up, 100, time*60000);
+		timer.schedule(up, 100, 2*60000);
 	}
 
-	private void setAutomaticUpdate(boolean active, int min){
-		SupportDatabaseHelper supportDatabase = new SupportDatabaseHelper(MyFinanceActivity.this);
-		supportDatabase.openDataBase();
-		supportDatabase.setAutomaticUpdateStatus(active, min);
-
+	private void stopAutomaticUpdate()
+	{
+		if(timer!= null)
+			timer.cancel();
 	}
 }
