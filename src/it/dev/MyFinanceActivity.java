@@ -5,9 +5,9 @@ import it.util.UpdateTimeTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Timer;
 
+import myUtils.UtilFuncs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -246,7 +246,7 @@ public class MyFinanceActivity extends Activity
 							editedPortfolioName_ET.getText().toString().equals(previousName))
 					{
 						db.open();
-						String creationDate = getTodaysDate();
+						String creationDate = UtilFuncs.getTodaysDate();
 						db.updateSelectedPortfolio(previousName, editedPortfolioName_ET.getText().toString(), 
 								editedPortfolioDescription_ET.getText().toString(), creationDate, creationDate);
 						db.close();
@@ -316,7 +316,7 @@ public class MyFinanceActivity extends Activity
 					if(!portfolioNameAlreadyChoosen(portfolioName_ET.getText().toString()))
 					{
 						db.open();
-						String creationDate = getTodaysDate();
+						String creationDate = UtilFuncs.getTodaysDate();
 						db.addNewPortfolio(1, portfolioName_ET.getText().toString(), portfolioDescription_ET.getText().toString(), creationDate, creationDate);
 						db.close();
 						addPortfolioDialog.dismiss();
@@ -581,23 +581,13 @@ public class MyFinanceActivity extends Activity
 
 	//-------------------------RETURNS the current date in format:-------------------------------//
 	//-------------------------MM/DD/YYYY hh:mm:ss-----------------------------------------------//
-	private String getTodaysDate() 
-	{
-		final Calendar c = Calendar.getInstance();
-		return(new StringBuilder()
-		.append(c.get(Calendar.MONTH) + 1).append("/")
-		.append(c.get(Calendar.DAY_OF_MONTH)).append("/")
-		.append(c.get(Calendar.YEAR)).append(" ")
-		.append(c.get(Calendar.HOUR_OF_DAY)).append(":")
-		.append(c.get(Calendar.MINUTE)).append(":")
-		.append(c.get(Calendar.SECOND)).append(" ")).toString();
-	}
 
 	private void startAutomaticUpdate(int time){
 		timer = new Timer();
 //		timer.cancel();
 		up = new UpdateTimeTask(MyFinanceActivity.this);
-		timer.schedule(up, 100, time*60000);
+//		timer.schedule(up, 100, time*60000);
+		timer.schedule(up, 100, 30000);
 	}
 
 	private void stopAutomaticUpdate()

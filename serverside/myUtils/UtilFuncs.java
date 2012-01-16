@@ -184,7 +184,12 @@ public class UtilFuncs {
 		return date;
 	}
 	
-	
+	static public String getTodaysDate() 
+	{
+		Calendar gc  = GregorianCalendar.getInstance(Locale.US);
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		return sdf.format(gc.getTime());
+	}
 	
 
 }

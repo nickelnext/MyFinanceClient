@@ -77,7 +77,7 @@ public class UpdateTimeTask extends TimerTask
     				{
     					ignored.add(b);
     				}
-    				array.add(new Request(c_bond.getColumnName(1), QuotationType.BOND, c_bond.getString(c.getColumnIndex("sitoPreferito")), ignored));
+    				array.add(new Request(c_bond.getString(c_bond.getColumnIndex("isin")), QuotationType.BOND, c_bond.getString(c.getColumnIndex("sitoPreferito")), ignored));
     			}
     			c_bond.close();
     			
