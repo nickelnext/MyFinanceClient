@@ -67,6 +67,7 @@ src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
 src/it/dev/Splashscreen.java -text
 src/it/dev/SupportDatabaseHelper.java -text
 src/it/dev/ToolDetailsActivity.java -text
+src/it/dev/ToolListActivity.java -text
 src/it/dev/ToolObject.java -text
 src/it/dev/WishlistActivity.java -text
 src/it/util/Conn.java -text svneol=unset#text/plain
