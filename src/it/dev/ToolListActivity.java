@@ -233,7 +233,7 @@ public class ToolListActivity extends Activity
         		}
         		else
         		{
-        			showMessage("Info", "You have to wait 30 minutes between one update and another.");
+        			showMessage("Info", "You have to wait 3 minutes between one update and another.");
         		}
     		}
     		
@@ -1325,7 +1325,7 @@ public class ToolListActivity extends Activity
 	{
 		GregorianCalendar today = (GregorianCalendar) Calendar.getInstance();
 		GregorianCalendar upDate = (GregorianCalendar) Calendar.getInstance();
-		today.add(Calendar.MINUTE, -30);
+		today.add(Calendar.MINUTE, -3);
 		db.open();
 		Cursor c = db.getDetailsOfPortfolio(portfolioName);
 		c.moveToFirst();
