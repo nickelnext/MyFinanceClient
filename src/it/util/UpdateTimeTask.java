@@ -1,6 +1,7 @@
 package it.util;
 
 import it.dev.MyFinanceDatabase;
+import it.dev.ToolObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ public class UpdateTimeTask extends TimerTask
 	
 	private QuotationContainer quotCont = new QuotationContainer();
 	private ArrayList<String> shareIsinArrayList = new ArrayList<String>();
-	private GregorianCalendar today, upDate;
 	
 	private Context ctx;
 	
@@ -47,178 +47,183 @@ public class UpdateTimeTask extends TimerTask
 		
 		for(String s : portfolii)
 		{
+			ArrayList<ToolObject> toolListForPortfolioS = new ArrayList<ToolObject>();
 			
-//			
-//			if(today.after(upDate))
-//			{
-				System.out.println("Start automatic update of portfolio: "+s);
-				ArrayList<Request> array = new ArrayList<Request>();		
-				
-				Cursor c_bond = db.getAllBondOverviewInPortfolio(s);
-				Cursor c_fund = db.getAllFundOverviewInPortfolio(s);
-				Cursor c_share = db.getAllShareOverviewInPortfolio(s);
+			System.out.println("Start automatic update of portfolio: "+s);
 			
-				c_bond.moveToFirst();
-    			while(c_bond.moveToNext())
-    			{
-    				String[] split = c_bond.getString(c_bond.getColumnIndex("sitiIgnorati")).split(" ");
-    				ArrayList<String> ignored = new ArrayList<String>();
-    				for(String b : split)
-    				{
-    					ignored.add(b);
-    				}
-    				array.add(new Request(c_bond.getString(c_bond.getColumnIndex("isin")), QuotationType.BOND, c_bond.getString(c.getColumnIndex("sitoPreferito")), ignored));
-    			}
-    			c_bond.close();
-    			
-    			c_fund.moveToFirst();
-    			while(c_fund.moveToNext())
-    			{
-    				String[] split = c_fund.getString(c_fund.getColumnIndex("sitiIgnorati")).split(" ");
-    				ArrayList<String> ignored = new ArrayList<String>();
-    				for(String b : split)
-    				{
-    					ignored.add(b);
-    				}
-    				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, c_fund.getString(c.getColumnIndex("sitoPreferito")), ignored));
-    			}
-    			c_fund.close();
-    			
-    			c_share.moveToFirst();
-    			while(c_share.moveToNext())
-    			{
-    				String[] split = c_share.getString(c_share.getColumnIndex("sitiIgnorati")).split(" ");
-    				ArrayList<String> ignored = new ArrayList<String>();
-    				for(String b : split)
-    				{
-    					ignored.add(b);
-    				}
-    				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, c_share.getString(c.getColumnIndex("sitoPreferito")), ignored));
-    			}
-    			c_share.close();
-    			
-    			try 
-    			{
-    				Gson converter = new Gson();
-    				String jsonReq = converter.toJson(array);
-    				System.out.println("RICHIESTA: "+jsonReq);
-    				String jsonResponse = ConnectionUtils.postData(jsonReq);
-    				if(jsonResponse != null)
-    				{
-    					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
-    				}
-    				else
-    				{
-    					System.out.println("Empty jsonResponse");
-    				}
-    			}
-    			catch (Exception e) 
-    			{
-    				System.out.println("connection ERROR");
-    			}
-
-    			if(quotCont!=null)
-    			{
-				
-    				int totalQuotationReturned = quotCont.getBondList().size() + quotCont.getFundList().size() + quotCont.getShareList().size();
-				
-    				if(allIsinRequestedAreReturned(shareIsinArrayList, quotCont))
-    				{
-    					if(totalQuotationReturned != shareIsinArrayList.size())
-    					{
-    						//ne ho ricevuti di più rispetto a quelli richiesti....
-    						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
-    						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(shareIsinArrayList, quotCont);
-    						for (int i = 0; i < listaIsinNotRequested.size(); i++)
-    						{
-    							System.out.println(listaIsinNotRequested.get(i));							
-    						}
-						
-    						//elimino quelli non richiesti dal container...
-    						System.out.println("elimino quelli non richiesti dal container...");
-    						for (int i = 0; i < listaIsinNotRequested.size(); i++)
-    						{
-    							for(Quotation_Bond qb : quotCont.getBondList())	
-    							{
-    								if(qb.getISIN().equals(listaIsinNotRequested.get(i)))
-    								{
-    									quotCont.getBondList().remove(qb);
-    								}
-    							}
-    							for(Quotation_Fund qf : quotCont.getFundList())
-    							{
-    								if(qf.getISIN().equals(listaIsinNotRequested.get(i)))
-    								{
-    									quotCont.getFundList().remove(qf);
-    								}
-    							}
-    							for(Quotation_Share qs : quotCont.getShareList())
-    							{
-    								if(qs.getISIN().equals(listaIsinNotRequested.get(i)))
-    								{
-    									quotCont.getShareList().remove(qs);
-    								}
-    							}
-    						}
-    					}
-    				}
-    				else
-    				{
-    					//alcuni di quelli richiesti non sono stati tornati....
-    					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
-    					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(shareIsinArrayList, quotCont);
-    					for (int i = 0; i < listaIsinNotReturned.size(); i++)
-    					{
-    						System.out.println(listaIsinNotReturned.get(i));
-    					}
-    				}
-				
-    				//UPDATE IN DATABASE <BOND/FUND/SHARE> OF 'container'
-    				for(Quotation_Bond qb : quotCont.getBondList())	
-    				{
-    					try {
-    						db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
-    					} catch (Exception e) {
-    						System.out.println("Database update error");
-    					}
-    				}
-				
-    				//4. for all FUND returned...
-    				for(Quotation_Fund qf : quotCont.getFundList())
-    				{
-    					//4.1 control if fund already exist in database --> UPDATE
-    					//UPDATE
-    					try {
-    						db.updateSelectedFundByQuotationObject(qf, getTodaysDate());
-    					} catch (Exception e) {
-    						System.out.println("Database update error");
-    					}
-    				}
-				
-    				//5. for all SHARE returned...
-    				for(Quotation_Share qs : quotCont.getShareList())
-    				{
-    					//5.1 control if share already exist in database --> UPDATE
-    					//UPDATE
-    					try {
-						db.updateSelectedShareByQuotationObject(qs, getTodaysDate());
-    					} catch (Exception e) {
-    						System.out.println("Database update error");
-    					}
-    				}
-				
-    				//update portfolio lastupdate field...
-    				db.updateSelectedPortfolioLastUpdate(s, getTodaysDate());
+			ArrayList<Request> array = new ArrayList<Request>();		
 			
-    			}
-    			else
-    			{
-    				//connection error!
-    				System.out.println("Connection error");
-    			}
-			}
-//		}
+			Cursor c_bond = db.getAllBondOverviewInPortfolio(s);
+			Cursor c_fund = db.getAllFundOverviewInPortfolio(s);
+			Cursor c_share = db.getAllShareOverviewInPortfolio(s);
 		
+			c_bond.moveToFirst();
+			do {
+				
+			} while (c_bond.moveToNext());
+			
+			
+			
+			
+			
+			while(c_bond.moveToNext())
+			{
+				String[] split = c_bond.getString(c_bond.getColumnIndex("sitiIgnorati")).split(" ");
+				ArrayList<String> ignored = new ArrayList<String>();
+				for(String b : split)
+				{
+					ignored.add(b);
+				}
+//				array.add(new Request(c_bond.getString(c_bond.getColumnIndex("isin")), QuotationType.BOND, c_bond.getString(c.getColumnIndex("sitoPreferito")), ignored));
+			}
+			c_bond.close();
+			
+			c_fund.moveToFirst();
+			while(c_fund.moveToNext())
+			{
+				String[] split = c_fund.getString(c_fund.getColumnIndex("sitiIgnorati")).split(" ");
+				ArrayList<String> ignored = new ArrayList<String>();
+				for(String b : split)
+				{
+					ignored.add(b);
+				}
+//				array.add(new Request(c_fund.getColumnName(1), QuotationType.FUND, c_fund.getString(c.getColumnIndex("sitoPreferito")), ignored));
+			}
+			c_fund.close();
+			
+			c_share.moveToFirst();
+			while(c_share.moveToNext())
+			{
+				String[] split = c_share.getString(c_share.getColumnIndex("sitiIgnorati")).split(" ");
+				ArrayList<String> ignored = new ArrayList<String>();
+				for(String b : split)
+				{
+					ignored.add(b);
+				}
+//				array.add(new Request(c_share.getColumnName(1), QuotationType.SHARE, c_share.getString(c.getColumnIndex("sitoPreferito")), ignored));
+			}
+			c_share.close();
+			
+			try 
+			{
+				Gson converter = new Gson();
+				String jsonReq = converter.toJson(array);
+				System.out.println("RICHIESTA: "+jsonReq);
+				String jsonResponse = ConnectionUtils.postData(jsonReq);
+				if(jsonResponse != null)
+				{
+					quotCont = ResponseHandler.decodeQuotations(jsonResponse);
+				}
+				else
+				{
+					System.out.println("Empty jsonResponse");
+				}
+			}
+			catch (Exception e) 
+			{
+				System.out.println("connection ERROR");
+			}
+
+			if(quotCont!=null)
+			{
+			
+				int totalQuotationReturned = quotCont.getBondList().size() + quotCont.getFundList().size() + quotCont.getShareList().size();
+			
+				if(allIsinRequestedAreReturned(shareIsinArrayList, quotCont))
+				{
+					if(totalQuotationReturned != shareIsinArrayList.size())
+					{
+						//ne ho ricevuti di più rispetto a quelli richiesti....
+						System.out.println("ne ho ricevuti di più rispetto a quelli richiesti....");
+						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(shareIsinArrayList, quotCont);
+						for (int i = 0; i < listaIsinNotRequested.size(); i++)
+						{
+							System.out.println(listaIsinNotRequested.get(i));							
+						}
+					
+						//elimino quelli non richiesti dal container...
+						System.out.println("elimino quelli non richiesti dal container...");
+						for (int i = 0; i < listaIsinNotRequested.size(); i++)
+						{
+							for(Quotation_Bond qb : quotCont.getBondList())	
+							{
+								if(qb.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									quotCont.getBondList().remove(qb);
+								}
+							}
+							for(Quotation_Fund qf : quotCont.getFundList())
+							{
+								if(qf.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									quotCont.getFundList().remove(qf);
+								}
+							}
+							for(Quotation_Share qs : quotCont.getShareList())
+							{
+								if(qs.getISIN().equals(listaIsinNotRequested.get(i)))
+								{
+									quotCont.getShareList().remove(qs);
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					//alcuni di quelli richiesti non sono stati tornati....
+					System.out.println("alcuni di quelli richiesti non sono stati tornati....");
+					ArrayList<String> listaIsinNotReturned = searchIsinNotReturned(shareIsinArrayList, quotCont);
+					for (int i = 0; i < listaIsinNotReturned.size(); i++)
+					{
+						System.out.println(listaIsinNotReturned.get(i));
+					}
+				}
+			
+				//UPDATE IN DATABASE <BOND/FUND/SHARE> OF 'container'
+				for(Quotation_Bond qb : quotCont.getBondList())	
+				{
+					try {
+						db.updateSelectedBondByQuotationObject(qb, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
+				}
+			
+				//4. for all FUND returned...
+				for(Quotation_Fund qf : quotCont.getFundList())
+				{
+					//4.1 control if fund already exist in database --> UPDATE
+					//UPDATE
+					try {
+						db.updateSelectedFundByQuotationObject(qf, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
+				}
+			
+				//5. for all SHARE returned...
+				for(Quotation_Share qs : quotCont.getShareList())
+				{
+					//5.1 control if share already exist in database --> UPDATE
+					//UPDATE
+					try {
+					db.updateSelectedShareByQuotationObject(qs, getTodaysDate());
+					} catch (Exception e) {
+						System.out.println("Database update error");
+					}
+				}
+			
+				//update portfolio lastupdate field...
+				db.updateSelectedPortfolioLastUpdate(s, getTodaysDate());
+		
+			}
+			else
+			{
+				//connection error!
+				System.out.println("Connection error");
+			}
+		}		
 		db.close();
     }
 	
