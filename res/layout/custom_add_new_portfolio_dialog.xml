@@ -1,53 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:minWidth="300dp" >
-    <TextView
-        android:id="@+id/portfolioNameTextView"
-    	android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="Portfolio name"/>
-    <EditText
-        android:id="@+id/portfolioName_ET"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="name"/>
-    <TextView
-        android:id="@+id/portfolioDescriptionTextView"
-    	android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="5dp"
-        android:text="Portfolio description"/>
-    <EditText
-        android:id="@+id/portfolioDescription_ET"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="description"/>
+    android:layout_height="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:minWidth="300dp">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginTop="10dp"
-		android:weightSum="2">
+        <TextView
+            android:id="@+id/portfolioNameTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Portfolio name" />
 
-        <TableRow>
-            <Button
-    			android:id="@+id/cancelPortfolio_btn"
-        		android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:layout_weight="1"
-        		android:text="Cancel"/>
-            <Button
-    			android:id="@+id/addPortfolio_btn"
-        		android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:layout_weight="1"
-        		android:text="Save"/>
-        </TableRow>        
-    </TableLayout>
-</LinearLayout>
+        <EditText
+            android:id="@+id/portfolioName_ET"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="name" />
+
+        <TextView
+            android:id="@+id/portfolioDescriptionTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="Portfolio description" />
+
+        <EditText
+            android:id="@+id/portfolioDescription_ET"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="description" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:weightSum="2" >
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/cancelPortfolio_btn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+
+                <Button
+                    android:id="@+id/addPortfolio_btn"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save" />
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+</ScrollView>
