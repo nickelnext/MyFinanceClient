@@ -131,6 +131,7 @@ public class UpdateTimeTask extends TimerTask
 					
 					toolListForPortfolioS.get(i).setIgnoredSites(ignoredSites);
 				}
+				details.close();
 			}
 			
 			//save quotation types....
