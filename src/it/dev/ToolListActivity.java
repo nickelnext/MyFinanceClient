@@ -32,10 +32,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.database.SQLException;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,7 +49,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -73,6 +76,8 @@ public class ToolListActivity extends Activity
 	private TextView percVarTextView;
 	private TextView priceColTextView;
 	private TextView addTitleTextView;
+	
+	private TableLayout dynamic_tools_table;
 
 	private static final Pattern ISIN_PATTERN = Pattern.compile("[A-Z]{2}([A-Z0-9]){9}[0-9]");
 
@@ -100,6 +105,8 @@ public class ToolListActivity extends Activity
 		portfolioLastUpdate_TV = (TextView) findViewById(R.id.portfolioLastUpdate_TV);
 		portfolioLastUpdate = (TextView) findViewById(R.id.portfolioLastUpdate);
 		toolListView = (ListView) findViewById(R.id.toolListView);
+		
+		dynamic_tools_table = (TableLayout) findViewById(R.id.dynamic_tools_table);
 
 		addTitleTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "addTitle", language));
 		portfolioLastUpdate_TV.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "portfolioLastUpdate_TV", language));
@@ -163,9 +170,9 @@ public class ToolListActivity extends Activity
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-		menu.setHeaderTitle(toolLoadedByDatabase.get(info.position).getISIN());
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.select_portfolio_context_menu, menu);
+		menu.setHeaderTitle(toolLoadedByDatabase.get(info.position).getISIN());
 		MenuItem editItem = menu.findItem(R.id.edit_item);
 		MenuItem removeItem = menu.findItem(R.id.remove_item);
 
@@ -621,6 +628,7 @@ public class ToolListActivity extends Activity
 	private void updateView()
 	{
 		//inizialize variables...
+		dynamic_tools_table.removeAllViews();
 		toolListView.setAdapter(null);
 		toolLoadedByDatabase.clear();
 
@@ -649,17 +657,99 @@ public class ToolListActivity extends Activity
 
 		if(c_merged.getCount()!=0)
 		{
-			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tool_listview_items, c_merged, 
-					new String[] {"isin", PortfolioBondMetadata.BOND_BUYDATE_KEY, ShareMetaData.SHARE_PERCVAR_KEY, "prezzo"}, 
-					new int[] {R.id.isinTextView, R.id.dateTextView, R.id.percVarTextView, R.id.lastPrizeTextView});
-			toolListView.setAdapter(adapter);
-			toolListView.setOnItemClickListener(new AdapterView.OnItemClickListener() 
-			{
-				public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+			//for all rows in cursor add a tableRow to the table layout....
+			c_merged.moveToFirst();
+			do {
+				
+				float purchasePrice = c_merged.getFloat(c_merged.getColumnIndex(PortfolioBondMetadata.BOND_BUYPRICE_KEY));
+				float lastPrice = c_merged.getFloat(c_merged.getColumnIndex("prezzo"));
+				float calculatedCG = (lastPrice - purchasePrice) / purchasePrice;
+				
+				int ix = (int)(calculatedCG * 100.0);
+				double dbl2 = ((double)ix)/100.0;
+				
+				
+				LayoutInflater inflater = getLayoutInflater();
+				
+				TableRow newRow = (TableRow) inflater.inflate(R.layout.tool_listview_items, dynamic_tools_table, false);
+				
+				TextView isinTextView = (TextView) newRow.findViewById(R.id.isinTextView);
+				TextView dateTextView = (TextView) newRow.findViewById(R.id.dateTextView);
+				TextView percVarTextView = (TextView) newRow.findViewById(R.id.percVarTextView);
+				TextView lastPrizeTextView = (TextView) newRow.findViewById(R.id.lastPrizeTextView);
+				TextView capitalGainTextView = (TextView) newRow.findViewById(R.id.capitalGainTextView);
+				
+				//set colors and 'plus'....
+				percVarTextView.setText("");
+				if(c_merged.getFloat(c_merged.getColumnIndex(ShareMetaData.SHARE_PERCVAR_KEY))>=0)
 				{
-					goToToolDetailsActivity(toolLoadedByDatabase.get(position).getISIN(), toolLoadedByDatabase.get(position).getType(), toolLoadedByDatabase.get(position).getPurchaseDate(), toolLoadedByDatabase.get(position).getPurchasePrice(), toolLoadedByDatabase.get(position).getRoundLot());
+					percVarTextView.setText("+");
+					percVarTextView.setTextColor(Color.GREEN);
 				}
-			});
+				else
+				{
+					percVarTextView.setTextColor(Color.RED);
+				}
+				isinTextView.setTextColor(Color.GRAY);
+				capitalGainTextView.setText("");
+				if(calculatedCG>=0)
+				{
+					capitalGainTextView.setText("+");
+					capitalGainTextView.setTextColor(Color.GREEN);
+				}
+				else
+				{
+					capitalGainTextView.setTextColor(Color.RED);
+				}
+				
+				
+				
+				isinTextView.setText(c_merged.getString(c_merged.getColumnIndex("isin")));
+				dateTextView.setText(c_merged.getString(c_merged.getColumnIndex(PortfolioBondMetadata.BOND_BUYDATE_KEY)));
+				percVarTextView.append(c_merged.getString(c_merged.getColumnIndex(ShareMetaData.SHARE_PERCVAR_KEY)));
+				lastPrizeTextView.setText(c_merged.getString(c_merged.getColumnIndex("prezzo")));
+				
+				capitalGainTextView.append(String.valueOf(dbl2));
+				
+				dynamic_tools_table.addView(newRow);
+				
+			} while (c_merged.moveToNext());
+			
+			for (int i = 0; i < dynamic_tools_table.getChildCount(); i++) 
+			{
+				final int j = i;
+				dynamic_tools_table.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						goToToolDetailsActivity(toolLoadedByDatabase.get(j).getISIN(), toolLoadedByDatabase.get(j).getType(), toolLoadedByDatabase.get(j).getPurchaseDate(), toolLoadedByDatabase.get(j).getPurchasePrice(), toolLoadedByDatabase.get(j).getRoundLot());
+					}
+				});
+				dynamic_tools_table.getChildAt(i).setOnLongClickListener(new View.OnLongClickListener() {
+					public boolean onLongClick(View v) {
+						// TODO
+						
+						//open a custom dialog with edit and delete options...
+						System.out.println("todo.......");
+						
+						return false;
+					}
+				});
+			}
+			
+			
+			
+			
+			
+//			SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.tool_listview_items, c_merged, 
+//					new String[] {"isin", PortfolioBondMetadata.BOND_BUYDATE_KEY, ShareMetaData.SHARE_PERCVAR_KEY, "prezzo"}, 
+//					new int[] {R.id.isinTextView, R.id.dateTextView, R.id.percVarTextView, R.id.lastPrizeTextView});
+//			toolListView.setAdapter(adapter);
+//			toolListView.setOnItemClickListener(new AdapterView.OnItemClickListener() 
+//			{
+//				public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+//				{
+//					goToToolDetailsActivity(toolLoadedByDatabase.get(position).getISIN(), toolLoadedByDatabase.get(position).getType(), toolLoadedByDatabase.get(position).getPurchaseDate(), toolLoadedByDatabase.get(position).getPurchasePrice(), toolLoadedByDatabase.get(position).getRoundLot());
+//				}
+//			});
 		}
 
 		Cursor details;

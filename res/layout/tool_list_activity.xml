@@ -64,7 +64,7 @@
     		android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
     		android:layout_marginTop="5dp"
-    		android:weightSum="12">
+    		android:weightSum="14">
     	    <TableRow>
 
     	        <TextView
@@ -108,9 +108,27 @@
                 	android:textColor="#000000"
         			android:layout_weight="3"
     	            android:text="Price"/>
+        		<TextView 
+        		    android:id="@+id/cgCol"
+                	android:layout_width="0dp"
+                	android:layout_height="wrap_content"
+                	android:textSize="15dp"
+                	android:textStyle="bold" 
+                	android:gravity="center_horizontal"
+                	android:textColor="#000000"
+        			android:layout_weight="2"
+    	            android:text="CG%"/>
     		</TableRow>
 		</TableLayout>
 		
+    <TableLayout
+        android:id="@+id/dynamic_tools_table"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_marginTop="5dp"
+    	android:weightSum="14">
+    </TableLayout>
+    
     <ListView
         android:id="@+id/toolListView"
         android:layout_width="match_parent"
