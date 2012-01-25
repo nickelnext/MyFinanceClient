@@ -35,20 +35,14 @@ import android.database.SQLException;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -68,9 +62,10 @@ public class ToolListActivity extends Activity
 	private ArrayList<ToolObject> toolTmpToAddInDatabase = new ArrayList<ToolObject>();
 
 	private TextView portfolioReferenceTextView;
+	private TextView capitalGainText_TV;
+	private TextView capitalGainValue_TV;
 	private TextView portfolioLastUpdate_TV;
 	private TextView portfolioLastUpdate;
-	private ListView toolListView;
 	private TextView nameColTextView;
 	private TextView dateColTextView;
 	private TextView percVarTextView;
@@ -78,6 +73,7 @@ public class ToolListActivity extends Activity
 	private TextView addTitleTextView;
 	
 	private TableLayout dynamic_tools_table;
+	private ArrayList<Double> capitalGainPercList = new ArrayList<Double>();
 
 	private static final Pattern ISIN_PATTERN = Pattern.compile("[A-Z]{2}([A-Z0-9]){9}[0-9]");
 
@@ -102,12 +98,14 @@ public class ToolListActivity extends Activity
 		percVarTextView  = (TextView) findViewById(R.id.percVarCol);
 		priceColTextView  = (TextView) findViewById(R.id.priceCol);
 		portfolioReferenceTextView = (TextView) findViewById(R.id.portfolioReferenceTextView);
+		capitalGainText_TV = (TextView) findViewById(R.id.capitalGainText_TV);
+		capitalGainValue_TV = (TextView) findViewById(R.id.capitalGainValue_TV);
 		portfolioLastUpdate_TV = (TextView) findViewById(R.id.portfolioLastUpdate_TV);
 		portfolioLastUpdate = (TextView) findViewById(R.id.portfolioLastUpdate);
-		toolListView = (ListView) findViewById(R.id.toolListView);
 		
 		dynamic_tools_table = (TableLayout) findViewById(R.id.dynamic_tools_table);
 
+		capitalGainText_TV.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "capitalGainText", language));
 		addTitleTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "addTitle", language));
 		portfolioLastUpdate_TV.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "portfolioLastUpdate_TV", language));
 		nameColTextView.setText(supportDatabase.getTextFromTable("Label_ToolListActivity", "nameCol", language));
@@ -118,8 +116,7 @@ public class ToolListActivity extends Activity
 		supportDatabase.close();
 
 
-		registerForContextMenu(toolListView);
-
+		
 		Intent intent = getIntent();
 		String pkg = getPackageName();
 
@@ -140,6 +137,18 @@ public class ToolListActivity extends Activity
 				updateToolsInPortfolio();
 			UpdateTimeTask.add(portfolioName);
 		}
+		
+		capitalGainValue_TV.setText("");
+		if(calculatePortfolioCapitalGain()>=0)
+		{
+			capitalGainValue_TV.append("+");
+			capitalGainValue_TV.setTextColor(Color.GREEN);
+		}
+		else
+		{
+			capitalGainValue_TV.setTextColor(Color.RED);
+		}
+		capitalGainValue_TV.append(String.valueOf(calculatePortfolioCapitalGain()));
 
 
 	}
@@ -160,6 +169,27 @@ public class ToolListActivity extends Activity
 		supportDatabase.close();
 		db.close();
 	}
+	
+	private float calculatePortfolioCapitalGain()
+	{
+		float result = 0f;
+		
+		float sumOfProduct = 0f;
+		int sumOfQuantity = 0;
+		
+		for (int i = 0; i < toolLoadedByDatabase.size(); i++) 
+		{
+			sumOfProduct = (float) (sumOfProduct + (capitalGainPercList.get(i) * Integer.parseInt(toolLoadedByDatabase.get(i).getRoundLot())));
+			sumOfQuantity = sumOfQuantity + Integer.parseInt(toolLoadedByDatabase.get(i).getRoundLot());
+		}
+		
+		result = sumOfProduct / sumOfQuantity;
+		
+		
+		
+		
+		return result;
+	}
 
 	public void onResume()
 	{
@@ -167,37 +197,37 @@ public class ToolListActivity extends Activity
 		updateView();
 	}
 
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.select_portfolio_context_menu, menu);
-		menu.setHeaderTitle(toolLoadedByDatabase.get(info.position).getISIN());
-		MenuItem editItem = menu.findItem(R.id.edit_item);
-		MenuItem removeItem = menu.findItem(R.id.remove_item);
-
-		supportDatabase.openDataBase();
-
-		String language = supportDatabase.getUserSelectedLanguage();
-
-		editItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "edit_item", language));
-		removeItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "remove_item", language));
-
-		supportDatabase.close();
-	}
-
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		switch (item.getItemId()) {
-		case R.id.edit_item:
-			showEditToolDialog(toolLoadedByDatabase.get(info.position).getISIN(), toolLoadedByDatabase.get(info.position).getType(), toolLoadedByDatabase.get(info.position).getPurchaseDate());
-			return true;            
-		case R.id.remove_item:        	
-			deleteSelectedTool(toolLoadedByDatabase.get(info.position).getISIN(), toolLoadedByDatabase.get(info.position).getType(), toolLoadedByDatabase.get(info.position).getPurchaseDate());        	
-			return true;        
-		}
-		return false;
-	}
+//	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+//		super.onCreateContextMenu(menu, v, menuInfo);
+//		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.select_portfolio_context_menu, menu);
+//		menu.setHeaderTitle(toolLoadedByDatabase.get(info.position).getISIN());
+//		MenuItem editItem = menu.findItem(R.id.edit_item);
+//		MenuItem removeItem = menu.findItem(R.id.remove_item);
+//
+//		supportDatabase.openDataBase();
+//
+//		String language = supportDatabase.getUserSelectedLanguage();
+//
+//		editItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "edit_item", language));
+//		removeItem.setTitle(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "remove_item", language));
+//
+//		supportDatabase.close();
+//	}
+//
+//	public boolean onContextItemSelected(MenuItem item) {
+//		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+//		switch (item.getItemId()) {
+//		case R.id.edit_item:
+//			showEditToolDialog(toolLoadedByDatabase.get(info.position).getISIN(), toolLoadedByDatabase.get(info.position).getType(), toolLoadedByDatabase.get(info.position).getPurchaseDate());
+//			return true;            
+//		case R.id.remove_item:        	
+//			deleteSelectedTool(toolLoadedByDatabase.get(info.position).getISIN(), toolLoadedByDatabase.get(info.position).getType(), toolLoadedByDatabase.get(info.position).getPurchaseDate());        	
+//			return true;        
+//		}
+//		return false;
+//	}
 
 	public void onContextMenuClosed(Menu menu)
 	{    	
@@ -629,8 +659,8 @@ public class ToolListActivity extends Activity
 	{
 		//inizialize variables...
 		dynamic_tools_table.removeAllViews();
-		toolListView.setAdapter(null);
 		toolLoadedByDatabase.clear();
+		capitalGainPercList.clear();
 
 		db.open();
 
@@ -710,6 +740,7 @@ public class ToolListActivity extends Activity
 				lastPrizeTextView.setText(c_merged.getString(c_merged.getColumnIndex("prezzo")));
 				
 				capitalGainTextView.append(String.valueOf(dbl2));
+				capitalGainPercList.add(dbl2);
 				
 				dynamic_tools_table.addView(newRow);
 				
@@ -725,10 +756,11 @@ public class ToolListActivity extends Activity
 				});
 				dynamic_tools_table.getChildAt(i).setOnLongClickListener(new View.OnLongClickListener() {
 					public boolean onLongClick(View v) {
-						// TODO
 						
 						//open a custom dialog with edit and delete options...
 						System.out.println("todo.......");
+						
+						showToolsContextMenu(j);
 						
 						return false;
 					}
@@ -819,6 +851,44 @@ public class ToolListActivity extends Activity
 
 
 		db.close();
+	}
+	
+	private void showToolsContextMenu(int index)
+	{
+		final int findex = index;
+		
+		supportDatabase.openDataBase();
+
+		String language  = supportDatabase.getUserSelectedLanguage();
+		
+		final Dialog toolContextMenuDialog = new Dialog(ToolListActivity.this);
+		toolContextMenuDialog.setContentView(R.layout.custom_tools_context_menu);
+		toolContextMenuDialog.setTitle(toolLoadedByDatabase.get(index).getISIN());
+		toolContextMenuDialog.setCancelable(true);
+		
+		Button edit_tool_btn = (Button) toolContextMenuDialog.findViewById(R.id.edit_tool_btn);
+		Button delete_tool_btn = (Button) toolContextMenuDialog.findViewById(R.id.delete_tool_btn);
+		
+		edit_tool_btn.setText(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "edit_item", language));
+		delete_tool_btn.setText(supportDatabase.getTextFromTable("Label_select_portfolio_context_menu", "remove_item", language));
+		
+		edit_tool_btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				toolContextMenuDialog.dismiss();
+				showEditToolDialog(toolLoadedByDatabase.get(findex).getISIN(), toolLoadedByDatabase.get(findex).getType(), toolLoadedByDatabase.get(findex).getPurchaseDate());
+			}
+		});
+		
+		delete_tool_btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				toolContextMenuDialog.dismiss();
+				deleteSelectedTool(toolLoadedByDatabase.get(findex).getISIN(), toolLoadedByDatabase.get(findex).getType(), toolLoadedByDatabase.get(findex).getPurchaseDate());
+			}
+		});
+		
+		toolContextMenuDialog.show();
+		
+		supportDatabase.close();
 	}
 
 	//function that control if all the isin requested are returned...
@@ -1007,6 +1077,7 @@ public class ToolListActivity extends Activity
 			System.out.println("type error");
 		}
 		db.close();
+		updateView();
 	}
 
 	private class QuotationRequestAsyncTask extends
