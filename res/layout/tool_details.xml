@@ -87,5 +87,19 @@
     		android:layout_marginTop="2dp"
     		android:weightSum="10">
     </TableLayout>
+    
+    <View
+        android:layout_height="2dip"
+        android:layout_marginTop="2dp"
+       	android:layout_width="fill_parent"
+       	android:background="#FF909090" />
+
+    <Button
+        android:id="@+id/plot_btn"
+        android:layout_marginTop="2dp"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:text="Show graph" />
+    
 </LinearLayout>
 </ScrollView>

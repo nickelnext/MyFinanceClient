@@ -138,6 +138,13 @@ public class ToolListActivity extends Activity
 			UpdateTimeTask.add(portfolioName);
 		}
 		
+		setPortfolioCapitalGain();
+
+
+	}
+	
+	private void setPortfolioCapitalGain()
+	{
 		capitalGainValue_TV.setText("");
 		if(calculatePortfolioCapitalGain()>=0)
 		{
@@ -149,8 +156,6 @@ public class ToolListActivity extends Activity
 			capitalGainValue_TV.setTextColor(Color.RED);
 		}
 		capitalGainValue_TV.append(String.valueOf(calculatePortfolioCapitalGain()));
-
-
 	}
 
 	private void setPortfolioLastUpdate()
@@ -441,6 +446,7 @@ public class ToolListActivity extends Activity
 		editToolDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			public void onDismiss(DialogInterface dialog) {
 				updateView();
+				setPortfolioCapitalGain();
 			}
 		});
 
@@ -1078,6 +1084,7 @@ public class ToolListActivity extends Activity
 		}
 		db.close();
 		updateView();
+		setPortfolioCapitalGain();
 	}
 
 	private class QuotationRequestAsyncTask extends
@@ -1342,7 +1349,7 @@ public class ToolListActivity extends Activity
 			//save in database...
 			//update view....
 			updateView();
-
+			setPortfolioCapitalGain();
 
 			db.close();
 		}
@@ -1510,7 +1517,7 @@ public class ToolListActivity extends Activity
 			updateView();
 
 			setPortfolioLastUpdate();
-
+			setPortfolioCapitalGain();
 			db.close();
 		}
 	}

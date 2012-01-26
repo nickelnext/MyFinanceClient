@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class ToolDetailsActivity extends Activity
 	private TextView tool_purchasePrize_TV;
 	private TextView tool_roundLot_TV;
 	private TableLayout dynamic_detail_table;
+	private Button plot_btn;
 
 	private String toolIsin;
 	private String toolType;
@@ -74,6 +76,7 @@ public class ToolDetailsActivity extends Activity
 		tool_purchasePrize_TV = (TextView) findViewById(R.id.tool_purchasePrize_TV);
 		tool_roundLot_TV = (TextView) findViewById(R.id.tool_roundLot_TV);
 		dynamic_detail_table = (TableLayout) findViewById(R.id.dynamic_detail_table);
+		plot_btn = (Button) findViewById(R.id.plot_btn);
 
 		Intent intent = getIntent();
 		String pkg = getPackageName();
@@ -98,6 +101,17 @@ public class ToolDetailsActivity extends Activity
         }
 		
 		initializeLabels();
+		
+		plot_btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				//go to plot activity...
+			}
+		});
+		
+		if(!toolType.equals("share"))
+		{
+			((LinearLayout)plot_btn.getParent()).removeView(plot_btn);
+		}
 
 	}
 	
@@ -117,6 +131,7 @@ public class ToolDetailsActivity extends Activity
 	public void onResume()
 	{
 		super.onResume();
+		dynamic_detail_table.removeAllViews();
 		updateView();
 	}
 
