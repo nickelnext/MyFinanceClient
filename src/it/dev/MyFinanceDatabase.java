@@ -191,6 +191,16 @@ public class MyFinanceDatabase
 		static final String SITE = "sito";
 	}
 	
+	//-----------------------------------METADATA tabella dati storici---------------------------------//
+	static class HistoricalDataMetadata
+	{
+		static final String HISTORICAL_DATA_TABLE = "Table_Historical_Data";
+		static final String ID = "_id";
+		static final String ISIN = "isin";
+		static final String DATE = "data";
+		static final String VALUE = "valore";
+	}
+	
 	
 	//-------------------------------------STRING per creazione tabelle-------------------------------//
 	private static final String TABLE_PORTFOLIO_CREATE = "CREATE TABLE "+PortfolioMetaData.PORTFOLIO_TABLE+ " (" +
@@ -329,6 +339,14 @@ public class MyFinanceDatabase
 			SiteTypeMetadata.SITE +" TEXT NOT NULL, " +
 			"PRIMARY KEY (" +SiteTypeMetadata.VERSION+", " +SiteTypeMetadata.TYPE+", " +SiteTypeMetadata.SITE+"));";
 	
+	//-------------------------------------STRING per creazione tabella dati storici-------------------//
+		private static final String TABLE_HISTORICAL_DATA_CREATE = "CREATE TABLE "+HistoricalDataMetadata.HISTORICAL_DATA_TABLE+" (" +
+				HistoricalDataMetadata.ID +" INTEGER NOT NULL, " +
+				HistoricalDataMetadata.ISIN +" TEXT NOT NULL, " +
+				HistoricalDataMetadata.DATE +" TEXT NOT NULL, " +
+				HistoricalDataMetadata.VALUE +" REAL NOT NULL, " +
+				"PRIMARY KEY (" +HistoricalDataMetadata.ISIN+", " +HistoricalDataMetadata.DATE+"));";
+	
 	//-------------------------------------HELPER class---------------------------------------//
 	private class DatabaseHelper extends SQLiteOpenHelper
 	{
@@ -348,6 +366,7 @@ public class MyFinanceDatabase
             _db.execSQL(TABLE_PORTFOLIO_FUND_CREATE);
             _db.execSQL(TABLE_PORTFOLIO_SHARE_CREATE);
             _db.execSQL(TABLE_SITE_TYPE_CREATE);
+            _db.execSQL(TABLE_HISTORICAL_DATA_CREATE);
             
 /*            _db.execSQL("CREATE TRIGGER deleteBond"+ 
 					" BEFORE DELETE ON "+PortfolioBondMetadata.PORTFOLIO_BOND_TABLE+
@@ -486,6 +505,14 @@ public class MyFinanceDatabase
 		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
 		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
 		database.insert(BondMetaData.BOND_TABLE, null, cv);
+		
+		ContentValues cv2 = new ContentValues();
+		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ISIN, newBond.getISIN());
+		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
+		cv2.put(HistoricalDataMetadata.VALUE, newBond.getPrezzoUltimoContratto());
+		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
+		
 	}
 	
 //	public void addNewFund(int _id, String isin, String name, String manager, String category, String benchmark, 
@@ -542,6 +569,13 @@ public class MyFinanceDatabase
 		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
 		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
 		database.insert(FundMetaData.FUND_TABLE, null, cv);
+		
+		ContentValues cv2 = new ContentValues();
+		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ISIN, newFund.getISIN());
+		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
+		cv2.put(HistoricalDataMetadata.VALUE, newFund.getUltimoPrezzo());
+		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 	}
 	
 //	public void addNewShare(int _id, String code, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
@@ -991,6 +1025,13 @@ public class MyFinanceDatabase
 //		cv.put(BondMetaData.BOND_PREFERREDSITE_KEY, "");
 //		cv.put(BondMetaData.BOND_IGNOREDSITES_KEY, "");
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+newBond.getISIN()+"'", null);
+		
+		ContentValues cv2 = new ContentValues();
+		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ISIN, newBond.getISIN());
+		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
+		cv2.put(HistoricalDataMetadata.VALUE, newBond.getPrezzoUltimoContratto());
+		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 	}
 	
 //	public void updateSelectedFund(String ISIN, String name, String manager, String category, String benchmark, 
@@ -1046,6 +1087,13 @@ public class MyFinanceDatabase
 //		cv.put(FundMetaData.FUND_PREFERREDSITE_KEY, "");
 //		cv.put(FundMetaData.FUND_IGNOREDSITES_KEY, "");
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
+		
+		ContentValues cv2 = new ContentValues();
+		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ISIN, newFund.getISIN());
+		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
+		cv2.put(HistoricalDataMetadata.VALUE, newFund.getUltimoPrezzo());
+		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 	}
 	
 //	public void updateSelectedShare(String CODE, String isin, String name, int minRoundLot, String marketPhase, float lastContractPrice, 
@@ -1196,6 +1244,11 @@ public class MyFinanceDatabase
 	public void deleteShareInTransitionTable(String portfolioName, String CODE, String purchaseDate) 
 	{
 		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
+	}
+	
+	public void deleteTOOLHistoricalData(String ISIN)
+	{
+		database.delete(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, HistoricalDataMetadata.ISIN+" = '"+ISIN+"'", null);
 	}
 	
 	public void deleteAllSitesForTypes()

@@ -108,11 +108,6 @@ public class ToolDetailsActivity extends Activity
 			}
 		});
 		
-		if(!toolType.equals("share"))
-		{
-			((LinearLayout)plot_btn.getParent()).removeView(plot_btn);
-		}
-
 	}
 	
 	private void initializeLabels()
