@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import Quotes.HistoricalData;
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
 import Quotes.Quotation_Bond;
@@ -30,7 +31,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -61,6 +61,8 @@ public class ToolDetailsActivity extends Activity
 	
 	private ArrayList<CheckBox> ignoredSitesCB = new ArrayList<CheckBox>();
 	private ArrayList<TextView> ignoredSitesTV = new ArrayList<TextView>();
+	
+	private ArrayList<HistoricalData> toolHistoricalData = new ArrayList<HistoricalData>();
 
 	public void onCreate(Bundle savedInstanceState) 
 	{
@@ -104,7 +106,20 @@ public class ToolDetailsActivity extends Activity
 		
 		plot_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//go to plot activity...
+				//se il tool considerato è un BOND o un FUND
+				if(!toolType.equals("share"))
+				{
+					//faccio chiamata al DB per riempire l'ArrayList corrispondente...<< toolHistoricalData >>
+					getHistoricalDataFromDatabase();
+				}
+				else
+				{
+					//faccio richiesta asincrona al Server per riempire l'ArrayList corrispondente...
+					
+				}
+				
+				//plotting dei dati presenti nell'arraylist....
+				
 			}
 		});
 		
@@ -171,6 +186,27 @@ public class ToolDetailsActivity extends Activity
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	//query the database in order to get the historical data of a particular Tool (ISIN)
+	private void getHistoricalDataFromDatabase()
+	{
+		toolHistoricalData.clear();
+		
+		db.open();
+		
+		Cursor toolHD = db.getHistoricalDataOfTool(toolIsin);
+		startManagingCursor(toolHD);
+		if(toolHD.getCount()!=0)
+		{
+			//aggiungo all'Arraylist gli elementi che tiro su dal database...[data, valore]
+			toolHD.moveToFirst();
+			do {
+				toolHistoricalData.add(new HistoricalData(toolHD.getString(2), toolHD.getFloat(3)));
+			} while (toolHD.moveToNext());
+		}
+		
+		db.close();
 	}
 
 	//load data from database and create layout...

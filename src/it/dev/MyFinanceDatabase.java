@@ -776,6 +776,11 @@ public class MyFinanceDatabase
 		return database.query(SiteTypeMetadata.SITE_TYPE_TABLE, null, SiteTypeMetadata.TYPE+" = '"+type+"'", null, null, null, null);
 	}
 	
+	public Cursor getHistoricalDataOfTool(String ISIN)
+	{
+		return database.query(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, HistoricalDataMetadata.ISIN+" = '"+ISIN+"'", null, null, null, null);
+	}
+	
 	//--------------------------------boolean control methods----------------------------//
 	public boolean bondAlreadyInDatabase(String bondIsin)
 	{

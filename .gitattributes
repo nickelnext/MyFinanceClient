@@ -50,6 +50,7 @@ res/menu/select_portfolio_context_menu.xml -text svneol=unset#text/plain
 res/menu/tool_detail_menu.xml -text
 res/menu/wishlist_menu.xml -text
 res/values/strings.xml -text svneol=unset#text/plain
+serverside/Quotes/HistoricalData.java -text
 serverside/Quotes/Quotation.java -text
 serverside/Quotes/QuotationContainer.java -text
 serverside/Quotes/QuotationType.java -text
