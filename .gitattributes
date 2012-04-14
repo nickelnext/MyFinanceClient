@@ -31,6 +31,7 @@ res/layout/custom_add_new_tool.xml -text
 res/layout/custom_advanced_options_dialog.xml -text
 res/layout/custom_edit_portfolio_dialog.xml -text
 res/layout/custom_edit_selected_tool_dialog.xml -text
+res/layout/custom_graph_dialog.xml -text
 res/layout/custom_tools_context_menu.xml -text
 res/layout/custom_update_option_dialog.xml -text
 res/layout/help_activity.xml -text
