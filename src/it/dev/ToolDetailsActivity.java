@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import Quotes.HistoricalData;
+import Quotes.HistoryContainer;
 import Quotes.QuotationContainer;
 import Quotes.QuotationType;
 import Quotes.Quotation_Bond;
@@ -115,11 +116,11 @@ public class ToolDetailsActivity extends Activity
 				else
 				{
 					//faccio richiesta asincrona al Server per riempire l'ArrayList corrispondente...
-					
+					callHistoricalDataRequest();
 				}
 				
 				//plotting dei dati presenti nell'arraylist....
-				
+				showGraphDialog();
 			}
 		});
 		
@@ -291,6 +292,13 @@ public class ToolDetailsActivity extends Activity
 		supportDatabase.close();
 	}
 	
+	private void callHistoricalDataRequest()
+	{
+		//1. CALL ASYNCTASK TO GET DATA FROM SERVER....
+		HistoricalDataRequestAsyncTask asyncTask1 = new HistoricalDataRequestAsyncTask(ToolDetailsActivity.this);
+		asyncTask1.execute(toolIsin);
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void callForcedUpdate()
 	{
@@ -386,6 +394,34 @@ public class ToolDetailsActivity extends Activity
 		
 		
 		db.close();
+	}
+	
+	//this method open the dialog for graph plotting...
+	private void showGraphDialog()
+	{
+		final Dialog graphDialog = new Dialog(ToolDetailsActivity.this);
+		graphDialog.setContentView(R.layout.custom_graph_dialog);
+		graphDialog.setTitle(toolIsin+" Historical Data");
+		graphDialog.setCancelable(false);
+		
+		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_graph_btn);
+		
+		close_graph_btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				graphDialog.dismiss();
+			}
+		});
+		
+		
+		//TODO qui ci va il codice per la visualizzazione del grafico:
+		//		i dati dovrebbero essere già salvati nell'ArrayList opportuno...
+		
+		
+		
+		
+		
+		graphDialog.show();
+		
 	}
 	
 	//this method open the dialog for advanced settings...
@@ -781,6 +817,75 @@ public class ToolDetailsActivity extends Activity
 	            .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
 	            .append(c.get(Calendar.MINUTE)).append(":")
 	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
+	}
+	
+	private class HistoricalDataRequestAsyncTask extends AsyncTask<String, Void, HistoryContainer>
+	{
+		private ProgressDialog dialog;
+		private Context context;
+		
+		public HistoricalDataRequestAsyncTask(Context ctx)
+		{
+			this.context = ctx;
+		}
+		
+		@Override
+		protected HistoryContainer doInBackground(String... params) 
+		{
+			try {
+				HistoryContainer historyCont = new HistoryContainer();
+//				Gson converter = new Gson();
+//				String jsonReq = converter.toJson(params[0]);
+//				System.out.println(""+jsonReq);
+				String jsonResponse = ConnectionUtils.postData(params[0]);
+				if(jsonResponse != null)
+				{
+					historyCont = ResponseHandler.decodeHistoryData(jsonResponse);
+					return historyCont;
+				}
+				else
+				{
+					return null;
+				}
+			} catch (Exception e) {
+				System.out.println("connection ERROR");
+			}
+			return null;
+		}
+		
+		@Override
+		protected void onPreExecute()
+		{
+			//load progress dialog....
+			dialog = new ProgressDialog(this.context);
+			dialog.setMessage("Loading, contacting Server for Historical Data.");
+			dialog.show();
+		}
+		
+		@Override
+		protected void onPostExecute(HistoryContainer container)
+		{
+			//dismiss progress dialog....
+			if(dialog.isShowing())
+			{
+				dialog.dismiss();
+			}
+			
+			if(container!=null)
+			{
+				if(container.getHistoryList()!=null)
+				{
+					//svuoto l'arraylist...per accogliere i nuovi dati...
+					toolHistoricalData.clear();
+					
+					for (int i = 0; i < container.getHistoryList().size(); i++) 
+					{
+						//aggiungo all'arraylist tutti gli elementi del container...
+						toolHistoricalData.add(container.getHistoryList().get(i));
+					}
+				}
+			}	
+		}
 	}
 	
 	private class ForcedRequestAsyncTask extends AsyncTask<ArrayList<Request>, Void, QuotationContainer>

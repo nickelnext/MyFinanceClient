@@ -1,11 +1,10 @@
 package it.util;
 
 import java.lang.reflect.Type;
-import java.sql.Types;
 import java.util.ArrayList;
 
 import other.TypeSiteObject;
-
+import Quotes.HistoryContainer;
 import Quotes.QuotationContainer;
 
 import com.google.gson.Gson;
@@ -30,6 +29,16 @@ public class ResponseHandler {
 		ArrayList<TypeSiteObject> res;
 		Gson converter = new Gson();	
 		Type typeOfT = new TypeToken<ArrayList<TypeSiteObject>>(){}.getType();
+		res = converter.fromJson(json, typeOfT);	
+		return res;
+		}
+	
+	
+	public static HistoryContainer decodeHistoryData(String json) throws IllegalStateException{
+		//TODO modificare a seconda di come decideremo di comprimere/convertire le  richieste
+		HistoryContainer res;
+		Gson converter = new Gson();	
+		Type typeOfT = new TypeToken<HistoryContainer>(){}.getType();
 		res = converter.fromJson(json, typeOfT);	
 		return res;
 		}
