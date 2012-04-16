@@ -48,6 +48,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -421,6 +422,7 @@ public class ToolDetailsActivity extends Activity
 		graphDialog.setCancelable(false);
 		
 		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_graph_btn);
+		final LinearLayout graph_layout = (LinearLayout) graphDialog.findViewById(R.id.graph_layout);
 		
 		close_graph_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -464,7 +466,7 @@ public class ToolDetailsActivity extends Activity
 
 		GraphicalView g = ChartFactory.getLineChartView(ToolDetailsActivity.this, buildDataset(titles, x, values), renderer);
 		
-		
+		graph_layout.addView(g);
 		
 		
 		
