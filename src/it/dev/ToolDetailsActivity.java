@@ -6,6 +6,21 @@ import it.util.ResponseHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.chart.PointStyle;
+import org.achartengine.model.CategorySeries;
+import org.achartengine.model.MultipleCategorySeries;
+import org.achartengine.model.TimeSeries;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.DefaultRenderer;
+import org.achartengine.renderer.SimpleSeriesRenderer;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
 
 import Quotes.HistoricalData;
 import Quotes.HistoryContainer;
@@ -15,6 +30,7 @@ import Quotes.Quotation_Bond;
 import Quotes.Quotation_Fund;
 import Quotes.Quotation_Share;
 import Requests.Request;
+import android.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,6 +40,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Paint.Align;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,6 +49,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -46,7 +64,7 @@ public class ToolDetailsActivity extends Activity
 	private TextView tool_purchaseDate_label;
 	private TextView tool_purchasePrize_label;
 	private TextView tool_roundLot_label;
-	
+
 	private TextView toolReferenceTextView;
 	private TextView tool_purchaseDate_TV;
 	private TextView tool_purchasePrize_TV;
@@ -56,13 +74,13 @@ public class ToolDetailsActivity extends Activity
 
 	private String toolIsin;
 	private String toolType;
-	
+
 	private String preferredSite;
 	private ArrayList<String> ignoredSites = new ArrayList<String>();
-	
+
 	private ArrayList<CheckBox> ignoredSitesCB = new ArrayList<CheckBox>();
 	private ArrayList<TextView> ignoredSitesTV = new ArrayList<TextView>();
-	
+
 	private ArrayList<HistoricalData> toolHistoricalData = new ArrayList<HistoricalData>();
 
 	public void onCreate(Bundle savedInstanceState) 
@@ -73,7 +91,7 @@ public class ToolDetailsActivity extends Activity
 		tool_purchaseDate_label = (TextView) findViewById(R.id.tool_purchaseDate_label);
 		tool_purchasePrize_label = (TextView) findViewById(R.id.tool_purchasePrize_label);
 		tool_roundLot_label = (TextView) findViewById(R.id.tool_roundLot_label);
-		
+
 		toolReferenceTextView = (TextView) findViewById(R.id.toolReferenceTextView);
 		tool_purchaseDate_TV = (TextView) findViewById(R.id.tool_purchaseDate_TV);
 		tool_purchasePrize_TV = (TextView) findViewById(R.id.tool_purchasePrize_TV);
@@ -93,18 +111,18 @@ public class ToolDetailsActivity extends Activity
 		tool_roundLot_TV.setText((String) intent.getStringExtra(pkg+".toolRoundLot"));
 
 		db = new MyFinanceDatabase(this);
-		
+
 		try 
-        {
-        	supportDatabase.createDataBase();
- 
-        } catch (IOException ioe) 
-        {
-        	throw new Error("Unable to create database");
-        }
-		
+		{
+			supportDatabase.createDataBase();
+
+		} catch (IOException ioe) 
+		{
+			throw new Error("Unable to create database");
+		}
+
 		initializeLabels();
-		
+
 		plot_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				//se il tool considerato è un BOND o un FUND
@@ -118,24 +136,24 @@ public class ToolDetailsActivity extends Activity
 					//faccio richiesta asincrona al Server per riempire l'ArrayList corrispondente...
 					callHistoricalDataRequest();
 				}
-				
+
 				//plotting dei dati presenti nell'arraylist....
 				showGraphDialog();
 			}
 		});
-		
+
 	}
-	
+
 	private void initializeLabels()
 	{
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		tool_purchaseDate_label.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "date_TV", language)+": ");
 		tool_purchasePrize_label.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "price_TV", language)+": ");
 		tool_roundLot_label.setText(supportDatabase.getTextFromTable("Label_custom_add_new_tool_dialog", "lot_TV", language)+": ");
-		
+
 		supportDatabase.close();
 	}
 
@@ -149,20 +167,20 @@ public class ToolDetailsActivity extends Activity
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		getMenuInflater().inflate(R.menu.tool_detail_menu, menu);
 		MenuItem forcedUpdate = menu.findItem(R.id.menu_forced_update);
 		MenuItem advancedSettings = menu.findItem(R.id.menu_advanced_settings);
 		MenuItem aboutPage = menu.findItem(R.id.menu_about_page);
 		MenuItem helpPage = menu.findItem(R.id.menu_help_page);
-		
+
 		forcedUpdate.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_forced_update", language));
 		advancedSettings.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_advanced_settings", language));
 		aboutPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_about_page", language));
 		helpPage.setTitle(supportDatabase.getTextFromTable("Label_MENU_MyFinanceActivity", "menu_help_page", language));
-		
+
 		supportDatabase.close();
 		return true;
 	}
@@ -188,14 +206,14 @@ public class ToolDetailsActivity extends Activity
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	//query the database in order to get the historical data of a particular Tool (ISIN)
 	private void getHistoricalDataFromDatabase()
 	{
 		toolHistoricalData.clear();
-		
+
 		db.open();
-		
+
 		Cursor toolHD = db.getHistoricalDataOfTool(toolIsin);
 		startManagingCursor(toolHD);
 		if(toolHD.getCount()!=0)
@@ -206,7 +224,7 @@ public class ToolDetailsActivity extends Activity
 				toolHistoricalData.add(new HistoricalData(toolHD.getString(2), toolHD.getFloat(3)));
 			} while (toolHD.moveToNext());
 		}
-		
+
 		db.close();
 	}
 
@@ -215,7 +233,7 @@ public class ToolDetailsActivity extends Activity
 	{
 		db.open();
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
 
 		Cursor toolDetails;
@@ -265,7 +283,7 @@ public class ToolDetailsActivity extends Activity
 
 				key.setTextColor(Color.BLACK);
 				key.setText(toolTranslate.getString(j));
-				
+
 				try	{
 					value.setText(toolDetails.getString(i));
 				}
@@ -275,7 +293,7 @@ public class ToolDetailsActivity extends Activity
 					}
 					catch(Exception e1)	{
 						try{
-						value.setText(""+toolDetails.getFloat(i));
+							value.setText(""+toolDetails.getFloat(i));
 						}
 						catch(Exception e2){
 							System.out.println("error");
@@ -283,7 +301,7 @@ public class ToolDetailsActivity extends Activity
 					}
 				}
 				value.setTextColor(Color.BLACK);
-				
+
 				dynamic_detail_table.addView(newRow);
 				j++;
 			}
@@ -291,23 +309,23 @@ public class ToolDetailsActivity extends Activity
 		db.close();
 		supportDatabase.close();
 	}
-	
+
 	private void callHistoricalDataRequest()
 	{
 		//1. CALL ASYNCTASK TO GET DATA FROM SERVER....
 		HistoricalDataRequestAsyncTask asyncTask1 = new HistoricalDataRequestAsyncTask(ToolDetailsActivity.this);
 		asyncTask1.execute(toolIsin);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void callForcedUpdate()
 	{
-		
+
 		ignoredSites.clear();
 		db.open();
 		QuotationType qType;
 		Cursor details;
-		
+
 		if(toolType.equals("bond"))
 		{
 			qType = QuotationType.BOND;
@@ -327,12 +345,12 @@ public class ToolDetailsActivity extends Activity
 		{
 			return;
 		}
-		
+
 		startManagingCursor(details);
 		if(details.getCount()==1)
 		{
 			details.moveToFirst();
-			
+
 			//add preferred site...
 			String tmp = details.getString(details.getColumnIndex("sitoPreferito"));
 			if(tmp.equals(""))
@@ -343,7 +361,7 @@ public class ToolDetailsActivity extends Activity
 			{
 				preferredSite = details.getString(details.getColumnIndex("sitoPreferito"));;
 			}
-			
+
 			if(preferredSite!=null)
 			{
 				if(preferredSite.equals(details.getString(details.getColumnIndex("sitoSorgente"))))
@@ -352,15 +370,15 @@ public class ToolDetailsActivity extends Activity
 					return;
 				}
 			}
-			
+
 			//add ignored sites already saved in database...
-			
+
 			try 
 			{
 				if(details.getString(details.getColumnIndex("sitiIgnorati"))!=null)
 				{
 					String[] array = details.getString(details.getColumnIndex("sitiIgnorati")).split(" ");
-					
+
 					for (String string : array) 
 					{
 						if(!string.equals(""))
@@ -370,32 +388,32 @@ public class ToolDetailsActivity extends Activity
 						}
 					}
 				}
-				
-				
+
+
 			} catch (StringIndexOutOfBoundsException e) 
 			{
 				e.printStackTrace();
 			}
-			
-			
+
+
 			//add source site...
 			ignoredSites.add(details.getString(details.getColumnIndex("sitoSorgente")));
 		}
-		
+
 		//1. create arrayList of Quotation Request....
 		ArrayList<Request> array = new ArrayList<Request>();
 		array.add(new Request(toolIsin, qType, preferredSite, ignoredSites));
-		
-		
+
+
 		//2. CALL ASYNCTASK TO GET DATA FROM SERVER....
 		ForcedRequestAsyncTask asyncTask1 = new ForcedRequestAsyncTask(ToolDetailsActivity.this);
 		asyncTask1.execute(array);
-		
-		
-		
+
+
+
 		db.close();
 	}
-	
+
 	//this method open the dialog for graph plotting...
 	private void showGraphDialog()
 	{
@@ -403,76 +421,319 @@ public class ToolDetailsActivity extends Activity
 		graphDialog.setContentView(R.layout.custom_graph_dialog);
 		graphDialog.setTitle(toolIsin+" Historical Data");
 		graphDialog.setCancelable(false);
-		
+
 		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_graph_btn);
+		final LinearLayout gianluca = (LinearLayout) graphDialog.findViewById(R.id.gianluca);
 		
 		close_graph_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				graphDialog.dismiss();
 			}
 		});
-		
-		
+
+
+
 		//TODO qui ci va il codice per la visualizzazione del grafico:
 		//		i dati dovrebbero essere già salvati nell'ArrayList opportuno...
+
+		String[] titles = new String[] { "Crete", "Corfu", "Thassos", "Skiathos" };
+		List<double[]> x = new ArrayList<double[]>();
+		for (int i = 0; i < titles.length; i++) {
+			x.add(new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
+		}
+		List<double[]> values = new ArrayList<double[]>();
+		values.add(new double[] { 12.3, 12.5, 13.8, 16.8, 20.4, 24.4, 26.4, 26.1, 23.6, 20.3, 17.2,
+				13.9 });
+		values.add(new double[] { 10, 10, 12, 15, 20, 24, 26, 26, 23, 18, 14, 11 });
+		values.add(new double[] { 5, 5.3, 8, 12, 17, 22, 24.2, 24, 19, 15, 9, 6 });
+		values.add(new double[] { 9, 10, 11, 15, 19, 23, 26, 25, 22, 18, 13, 10 });
+		int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.CYAN, Color.YELLOW };
+		PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND,
+				PointStyle.TRIANGLE, PointStyle.SQUARE };
+		XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
+		int length = renderer.getSeriesRendererCount();
+		for (int i = 0; i < length; i++) {
+			((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
+		}
+		setChartSettings(renderer, "Average temperature", "Month", "Temperature", 0.5, 12.5, -10, 40,
+				Color.LTGRAY, Color.LTGRAY);
+		renderer.setXLabels(12);
+		renderer.setYLabels(10);
+		renderer.setShowGrid(true);
+		renderer.setXLabelsAlign(Align.RIGHT);
+		renderer.setYLabelsAlign(Align.RIGHT);
+		renderer.setZoomButtonsVisible(true);
+		renderer.setPanLimits(new double[] { -10, 20, -10, 40 });
+		renderer.setZoomLimits(new double[] { -10, 20, -10, 40 });
+
+		GraphicalView g = ChartFactory.getLineChartView(ToolDetailsActivity.this, buildDataset(titles, x, values), renderer);
 		
 		
-		
-		
-		
+
+
+//		toolHistoricalData
+
+
+
+
 		graphDialog.show();
-		
+
 	}
-	
+
+	//METHODSSS
+
+	protected XYMultipleSeriesDataset buildDataset(String[] titles, List<double[]> xValues,
+			List<double[]> yValues) {
+		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+		addXYSeries(dataset, titles, xValues, yValues, 0);
+		return dataset;
+	}
+
+	public void addXYSeries(XYMultipleSeriesDataset dataset, String[] titles, List<double[]> xValues,
+			List<double[]> yValues, int scale) {
+		int length = titles.length;
+		for (int i = 0; i < length; i++) {
+			XYSeries series = new XYSeries(titles[i], scale);
+			double[] xV = xValues.get(i);
+			double[] yV = yValues.get(i);
+			int seriesLength = xV.length;
+			for (int k = 0; k < seriesLength; k++) {
+				series.add(xV[k], yV[k]);
+			}
+			dataset.addSeries(series);
+		}
+	}
+
+	/**
+	 * Builds an XY multiple series renderer.
+	 * 
+	 * @param colors the series rendering colors
+	 * @param styles the series point styles
+	 * @return the XY multiple series renderers
+	 */
+	protected XYMultipleSeriesRenderer buildRenderer(int[] colors, PointStyle[] styles) {
+		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+		setRenderer(renderer, colors, styles);
+		return renderer;
+	}
+
+	protected void setRenderer(XYMultipleSeriesRenderer renderer, int[] colors, PointStyle[] styles) {
+		renderer.setAxisTitleTextSize(16);
+		renderer.setChartTitleTextSize(20);
+		renderer.setLabelsTextSize(15);
+		renderer.setLegendTextSize(15);
+		renderer.setPointSize(5f);
+		renderer.setMargins(new int[] { 20, 30, 15, 20 });
+		int length = colors.length;
+		for (int i = 0; i < length; i++) {
+			XYSeriesRenderer r = new XYSeriesRenderer();
+			r.setColor(colors[i]);
+			r.setPointStyle(styles[i]);
+			renderer.addSeriesRenderer(r);
+		}
+	}
+
+	/**
+	 * Sets a few of the series renderer settings.
+	 * 
+	 * @param renderer the renderer to set the properties to
+	 * @param title the chart title
+	 * @param xTitle the title for the X axis
+	 * @param yTitle the title for the Y axis
+	 * @param xMin the minimum value on the X axis
+	 * @param xMax the maximum value on the X axis
+	 * @param yMin the minimum value on the Y axis
+	 * @param yMax the maximum value on the Y axis
+	 * @param axesColor the axes color
+	 * @param labelsColor the labels color
+	 */
+	protected void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle,
+			String yTitle, double xMin, double xMax, double yMin, double yMax, int axesColor,
+			int labelsColor) {
+		renderer.setChartTitle(title);
+		renderer.setXTitle(xTitle);
+		renderer.setYTitle(yTitle);
+		renderer.setXAxisMin(xMin);
+		renderer.setXAxisMax(xMax);
+		renderer.setYAxisMin(yMin);
+		renderer.setYAxisMax(yMax);
+		renderer.setAxesColor(axesColor);
+		renderer.setLabelsColor(labelsColor);
+	}
+
+	/**
+	 * Builds an XY multiple time dataset using the provided values.
+	 * 
+	 * @param titles the series titles
+	 * @param xValues the values for the X axis
+	 * @param yValues the values for the Y axis
+	 * @return the XY multiple time dataset
+	 */
+	protected XYMultipleSeriesDataset buildDateDataset(String[] titles, List<Date[]> xValues,
+			List<double[]> yValues) {
+		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+		int length = titles.length;
+		for (int i = 0; i < length; i++) {
+			TimeSeries series = new TimeSeries(titles[i]);
+			Date[] xV = xValues.get(i);
+			double[] yV = yValues.get(i);
+			int seriesLength = xV.length;
+			for (int k = 0; k < seriesLength; k++) {
+				series.add(xV[k], yV[k]);
+			}
+			dataset.addSeries(series);
+		}
+		return dataset;
+	}
+
+	/**
+	 * Builds a category series using the provided values.
+	 * 
+	 * @param titles the series titles
+	 * @param values the values
+	 * @return the category series
+	 */
+	protected CategorySeries buildCategoryDataset(String title, double[] values) {
+		CategorySeries series = new CategorySeries(title);
+		int k = 0;
+		for (double value : values) {
+			series.add("Project " + ++k, value);
+		}
+
+		return series;
+	}
+
+	/**
+	 * Builds a multiple category series using the provided values.
+	 * 
+	 * @param titles the series titles
+	 * @param values the values
+	 * @return the category series
+	 */
+	protected MultipleCategorySeries buildMultipleCategoryDataset(String title,
+			List<String[]> titles, List<double[]> values) {
+		MultipleCategorySeries series = new MultipleCategorySeries(title);
+		int k = 0;
+		for (double[] value : values) {
+			series.add(2007 + k + "", titles.get(k), value);
+			k++;
+		}
+		return series;
+	}
+
+	/**
+	 * Builds a category renderer to use the provided colors.
+	 * 
+	 * @param colors the colors
+	 * @return the category renderer
+	 */
+	protected DefaultRenderer buildCategoryRenderer(int[] colors) {
+		DefaultRenderer renderer = new DefaultRenderer();
+		renderer.setLabelsTextSize(15);
+		renderer.setLegendTextSize(15);
+		renderer.setMargins(new int[] { 20, 30, 15, 0 });
+		for (int color : colors) {
+			SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+			r.setColor(color);
+			renderer.addSeriesRenderer(r);
+		}
+		return renderer;
+	}
+
+	/**
+	 * Builds a bar multiple series dataset using the provided values.
+	 * 
+	 * @param titles the series titles
+	 * @param values the values
+	 * @return the XY multiple bar dataset
+	 */
+	protected XYMultipleSeriesDataset buildBarDataset(String[] titles, List<double[]> values) {
+		XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+		int length = titles.length;
+		for (int i = 0; i < length; i++) {
+			CategorySeries series = new CategorySeries(titles[i]);
+			double[] v = values.get(i);
+			int seriesLength = v.length;
+			for (int k = 0; k < seriesLength; k++) {
+				series.add(v[k]);
+			}
+			dataset.addSeries(series.toXYSeries());
+		}
+		return dataset;
+	}
+
+	/**
+	 * Builds a bar multiple series renderer to use the provided colors.
+	 * 
+	 * @param colors the series renderers colors
+	 * @return the bar multiple series renderer
+	 */
+	protected XYMultipleSeriesRenderer buildBarRenderer(int[] colors) {
+		XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+		renderer.setAxisTitleTextSize(16);
+		renderer.setChartTitleTextSize(20);
+		renderer.setLabelsTextSize(15);
+		renderer.setLegendTextSize(15);
+		int length = colors.length;
+		for (int i = 0; i < length; i++) {
+			SimpleSeriesRenderer r = new SimpleSeriesRenderer();
+			r.setColor(colors[i]);
+			renderer.addSeriesRenderer(r);
+		}
+		return renderer;
+	}
+
+
+
 	//this method open the dialog for advanced settings...
 	private void showAdvancedSettingsDialog()
 	{
 		supportDatabase.openDataBase();
-		
+
 		String language = supportDatabase.getUserSelectedLanguage();
-		
+
 		ignoredSitesCB.clear();
 		ignoredSitesTV.clear();
-		
+
 		String prefSiteFromDB = null;
 		final TextView tmp = new TextView(ToolDetailsActivity.this);
-		
+
 		final Dialog advancedOptionsDialog = new Dialog(ToolDetailsActivity.this);
 		advancedOptionsDialog.setContentView(R.layout.custom_advanced_options_dialog);
 		advancedOptionsDialog.setTitle(toolIsin);
 		advancedOptionsDialog.setCancelable(true);
-		
+
 		final CheckBox prefSite_CB = (CheckBox) advancedOptionsDialog.findViewById(R.id.prefSite_CB);
 		final TextView preferredSiteRef = (TextView) advancedOptionsDialog.findViewById(R.id.preferredSite_TV);
 		final TextView ignoredSites_TV = (TextView) advancedOptionsDialog.findViewById(R.id.ignoredSites_TV);
 		final TableLayout dynamic_ignoredSites_table = (TableLayout) advancedOptionsDialog.findViewById(R.id.dynamic_ignoredSites_table);
-		
+
 		Button canc_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.canc_adv_sett_btn);
 		Button save_adv_sett_btn = (Button) advancedOptionsDialog.findViewById(R.id.save_adv_sett_btn);
-		
+
 		preferredSiteRef.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_TV", language));
 		ignoredSites_TV.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "ignoredSites_TV", language));
-		
+
 		canc_adv_sett_btn.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "canc_advanced_settings_btn", language));
 		save_adv_sett_btn.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "save_advanced_settings_btn", language));
-		
+
 		prefSite_CB.setText(supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_CB", language));
-		
+
 		canc_adv_sett_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				advancedOptionsDialog.dismiss();
 			}
 		});
-		
+
 		save_adv_sett_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				db.open();
-				
+
 				//controlli:
-				
+
 				//1. deve esserci almeno una checkbox dei siti ignorati non checkata
 				boolean allIgnoredSitesCBChecked = true;
-				
+
 				for (int i = 0; i < ignoredSitesCB.size(); i++) 
 				{
 					if(!ignoredSitesCB.get(i).isChecked())
@@ -481,7 +742,7 @@ public class ToolDetailsActivity extends Activity
 						break;
 					}
 				}
-				
+
 				if(ignoredSitesCB.size()==0)
 				{
 					if(prefSite_CB.isChecked())
@@ -514,11 +775,11 @@ public class ToolDetailsActivity extends Activity
 							db.updateSelectedSharePreferredSite(toolIsin, "");
 						}
 					}
-					
+
 					showMessage("Info", "Please be sure to have internet connection next time you will open the application.");
-					
+
 					advancedOptionsDialog.dismiss();
-					
+
 				}
 				else
 				{
@@ -540,9 +801,9 @@ public class ToolDetailsActivity extends Activity
 								index = i;
 							}
 						}
-						
+
 						System.out.println("INDEX = "+index);
-						
+
 						if(prefSite_CB.isChecked() && ignoredSitesCB.get(index).isChecked())
 						{
 							//error
@@ -582,9 +843,9 @@ public class ToolDetailsActivity extends Activity
 									db.updateSelectedSharePreferredSite(toolIsin, "");
 								}
 							}
-							
+
 							String stringTmp = "";
-							
+
 							for (int i = 0; i < ignoredSitesCB.size(); i++) 
 							{
 								if(ignoredSitesCB.get(i).isChecked())
@@ -592,7 +853,7 @@ public class ToolDetailsActivity extends Activity
 									stringTmp = stringTmp + ignoredSitesTV.get(i).getText().toString()+" ";
 								}
 							}
-							
+
 							if(toolType.equals("bond"))
 							{
 								db.updateSelectedBondIgnoredSites(toolIsin, stringTmp);
@@ -605,20 +866,20 @@ public class ToolDetailsActivity extends Activity
 							{
 								db.updateSelectedShareIgnoredSites(toolIsin, stringTmp);
 							}
-							
+
 							advancedOptionsDialog.dismiss();
 						}
-						
+
 					}
 				}
-				
+
 				db.close();
-				
+
 			}
 		});
-		
+
 		db.open();
-		
+
 		Cursor toolDetails;
 		if(toolType.equals("bond"))
 		{
@@ -637,39 +898,39 @@ public class ToolDetailsActivity extends Activity
 			toolDetails = null;
 		}
 		startManagingCursor(toolDetails);
-		
-		
+
+
 		//add preferred site...
 		if(toolDetails!=null)
 		{
 			if(toolDetails.getCount()==1)
 			{
 				toolDetails.moveToFirst();
-				
+
 				String label = supportDatabase.getTextFromTable("Label_custom_advanced_settings_dialog", "preferredSite_CB", language);
 				prefSiteFromDB = toolDetails.getString(toolDetails.getColumnIndex("sitoSorgente"));
 				tmp.setText(prefSiteFromDB);
-				
+
 				label = label.replaceAll("__NAME__", prefSiteFromDB);
-				
-				
+
+
 				prefSite_CB.setText(label);
-				
+
 				if(prefSiteFromDB.equals(toolDetails.getString(toolDetails.getColumnIndex("sitoPreferito"))))
 				{
 					prefSite_CB.setChecked(true);
 				}
-				
+
 			}
 		}
-		
+
 		ArrayList<String> array = new ArrayList<String>();
-		
+
 		//add rows for ignored sites...
 		//1. all sites that find this type of tools...
 		Cursor sites = db.getSitesForType(toolType.toUpperCase());
 		startManagingCursor(sites);
-		
+
 		if(sites.getCount()!=0)
 		{
 			sites.moveToFirst();
@@ -677,11 +938,11 @@ public class ToolDetailsActivity extends Activity
 				array.add(sites.getString(sites.getColumnIndex("sito")));
 			} while (sites.moveToNext());
 		}
-		
-		
+
+
 		//2. all sites already ignored must be checked...
 		ArrayList<String> ignoredSitesFromDB = new ArrayList<String>();
-		
+
 		if(toolDetails!=null)
 		{
 			if(toolDetails.getCount()==1)
@@ -697,33 +958,33 @@ public class ToolDetailsActivity extends Activity
 				}
 			}
 		}
-		
+
 		for (int i = 0; i < array.size(); i++)
 		{
 			LayoutInflater inflater = getLayoutInflater();
-			
+
 			TableRow newRow = (TableRow) inflater.inflate(R.layout.advanced_options_row, dynamic_ignoredSites_table, false);
-			
+
 			CheckBox ignored_cb = (CheckBox) newRow.findViewById(R.id.ignoredSite_CB);
 			TextView ignored_tv = (TextView) newRow.findViewById(R.id.ignoredSite_TV);
-			
+
 			if(ignoredSitesFromDB.contains(array.get(i)))
 			{
 				ignored_cb.setChecked(true);
 			}
 			ignored_tv.setText(array.get(i));
-			
+
 			ignoredSitesCB.add(ignored_cb);
 			ignoredSitesTV.add(ignored_tv);
-			
+
 			dynamic_ignoredSites_table.addView(newRow);
 		}
-		
+
 		advancedOptionsDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
 			public void onDismiss(DialogInterface dialog) {
-				
+
 				dynamic_detail_table.removeAllViews();
-				
+
 				updateView();
 			}
 		});
@@ -731,27 +992,27 @@ public class ToolDetailsActivity extends Activity
 		db.close();
 		advancedOptionsDialog.show();
 	}
-	
+
 	private void showMessage(String type, String message)
 	{
 		AlertDialog.Builder alert_builder = new AlertDialog.Builder(this);
-    	alert_builder.setTitle(type);
-    	alert_builder.setMessage(message);
-    	alert_builder.setCancelable(false);
-    	alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			
+		alert_builder.setTitle(type);
+		alert_builder.setMessage(message);
+		alert_builder.setCancelable(false);
+		alert_builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
 			public void onClick(DialogInterface dialog, int id) {
 				dialog.cancel();
 			}
 		});
-    	AlertDialog message_empty = alert_builder.create();
-    	message_empty.show();
+		AlertDialog message_empty = alert_builder.create();
+		message_empty.show();
 	}
-	
+
 	private boolean isinRequestedIsReturned(String isinRequested, QuotationContainer container)
 	{
 		boolean result = false;
-		
+
 		for(Quotation_Bond qb : container.getBondList())
 		{
 			if(qb.getISIN().equals(isinRequested))
@@ -773,15 +1034,15 @@ public class ToolDetailsActivity extends Activity
 				result = true;
 			}
 		}
-		
+
 		return result;
-		
+
 	}
-	
+
 	private ArrayList<String> searchIsinNotRequested(String toolIsin, QuotationContainer container)
 	{
 		ArrayList<String> result = new ArrayList<String>();
-		
+
 		ArrayList<String> support = new ArrayList<String>();
 		for(Quotation_Bond qb : container.getBondList())
 		{
@@ -795,7 +1056,7 @@ public class ToolDetailsActivity extends Activity
 		{
 			support.add(qs.getISIN());
 		}
-		
+
 		for (int i = 0; i < support.size(); i++) 
 		{
 			if(!support.get(i).equals(toolIsin))
@@ -803,40 +1064,40 @@ public class ToolDetailsActivity extends Activity
 				result.add(support.get(i));
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	private String getTodaysDate() 
 	{
-	    final Calendar c = Calendar.getInstance();
-	    return(new StringBuilder()
-	            .append(c.get(Calendar.MONTH) + 1).append("/")
-	            .append(c.get(Calendar.DAY_OF_MONTH)).append("/")
-	            .append(c.get(Calendar.YEAR)).append(" ")
-	            .append(c.get(Calendar.HOUR_OF_DAY)).append(":")
-	            .append(c.get(Calendar.MINUTE)).append(":")
-	            .append(c.get(Calendar.SECOND)).append(" ")).toString();
+		final Calendar c = Calendar.getInstance();
+		return(new StringBuilder()
+		.append(c.get(Calendar.MONTH) + 1).append("/")
+		.append(c.get(Calendar.DAY_OF_MONTH)).append("/")
+		.append(c.get(Calendar.YEAR)).append(" ")
+		.append(c.get(Calendar.HOUR_OF_DAY)).append(":")
+		.append(c.get(Calendar.MINUTE)).append(":")
+		.append(c.get(Calendar.SECOND)).append(" ")).toString();
 	}
-	
+
 	private class HistoricalDataRequestAsyncTask extends AsyncTask<String, Void, HistoryContainer>
 	{
 		private ProgressDialog dialog;
 		private Context context;
-		
+
 		public HistoricalDataRequestAsyncTask(Context ctx)
 		{
 			this.context = ctx;
 		}
-		
+
 		@Override
 		protected HistoryContainer doInBackground(String... params) 
 		{
 			try {
 				HistoryContainer historyCont = new HistoryContainer();
-//				Gson converter = new Gson();
-//				String jsonReq = converter.toJson(params[0]);
-//				System.out.println(""+jsonReq);
+				//				Gson converter = new Gson();
+				//				String jsonReq = converter.toJson(params[0]);
+				//				System.out.println(""+jsonReq);
 				String jsonResponse = ConnectionUtils.postData(params[0]);
 				if(jsonResponse != null)
 				{
@@ -852,7 +1113,7 @@ public class ToolDetailsActivity extends Activity
 			}
 			return null;
 		}
-		
+
 		@Override
 		protected void onPreExecute()
 		{
@@ -861,7 +1122,7 @@ public class ToolDetailsActivity extends Activity
 			dialog.setMessage("Loading, contacting Server for Historical Data.");
 			dialog.show();
 		}
-		
+
 		@Override
 		protected void onPostExecute(HistoryContainer container)
 		{
@@ -870,14 +1131,14 @@ public class ToolDetailsActivity extends Activity
 			{
 				dialog.dismiss();
 			}
-			
+
 			if(container!=null)
 			{
 				if(container.getHistoryList()!=null)
 				{
 					//svuoto l'arraylist...per accogliere i nuovi dati...
 					toolHistoricalData.clear();
-					
+
 					for (int i = 0; i < container.getHistoryList().size(); i++) 
 					{
 						//aggiungo all'arraylist tutti gli elementi del container...
@@ -887,17 +1148,17 @@ public class ToolDetailsActivity extends Activity
 			}	
 		}
 	}
-	
+
 	private class ForcedRequestAsyncTask extends AsyncTask<ArrayList<Request>, Void, QuotationContainer>
 	{
 		private ProgressDialog dialog;
 		private Context context;
-		
+
 		public ForcedRequestAsyncTask(Context ctx)
 		{
 			this.context = ctx;
 		}
-		
+
 		@Override
 		protected QuotationContainer doInBackground(ArrayList<Request>... params) 
 		{
@@ -921,7 +1182,7 @@ public class ToolDetailsActivity extends Activity
 			}
 			return null;
 		}
-		
+
 		@Override
 		protected void onPreExecute()
 		{
@@ -930,32 +1191,32 @@ public class ToolDetailsActivity extends Activity
 			dialog.setMessage("Loading, forced update");
 			dialog.show();
 		}
-		
+
 		@Override
 		protected void onPostExecute(QuotationContainer container)
 		{
 			db.open();
-			
+
 			//dismiss progress dialog....
 			if(dialog.isShowing())
 			{
 				dialog.dismiss();
 			}
-			
-			
+
+
 			if(container!=null)
 			{
 				int totalQuotationReturned = container.getBondList().size() + container.getFundList().size() + container.getShareList().size();
-				
+
 				System.out.println("total returned: "+totalQuotationReturned);
-				
+
 				if(isinRequestedIsReturned(toolIsin, container))
 				{
 					if(totalQuotationReturned > 1)
 					{
 						//ne ho ricevuti di più rispetto a quello richiesto....
 						ArrayList<String> listaIsinNotRequested = searchIsinNotRequested(toolIsin, container);
-						
+
 						for (int i = 0; i < listaIsinNotRequested.size(); i++) 
 						{
 							for(Quotation_Bond qb : container.getBondList())
@@ -981,8 +1242,8 @@ public class ToolDetailsActivity extends Activity
 							}
 						}
 					}
-					
-					
+
+
 					String ignoredSitesString = null;
 					for (int i = 0; i < ignoredSites.size(); i++) 
 					{
@@ -996,7 +1257,7 @@ public class ToolDetailsActivity extends Activity
 						}
 					}
 					System.out.println("siti ignorati:"+ignoredSitesString);
-					
+
 					//procedo all'update dei dati del titolo...
 					for(Quotation_Bond qb : container.getBondList())
 					{
@@ -1007,7 +1268,7 @@ public class ToolDetailsActivity extends Activity
 							System.out.println("Database update error");
 						}
 					}
-					
+
 					//4. for all FUND returned...
 					for(Quotation_Fund qf : container.getFundList())
 					{
@@ -1020,7 +1281,7 @@ public class ToolDetailsActivity extends Activity
 							System.out.println("Database update error");
 						}
 					}
-					
+
 					//5. for all SHARE returned...
 					for(Quotation_Share qs : container.getShareList())
 					{
@@ -1044,11 +1305,11 @@ public class ToolDetailsActivity extends Activity
 				//connection error!
 				showMessage("Error", "There were errors during connection with server. Please try again.");
 			}
-			
+
 			dynamic_detail_table.removeAllViews();
-			
+
 			updateView();
-			
+
 			db.close();
 		}
 	}
