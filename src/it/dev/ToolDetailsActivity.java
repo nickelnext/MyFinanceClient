@@ -12,6 +12,7 @@ import java.util.List;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
+import org.achartengine.chart.TimeChart;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.TimeSeries;
@@ -39,7 +40,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.Paint.Align;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -49,6 +49,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -418,7 +419,7 @@ public class ToolDetailsActivity extends Activity
 	{
 		final Dialog graphDialog = new Dialog(ToolDetailsActivity.this);
 		graphDialog.setContentView(R.layout.custom_graph_dialog);
-		graphDialog.setTitle(toolIsin+" Historical Data");
+		graphDialog.setTitle("History Graph");
 		graphDialog.setCancelable(false);
 		
 		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_graph_btn);
@@ -434,41 +435,96 @@ public class ToolDetailsActivity extends Activity
 		//TODO qui ci va il codice per la visualizzazione del grafico:
 		//		i dati dovrebbero essere già salvati nell'ArrayList opportuno...
 		
-		String[] titles = new String[] { "Crete", "Corfu", "Thassos", "Skiathos" };
-		List<double[]> x = new ArrayList<double[]>();
-		for (int i = 0; i < titles.length; i++) {
-			x.add(new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
+		
+		XYMultipleSeriesDataset mDataset;
+	    XYMultipleSeriesRenderer mRenderer;
+	    List<double[]> values = new ArrayList<double[]>();
+	    GraphicalView mChartView;
+	    TimeSeries time_series;
+		
+	    double[] tmp2 = new double[toolHistoricalData.size()];
+	    for (int i = 0; i < toolHistoricalData.size(); i++) 
+		{
+			tmp2[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
 		}
-		List<double[]> values = new ArrayList<double[]>();
-		values.add(new double[] { 12.3, 12.5, 13.8, 16.8, 20.4, 24.4, 26.4, 26.1, 23.6, 20.3, 17.2,
-				13.9 });
-		values.add(new double[] { 10, 10, 12, 15, 20, 24, 26, 26, 23, 18, 14, 11 });
-		values.add(new double[] { 5, 5.3, 8, 12, 17, 22, 24.2, 24, 19, 15, 9, 6 });
-		values.add(new double[] { 9, 10, 11, 15, 19, 23, 26, 25, 22, 18, 13, 10 });
-		int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.CYAN, Color.YELLOW };
-		PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE, PointStyle.DIAMOND,
-				PointStyle.TRIANGLE, PointStyle.SQUARE };
-		XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
-		int length = renderer.getSeriesRendererCount();
-		for (int i = 0; i < length; i++) {
-			((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
-		}
-		setChartSettings(renderer, "Average temperature", "Month", "Temperature", 0.5, 12.5, -10, 40,
-				Color.LTGRAY, Color.LTGRAY);
-		renderer.setXLabels(12);
-		renderer.setYLabels(10);
-		renderer.setShowGrid(true);
-		renderer.setXLabelsAlign(Align.RIGHT);
-		renderer.setYLabelsAlign(Align.RIGHT);
-		renderer.setZoomButtonsVisible(true);
-		renderer.setPanLimits(new double[] { -10, 20, -10, 40 });
-		renderer.setZoomLimits(new double[] { -10, 20, -10, 40 });
+	    values.add(tmp2);
+	    
+	    // create dataset and renderer
+        mDataset = new XYMultipleSeriesDataset();
+        mRenderer = new XYMultipleSeriesRenderer();
+        mRenderer.setAxisTitleTextSize(16);
+        mRenderer.setChartTitleTextSize(20);
+        mRenderer.setLabelsTextSize(15);
+        mRenderer.setLegendTextSize(15);
+        mRenderer.setPointSize(3f);
+        
+        XYSeriesRenderer r = new XYSeriesRenderer();
+        r.setColor(Color.GREEN);
+        r.setPointStyle(PointStyle.CIRCLE);
+        r.setFillPoints(true);
+        mRenderer.addSeriesRenderer(r);
+        mRenderer.setClickEnabled(true);
+        mRenderer.setSelectableBuffer(20);
+        mRenderer.setPanEnabled(true);
 
-		GraphicalView g = ChartFactory.getLineChartView(ToolDetailsActivity.this, buildDataset(titles, x, values), renderer);
+        time_series = new TimeSeries(toolIsin);
+
+        mDataset.addSeries(time_series);
+
+        
+        for (int i = 0; i < 100; i++) 
+        {
+            time_series.add(new Date(i * TimeChart.DAY / 4), i);
+        }
+
+        mChartView = ChartFactory.getTimeChartView(this, mDataset, mRenderer, "H:mm:ss");
+
+        
 		
-		graph_layout.addView(g);
+		//////////////////////////////////////////////////////////////////////////////////
 		
+//		String[] titles = new String[] { toolIsin };
+//		List<double[]> x_values = new ArrayList<double[]>();
+//		List<double[]> y_values = new ArrayList<double[]>();
+//		
+//		
+//		double[] tmp = new double[toolHistoricalData.size()];
+//		double[] tmp2 = new double[toolHistoricalData.size()];
+//		
+//		for (int i = 0; i < toolHistoricalData.size(); i++) 
+//		{
+//			tmp[i] = Double.valueOf(toolHistoricalData.get(i).getDate());
+//			tmp2[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
+//		}
+//		
+//		x_values.add(tmp);
+//		y_values.add(tmp2);
+//		
+//		int[] colors = new int[] { Color.BLUE};
+//		PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE};
+//		
+//		XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
+//		int length = renderer.getSeriesRendererCount();
+//		for (int i = 0; i < length; i++) 
+//		{
+//			((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
+//		}
+//		setChartSettings(renderer, "Tool Price", "Time", "Last price", 0, 12.5, 0, 40, Color.LTGRAY, Color.LTGRAY);
+//		
+//		renderer.setXLabels(12);
+//		renderer.setYLabels(10);
+//		renderer.setShowGrid(true);
+//		renderer.setXLabelsAlign(Align.RIGHT);
+//		renderer.setYLabelsAlign(Align.RIGHT);
+//		renderer.setZoomButtonsVisible(true);
+//		renderer.setPanLimits(new double[] { -10, 20, -10, 40 });
+//		renderer.setZoomLimits(new double[] { -10, 20, -10, 40 });
+//		
+		//GraphicalView g = ChartFactory.getLineChartView(ToolDetailsActivity.this, buildDataset(titles, x_values, y_values), renderer);
 		
+		LayoutParams params = new LayoutParams(300, 300);
+		
+		graph_layout.addView(mChartView, 0, params);
 		
 		graphDialog.show();
 		
