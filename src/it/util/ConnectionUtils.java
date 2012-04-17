@@ -25,6 +25,7 @@ public class ConnectionUtils {
 	
 	private static String URL = "http://myfinance.no-ip.org:8080/Pinellas/MainServlet";
 	private static String URL2 = "http://myfinance.no-ip.org:8080/Pinellas/VersionServlet";
+	private static String URL3 = "http://myfinance.no-ip.org:8080/Pinellas/HistoryServlet";
 //	private static String URL = "http://bbcentrale.dyndns-server.com:8083/Pinellas/MainServlet";
 	//private static String JSONREQ = "[{\"idCode\":\"IT0004572910\",\"reqType\":\"UPDATE\",\"quotType\":\"BOND\",\"preferredSite\":\"__NONE__\"}]";
 
@@ -80,6 +81,32 @@ public class ConnectionUtils {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 	        nameValuePairs.add(new BasicNameValuePair("clientVersion", version));	        	        
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+	        // Execute HTTP Post Request	        
+	        HttpResponse response = httpclient.execute(httppost);
+	        
+	        InputStream content = response.getEntity().getContent();
+	        String result = convertStreamToString(content);
+	        System.out.println(result);
+	        return result;
+	        
+	    } catch (ClientProtocolException e) {
+	        // TODO Auto-generated catch block
+	    	return null;
+	    } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	    	return null;
+	    }
+	}
+	
+	public static String searchHistory(String isin) {
+	    // Create a new HttpClient and Post Header
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost(URL3);
+	    try {
+	        // Add your data
+	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("ISIN", isin));	        	        
 	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 	        // Execute HTTP Post Request	        
 	        HttpResponse response = httpclient.execute(httppost);

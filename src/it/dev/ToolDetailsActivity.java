@@ -4,15 +4,15 @@ import it.util.ConnectionUtils;
 import it.util.ResponseHandler;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
-import org.achartengine.chart.TimeChart;
 import org.achartengine.model.CategorySeries;
 import org.achartengine.model.MultipleCategorySeries;
 import org.achartengine.model.TimeSeries;
@@ -130,15 +130,13 @@ public class ToolDetailsActivity extends Activity
 				{
 					//faccio chiamata al DB per riempire l'ArrayList corrispondente...<< toolHistoricalData >>
 					getHistoricalDataFromDatabase();
+					showGraphDialog();
 				}
 				else
 				{
 					//faccio richiesta asincrona al Server per riempire l'ArrayList corrispondente...
 					callHistoricalDataRequest();
 				}
-				
-				//plotting dei dati presenti nell'arraylist....
-				showGraphDialog();
 			}
 		});
 		
@@ -417,6 +415,8 @@ public class ToolDetailsActivity extends Activity
 	//this method open the dialog for graph plotting...
 	private void showGraphDialog()
 	{
+		
+		
 		final Dialog graphDialog = new Dialog(ToolDetailsActivity.this);
 		graphDialog.setContentView(R.layout.custom_graph_dialog);
 		graphDialog.setTitle("History Graph");
@@ -432,97 +432,67 @@ public class ToolDetailsActivity extends Activity
 		});
 		
 		
-		//TODO qui ci va il codice per la visualizzazione del grafico:
+		//qui ci va il codice per la visualizzazione del grafico:
 		//		i dati dovrebbero essere già salvati nell'ArrayList opportuno...
 		
 		
-		XYMultipleSeriesDataset mDataset;
-	    XYMultipleSeriesRenderer mRenderer;
-	    List<double[]> values = new ArrayList<double[]>();
-	    GraphicalView mChartView;
-	    TimeSeries time_series;
-		
-	    double[] tmp2 = new double[toolHistoricalData.size()];
-	    for (int i = 0; i < toolHistoricalData.size(); i++) 
-		{
-			tmp2[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
-		}
-	    values.add(tmp2);
-	    
-	    // create dataset and renderer
-        mDataset = new XYMultipleSeriesDataset();
-        mRenderer = new XYMultipleSeriesRenderer();
-        mRenderer.setAxisTitleTextSize(16);
-        mRenderer.setChartTitleTextSize(20);
-        mRenderer.setLabelsTextSize(15);
-        mRenderer.setLegendTextSize(15);
-        mRenderer.setPointSize(3f);
-        
-        XYSeriesRenderer r = new XYSeriesRenderer();
-        r.setColor(Color.GREEN);
-        r.setPointStyle(PointStyle.CIRCLE);
-        r.setFillPoints(true);
-        mRenderer.addSeriesRenderer(r);
-        mRenderer.setClickEnabled(true);
-        mRenderer.setSelectableBuffer(20);
-        mRenderer.setPanEnabled(true);
-
-        time_series = new TimeSeries(toolIsin);
-
-        mDataset.addSeries(time_series);
-
-        
-        for (int i = 0; i < 100; i++) 
-        {
-            time_series.add(new Date(i * TimeChart.DAY / 4), i);
-        }
-
-        mChartView = ChartFactory.getTimeChartView(this, mDataset, mRenderer, "H:mm:ss");
-
-        
 		
 		//////////////////////////////////////////////////////////////////////////////////
+		String[] titles = new String[] {toolIsin};
+		List<Date[]> dates = new ArrayList<Date[]>();
+		List<double[]> values = new ArrayList<double[]>();
 		
-//		String[] titles = new String[] { toolIsin };
-//		List<double[]> x_values = new ArrayList<double[]>();
-//		List<double[]> y_values = new ArrayList<double[]>();
-//		
-//		
-//		double[] tmp = new double[toolHistoricalData.size()];
-//		double[] tmp2 = new double[toolHistoricalData.size()];
-//		
-//		for (int i = 0; i < toolHistoricalData.size(); i++) 
-//		{
-//			tmp[i] = Double.valueOf(toolHistoricalData.get(i).getDate());
-//			tmp2[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
-//		}
-//		
-//		x_values.add(tmp);
-//		y_values.add(tmp2);
-//		
-//		int[] colors = new int[] { Color.BLUE};
-//		PointStyle[] styles = new PointStyle[] { PointStyle.CIRCLE};
-//		
-//		XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
-//		int length = renderer.getSeriesRendererCount();
-//		for (int i = 0; i < length; i++) 
-//		{
-//			((XYSeriesRenderer) renderer.getSeriesRendererAt(i)).setFillPoints(true);
-//		}
-//		setChartSettings(renderer, "Tool Price", "Time", "Last price", 0, 12.5, 0, 40, Color.LTGRAY, Color.LTGRAY);
-//		
-//		renderer.setXLabels(12);
-//		renderer.setYLabels(10);
-//		renderer.setShowGrid(true);
-//		renderer.setXLabelsAlign(Align.RIGHT);
-//		renderer.setYLabelsAlign(Align.RIGHT);
-//		renderer.setZoomButtonsVisible(true);
-//		renderer.setPanLimits(new double[] { -10, 20, -10, 40 });
-//		renderer.setZoomLimits(new double[] { -10, 20, -10, 40 });
-//		
-		//GraphicalView g = ChartFactory.getLineChartView(ToolDetailsActivity.this, buildDataset(titles, x_values, y_values), renderer);
+		//------------------retreaving data from ArrayList--------------------//
+		Date[] dateTmp = new Date[toolHistoricalData.size()];
+		double[] valueTmp = new double[toolHistoricalData.size()];
 		
-		LayoutParams params = new LayoutParams(300, 300);
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		
+		ArrayList<Double> listaPerOrdinareY = new ArrayList<Double>();
+		
+	    for (int i = 0; i < toolHistoricalData.size(); i++) 
+		{
+	    	try 
+	    	{
+	    		System.out.println(toolHistoricalData.get(i).getDate());
+				dateTmp[i] = (Date)formatter.parse(toolHistoricalData.get(i).getDate());
+			} 
+	    	catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+			valueTmp[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
+			listaPerOrdinareY.add(valueTmp[i]);
+		}
+	    
+	    dates.add(dateTmp);
+	    values.add(valueTmp);
+        //------------------------------------------------------------------//
+	    
+	    int[] colors = new int[] {Color.BLUE};
+	    PointStyle[] styles = new PointStyle[] {PointStyle.DIAMOND};
+	    XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
+	    
+	    
+	    Collections.sort(listaPerOrdinareY);
+	    
+	    setChartSettings(renderer, "History Diagram", "Date", "Price", dates.get(0)[0].getTime(),dates.get(0)[toolHistoricalData.size()-1].getTime(), 0, listaPerOrdinareY.get(listaPerOrdinareY.size()-1)+20, Color.GRAY, Color.LTGRAY);
+	    renderer.setXLabels(5);
+	    renderer.setYLabels(10);
+	    int length = renderer.getSeriesRendererCount();
+	    for (int i = 0; i < length; i++) 
+	    {
+	        SimpleSeriesRenderer seriesRenderer = renderer.getSeriesRendererAt(i);
+	        seriesRenderer.setDisplayChartValues(true);
+	    }
+	    View mChartView = ChartFactory.getTimeChartView(ToolDetailsActivity.this, buildDateDataset(titles, dates, values),
+	            renderer, "MM/dd/yyyy");
+        
+        
+        
+        
+        
+		LayoutParams params = new LayoutParams(400, 400);
 		
 		graph_layout.addView(mChartView, 0, params);
 		
@@ -1146,7 +1116,7 @@ public class ToolDetailsActivity extends Activity
 //				Gson converter = new Gson();
 //				String jsonReq = converter.toJson(params[0]);
 //				System.out.println(""+jsonReq);
-				String jsonResponse = ConnectionUtils.postData(params[0]);
+				String jsonResponse = ConnectionUtils.searchHistory(params[0]);
 				if(jsonResponse != null)
 				{
 					historyCont = ResponseHandler.decodeHistoryData(jsonResponse);
@@ -1192,6 +1162,12 @@ public class ToolDetailsActivity extends Activity
 						//aggiungo all'arraylist tutti gli elementi del container...
 						toolHistoricalData.add(container.getHistoryList().get(i));
 					}
+					showGraphDialog();
+					System.out.println("wtffffffffaaaaaaaa");
+				}
+				else
+				{
+					showMessage("ERROR", "There were errors during connection");
 				}
 			}	
 		}
