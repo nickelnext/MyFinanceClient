@@ -500,6 +500,7 @@ public class ToolDetailsActivity extends Activity
 		
 	}
 	
+	
 	//METHODSSS
 
 		protected XYMultipleSeriesDataset buildDataset(String[] titles, List<double[]> xValues,
