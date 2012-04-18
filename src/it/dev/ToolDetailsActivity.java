@@ -461,7 +461,8 @@ public class ToolDetailsActivity extends Activity
 			{
 				e.printStackTrace();
 			}
-			valueTmp[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
+//			valueTmp[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
+	    	valueTmp[i] = toolHistoricalData.get(i).getValue();
 			listaPerOrdinareY.add(valueTmp[i]);
 		}
 	    
@@ -1158,11 +1159,12 @@ public class ToolDetailsActivity extends Activity
 					//svuoto l'arraylist...per accogliere i nuovi dati...
 					toolHistoricalData.clear();
 					
-					for (int i = 0; i < container.getHistoryList().size(); i++) 
-					{
-						//aggiungo all'arraylist tutti gli elementi del container...
-						toolHistoricalData.add(container.getHistoryList().get(i));
-					}
+//					for (int i = 0; i < container.getHistoryList().size(); i++) 
+//					{
+//						//aggiungo all'arraylist tutti gli elementi del container...
+//						toolHistoricalData.add(container.getHistoryList().get(i));
+//					}
+					toolHistoricalData = container.getHistoryList();
 					showGraphDialog();
 					System.out.println("wtffffffffaaaaaaaa");
 				}
