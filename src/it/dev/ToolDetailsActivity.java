@@ -462,7 +462,7 @@ public class ToolDetailsActivity extends Activity
 				e.printStackTrace();
 			}
 //			valueTmp[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
-	    	valueTmp[i] = Double.valueOf(toolHistoricalData.get(i).getValue());
+	    	valueTmp[i] = Double.parseDouble(toolHistoricalData.get(i).getValue());
 			listaPerOrdinareY.add(valueTmp[i]);
 		}
 	    
@@ -1146,6 +1146,7 @@ public class ToolDetailsActivity extends Activity
 		@Override
 		protected void onPostExecute(HistoryContainer container)
 		{
+			db.open();
 			
 			//dismiss progress dialog....
 			if(dialog.isShowing())
@@ -1158,14 +1159,14 @@ public class ToolDetailsActivity extends Activity
 				if(container.getHistoryList()!=null)
 				{
 					//svuoto l'arraylist...per accogliere i nuovi dati...
-					toolHistoricalData.clear();
+					//toolHistoricalData.clear();
 					
 //					for (int i = 0; i < container.getHistoryList().size(); i++) 
 //					{
 //						//aggiungo all'arraylist tutti gli elementi del container...
 //						toolHistoricalData.add(container.getHistoryList().get(i));
 //					}
-					toolHistoricalData = container.getHistoryList();
+					//toolHistoricalData = container.getHistoryList();
 //					for (int i = toolHistoricalData.size()-1; i > 8; i--) 
 //					{
 //						toolHistoricalData.remove(i);
@@ -1177,23 +1178,23 @@ public class ToolDetailsActivity extends Activity
 //						System.out.println("Valore: "+toolHistoricalData.get(i).getValue());
 //						System.out.println("-----------------------------------------------");
 //					}
-					showGraphDialog();
+					//showGraphDialog();
 					
 					
 					///////////////////////////////////////////////////////////////////////
 					
 					//salviamo nel DB i dati restituiti dal server...e poi li cancelliamo....
 					
-//					for (int i = 0; i < container.getHistoryList().size(); i++) 
-//					{
-//						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryList().get(i).getDate(), container.getHistoryList().get(i).getValue());
-//					}
-//					getHistoricalDataFromDatabase();
-//					showGraphDialog();
-//					
-//					db.open();
-//					db.deleteTOOLHistoricalData(toolIsin);
-//					db.close();
+					for (int i = 0; i < container.getHistoryList().size(); i++) 
+					{
+						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryList().get(i).getDate(), container.getHistoryList().get(i).getValue());
+					}
+					getHistoricalDataFromDatabase();
+					showGraphDialog();
+					
+					db.open();
+					db.deleteTOOLHistoricalData(toolIsin);
+					db.close();
 				}
 				else
 				{
@@ -1201,7 +1202,7 @@ public class ToolDetailsActivity extends Activity
 				}
 			}
 			
-			
+			db.close();
 		}
 	}
 	
