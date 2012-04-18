@@ -2,9 +2,9 @@ package Quotes;
 
 public class HistoricalData {
 	private String date;
-	private float value;
+	private String value;
 	
-	public HistoricalData(String date, float value) {
+	public HistoricalData(String date, String value) {
 		super();
 		this.date = date;
 		this.value = value;
@@ -15,10 +15,10 @@ public class HistoricalData {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public float getValue() {
+	public String getValue() {
 		return value;
 	}
-	public void setValue(float value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 }
