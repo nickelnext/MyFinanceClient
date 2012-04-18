@@ -344,7 +344,7 @@ public class MyFinanceDatabase
 				HistoricalDataMetadata.ID +" INTEGER NOT NULL, " +
 				HistoricalDataMetadata.ISIN +" TEXT NOT NULL, " +
 				HistoricalDataMetadata.DATE +" TEXT NOT NULL, " +
-				HistoricalDataMetadata.VALUE +" REAL NOT NULL, " +
+				HistoricalDataMetadata.VALUE +" TEXT NOT NULL, " +
 				"PRIMARY KEY (" +HistoricalDataMetadata.ISIN+", " +HistoricalDataMetadata.DATE+"));";
 	
 	//-------------------------------------HELPER class---------------------------------------//
@@ -510,7 +510,7 @@ public class MyFinanceDatabase
 		cv2.put(HistoricalDataMetadata.ID, 1);
 		cv2.put(HistoricalDataMetadata.ISIN, newBond.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
-		cv2.put(HistoricalDataMetadata.VALUE, newBond.getPrezzoUltimoContratto());
+		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newBond.getPrezzoUltimoContratto()));
 		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 		
 	}
@@ -574,7 +574,7 @@ public class MyFinanceDatabase
 		cv2.put(HistoricalDataMetadata.ID, 1);
 		cv2.put(HistoricalDataMetadata.ISIN, newFund.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
-		cv2.put(HistoricalDataMetadata.VALUE, newFund.getUltimoPrezzo());
+		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newFund.getUltimoPrezzo()));
 		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 	}
 	
@@ -647,6 +647,16 @@ public class MyFinanceDatabase
 		cv.put(ShareMetaData.SHARE_PREFERREDSITE_KEY, "");
 		cv.put(ShareMetaData.SHARE_IGNOREDSITES_KEY, "");
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
+	}
+	
+	public void addNewTemporaryToolInHistoryTable(String isin, String date, String value)
+	{
+		ContentValues cv2 = new ContentValues();
+		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ISIN, isin);
+		cv2.put(HistoricalDataMetadata.DATE, date);
+		cv2.put(HistoricalDataMetadata.VALUE, value);
+		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 	}
 	
 	public void addNewBondInTransitionTable(String portfolioName, String bondISIN, String buyDate, float buyPrice, int roundLot)
@@ -1035,7 +1045,7 @@ public class MyFinanceDatabase
 		cv2.put(HistoricalDataMetadata.ID, 1);
 		cv2.put(HistoricalDataMetadata.ISIN, newBond.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
-		cv2.put(HistoricalDataMetadata.VALUE, newBond.getPrezzoUltimoContratto());
+		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newBond.getPrezzoUltimoContratto()));
 		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 	}
 	
@@ -1097,7 +1107,7 @@ public class MyFinanceDatabase
 		cv2.put(HistoricalDataMetadata.ID, 1);
 		cv2.put(HistoricalDataMetadata.ISIN, newFund.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
-		cv2.put(HistoricalDataMetadata.VALUE, newFund.getUltimoPrezzo());
+		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newFund.getUltimoPrezzo()));
 		database.insert(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, cv2);
 	}
 	

@@ -219,7 +219,7 @@ public class ToolDetailsActivity extends Activity
 			//aggiungo all'Arraylist gli elementi che tiro su dal database...[data, valore]
 			toolHD.moveToFirst();
 			do {
-				toolHistoricalData.add(new HistoricalData(toolHD.getString(2), toolHD.getFloat(3)));
+				toolHistoricalData.add(new HistoricalData(toolHD.getString(2), toolHD.getString(3)));
 			} while (toolHD.moveToNext());
 		}
 		
@@ -462,7 +462,7 @@ public class ToolDetailsActivity extends Activity
 				e.printStackTrace();
 			}
 //			valueTmp[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
-	    	valueTmp[i] = toolHistoricalData.get(i).getValue();
+	    	valueTmp[i] = Double.valueOf(toolHistoricalData.get(i).getValue());
 			listaPerOrdinareY.add(valueTmp[i]);
 		}
 	    
@@ -477,7 +477,7 @@ public class ToolDetailsActivity extends Activity
 	    
 	    Collections.sort(listaPerOrdinareY);
 	    
-	    setChartSettings(renderer, "History Diagram", "Date", "Price", dates.get(0)[0].getTime(),dates.get(0)[toolHistoricalData.size()-1].getTime(), 0, listaPerOrdinareY.get(listaPerOrdinareY.size()-1)+20, Color.GRAY, Color.LTGRAY);
+	    setChartSettings(renderer, "History Diagram", "Date", "Price", dates.get(0)[0].getTime(),dates.get(0)[toolHistoricalData.size()-1].getTime(), 0, listaPerOrdinareY.get(listaPerOrdinareY.size()-1)*1.05, Color.GRAY, Color.LTGRAY);
 	    renderer.setXLabels(5);
 	    renderer.setYLabels(10);
 	    int length = renderer.getSeriesRendererCount();
@@ -1146,6 +1146,7 @@ public class ToolDetailsActivity extends Activity
 		@Override
 		protected void onPostExecute(HistoryContainer container)
 		{
+			
 			//dismiss progress dialog....
 			if(dialog.isShowing())
 			{
@@ -1165,14 +1166,42 @@ public class ToolDetailsActivity extends Activity
 //						toolHistoricalData.add(container.getHistoryList().get(i));
 //					}
 					toolHistoricalData = container.getHistoryList();
+//					for (int i = toolHistoricalData.size()-1; i > 8; i--) 
+//					{
+//						toolHistoricalData.remove(i);
+//					}
+//					for (int i = 0; i < toolHistoricalData.size(); i++) 
+//					{
+//						System.out.println("Indice: "+i);
+//						System.out.println("Data: "+toolHistoricalData.get(i).getDate());
+//						System.out.println("Valore: "+toolHistoricalData.get(i).getValue());
+//						System.out.println("-----------------------------------------------");
+//					}
 					showGraphDialog();
-					System.out.println("wtffffffffaaaaaaaa");
+					
+					
+					///////////////////////////////////////////////////////////////////////
+					
+					//salviamo nel DB i dati restituiti dal server...e poi li cancelliamo....
+					
+//					for (int i = 0; i < container.getHistoryList().size(); i++) 
+//					{
+//						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryList().get(i).getDate(), container.getHistoryList().get(i).getValue());
+//					}
+//					getHistoricalDataFromDatabase();
+//					showGraphDialog();
+//					
+//					db.open();
+//					db.deleteTOOLHistoricalData(toolIsin);
+//					db.close();
 				}
 				else
 				{
-					showMessage("ERROR", "There were errors during connection");
+					showMessage("ERROR", "There were errors during connection with Server");
 				}
-			}	
+			}
+			
+			
 		}
 	}
 	
