@@ -34,6 +34,7 @@ import Requests.Request;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,6 +51,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -81,8 +84,15 @@ public class ToolDetailsActivity extends Activity
 	private ArrayList<CheckBox> ignoredSitesCB = new ArrayList<CheckBox>();
 	private ArrayList<TextView> ignoredSitesTV = new ArrayList<TextView>();
 	
+	//used for bond and fund.....
 	private ArrayList<HistoricalData> toolHistoricalData = new ArrayList<HistoricalData>();
 
+	//used ONLY for SHARES.......
+	private ArrayList<HistoricalData> historyListWeek = new ArrayList<HistoricalData>();
+	private ArrayList<HistoricalData> historyListMonth = new ArrayList<HistoricalData>();
+	private ArrayList<HistoricalData> historyListYear = new ArrayList<HistoricalData>();
+	
+	
 	public void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
@@ -130,7 +140,7 @@ public class ToolDetailsActivity extends Activity
 				{
 					//faccio chiamata al DB per riempire l'ArrayList corrispondente...<< toolHistoricalData >>
 					getHistoricalDataFromDatabase();
-					showGraphDialog();
+					showBondOrFundGraphDialog();
 				}
 				else
 				{
@@ -205,7 +215,7 @@ public class ToolDetailsActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
-	//query the database in order to get the historical data of a particular Tool (ISIN)
+	//query the database in order to get the historical data of a particular Tool (ISIN) !!!BOND and FUND!!!
 	private void getHistoricalDataFromDatabase()
 	{
 		toolHistoricalData.clear();
@@ -220,6 +230,27 @@ public class ToolDetailsActivity extends Activity
 			toolHD.moveToFirst();
 			do {
 				toolHistoricalData.add(new HistoricalData(toolHD.getString(2), toolHD.getString(3)));
+			} while (toolHD.moveToNext());
+		}
+		
+		db.close();
+	}
+	
+	//query the database in order to get the TEMPORARY historical data of a particular SHARE !!!only SHARE!!!
+	private void getTemporaryHistoricalDataFromDatabase(ArrayList<HistoricalData> array)
+	{
+		array.clear();
+		
+		db.open();
+		
+		Cursor toolHD = db.getHistoricalDataOfTool(toolIsin);
+		startManagingCursor(toolHD);
+		if(toolHD.getCount()!=0)
+		{
+			//aggiungo all'Arraylist gli elementi che tiro su dal database...[data, valore]
+			toolHD.moveToFirst();
+			do {
+				array.add(new HistoricalData(toolHD.getString(2), toolHD.getString(3)));
 			} while (toolHD.moveToNext());
 		}
 		
@@ -412,18 +443,17 @@ public class ToolDetailsActivity extends Activity
 		db.close();
 	}
 	
-	//this method open the dialog for graph plotting...
-	private void showGraphDialog()
+	//this method open the dialog for graph plotting...!!! BOND AND FUND !!!
+	private void showBondOrFundGraphDialog()
 	{
-		
 		
 		final Dialog graphDialog = new Dialog(ToolDetailsActivity.this);
 		graphDialog.setContentView(R.layout.custom_graph_dialog);
 		graphDialog.setTitle("History Graph");
 		graphDialog.setCancelable(false);
 		
-		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_graph_btn);
 		final LinearLayout graph_layout = (LinearLayout) graphDialog.findViewById(R.id.graph_layout);
+		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_graph_btn);
 		
 		close_graph_btn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -489,16 +519,58 @@ public class ToolDetailsActivity extends Activity
 	    View mChartView = ChartFactory.getTimeChartView(ToolDetailsActivity.this, buildDateDataset(titles, dates, values),
 	            renderer, "MM/dd/yyyy");
         
-        
-        
-        
-        
 		LayoutParams params = new LayoutParams(400, 400);
 		
 		graph_layout.addView(mChartView, 0, params);
 		
 		graphDialog.show();
 		
+	}
+	
+	//this method open the dialog for graph plotting...!!! ONLY SHARE !!!
+	private void showShareGraphDialog()
+	{
+		String pkg = getPackageName();
+		
+		final Dialog graphDialog = new Dialog(ToolDetailsActivity.this);
+		graphDialog.setContentView(R.layout.custom_share_graph_dialog);
+		graphDialog.setTitle("History Graph");
+		graphDialog.setCancelable(false);
+		
+		TabHost tabContainer = (TabHost) graphDialog.findViewById(R.id.tabhost);
+		tabContainer.setup(new LocalActivityManager(ToolDetailsActivity.this, true));
+		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_share_graph_btn);
+		
+		close_graph_btn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				graphDialog.dismiss();
+			}
+		});
+		
+		//tab for week graph...
+		TabHost.TabSpec weekSpec = tabContainer.newTabSpec("Week");
+		weekSpec.setIndicator("Week");
+        Intent weekIntent = new Intent(ToolDetailsActivity.this, WeekGraphActivity.class);        
+        weekIntent.putExtra(pkg+".lists", historyListWeek);
+		weekSpec.setContent(weekIntent);
+		tabContainer.addTab(weekSpec);
+		
+		//tab for month graph...
+		TabHost.TabSpec monthSpec = tabContainer.newTabSpec("Month");
+		monthSpec.setIndicator("Month");
+        Intent monthIntent = new Intent(ToolDetailsActivity.this, MonthGraphActivity.class);        
+        monthIntent.putExtra(pkg+".lists", historyListMonth);
+        monthSpec.setContent(monthIntent);
+        tabContainer.addTab(monthSpec);
+        
+		//tab for year graph...
+        TabHost.TabSpec yearSpec = tabContainer.newTabSpec("Year");
+		yearSpec.setIndicator("Year");
+        Intent yearIntent = new Intent(ToolDetailsActivity.this, YearGraphActivity.class);        
+        yearIntent.putExtra(pkg+".lists", historyListYear);
+        yearSpec.setContent(yearIntent);
+        tabContainer.addTab(yearSpec);
+        
 	}
 	
 	
@@ -1156,44 +1228,46 @@ public class ToolDetailsActivity extends Activity
 			
 			if(container!=null)
 			{
-				if(container.getHistoryList()!=null)
+				if(container.getComments().equals("ERROR_OK"))
 				{
-					//svuoto l'arraylist...per accogliere i nuovi dati...
-					//toolHistoricalData.clear();
-					
-//					for (int i = 0; i < container.getHistoryList().size(); i++) 
-//					{
-//						//aggiungo all'arraylist tutti gli elementi del container...
-//						toolHistoricalData.add(container.getHistoryList().get(i));
-//					}
-					//toolHistoricalData = container.getHistoryList();
-//					for (int i = toolHistoricalData.size()-1; i > 8; i--) 
-//					{
-//						toolHistoricalData.remove(i);
-//					}
-//					for (int i = 0; i < toolHistoricalData.size(); i++) 
-//					{
-//						System.out.println("Indice: "+i);
-//						System.out.println("Data: "+toolHistoricalData.get(i).getDate());
-//						System.out.println("Valore: "+toolHistoricalData.get(i).getValue());
-//						System.out.println("-----------------------------------------------");
-//					}
-					//showGraphDialog();
-					
 					
 					///////////////////////////////////////////////////////////////////////
 					
 					//salviamo nel DB i dati restituiti dal server...e poi li cancelliamo....
 					
-					for (int i = 0; i < container.getHistoryList().size(); i++) 
+					//1. Week data...........................................................
+					for (int i = 0; i < container.getHistoryListWeek().size(); i++) 
 					{
-						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryList().get(i).getDate(), container.getHistoryList().get(i).getValue());
+						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryListWeek().get(i).getDate(), container.getHistoryListWeek().get(i).getValue());
 					}
-					getHistoricalDataFromDatabase();
-					showGraphDialog();
-					
+					getTemporaryHistoricalDataFromDatabase(historyListWeek);
 					db.open();
 					db.deleteTOOLHistoricalData(toolIsin);
+					
+					//2. Month data...........................................................
+					for (int i = 0; i < container.getHistoryListMonth().size(); i++) 
+					{
+						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryListMonth().get(i).getDate(), container.getHistoryListMonth().get(i).getValue());
+					}
+					getTemporaryHistoricalDataFromDatabase(historyListMonth);
+					db.open();
+					db.deleteTOOLHistoricalData(toolIsin);
+					
+					//3. Year data...........................................................
+					for (int i = 0; i < container.getHistoryListYear().size(); i++) 
+					{
+						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryListYear().get(i).getDate(), container.getHistoryListYear().get(i).getValue());
+					}
+					getTemporaryHistoricalDataFromDatabase(historyListYear);
+					db.open();
+					db.deleteTOOLHistoricalData(toolIsin);
+					
+					
+					
+					
+					showShareGraphDialog();
+					
+					
 					db.close();
 				}
 				else

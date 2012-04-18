@@ -5,13 +5,13 @@
     android:layout_height="fill_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/graph_layout"
-	android:layout_width="fill_parent"
+ 	android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" 
     android:minWidth="300dp">
    
-   	<Button
-		android:id="@+id/close_graph_btn"
+    <Button
+  		android:id="@+id/close_graph_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
