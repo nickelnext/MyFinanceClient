@@ -541,9 +541,34 @@ public class MyFinanceActivity extends Activity
 		
 		//per tutti i bond, fund e share contenuti nel portafoglio devo controllare che non siano contenuti 
 		//in altri portafogli; in caso negativo posso cancellarli dalle tabelle QUOTATION....
+		for (int i = 0; i < listaBondDelPortafoglio.size(); i++) 
+		{
+			if(!db.bondInOtherPortfolios(listaBondDelPortafoglio.get(i), name))
+			{
+				db.deleteBond(listaBondDelPortafoglio.get(i));
+				db.deleteTOOLHistoricalData(listaBondDelPortafoglio.get(i));
+			}
+		}
 		
+		for (int i = 0; i < listaFundDelPortafoglio.size(); i++) 
+		{
+			if(!db.fundInOtherPortfolios(listaFundDelPortafoglio.get(i), name))
+			{
+				db.deleteBond(listaFundDelPortafoglio.get(i));
+				db.deleteTOOLHistoricalData(listaFundDelPortafoglio.get(i));
+			}
+		}
 		
+		for (int i = 0; i < listaShareDelPortafoglio.size(); i++) 
+		{
+			if(!db.shareInOtherPortfolios(listaShareDelPortafoglio.get(i), name))
+			{
+				db.deleteBond(listaShareDelPortafoglio.get(i));
+				db.deleteTOOLHistoricalData(listaShareDelPortafoglio.get(i));
+			}
+		}
 		
+		//////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		db.deletePortfolioByName(name);
 		
