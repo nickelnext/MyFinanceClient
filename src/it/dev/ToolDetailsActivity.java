@@ -253,10 +253,10 @@ public class ToolDetailsActivity extends Activity
 		}
 		
 		///////////////////////////////////////////////////////////////
-		System.out.println("ARRAY: ");
+		System.out.println("----------------------"+array.size()+" ELEMENTI--------------------------------");
 		for (int i = 0; i < array.size(); i++) 
 		{
-			System.out.println("");
+			System.out.println(array.get(i).getDate()+" --> "+array.get(i).getValue());
 		}
 		
 		db.close();
@@ -1312,7 +1312,7 @@ public class ToolDetailsActivity extends Activity
 		@Override
 		protected void onPostExecute(HistoryContainer container)
 		{
-			db.open();
+			
 			
 			//dismiss progress dialog....
 			if(dialog.isShowing())
@@ -1327,42 +1327,96 @@ public class ToolDetailsActivity extends Activity
 					
 					///////////////////////////////////////////////////////////////////////
 					
+					System.out.println("ARRAY: WEEK");
+					for (int i = 0; i < container.getHistoryListWeek().size(); i++) 
+					{
+						System.out.println(container.getHistoryListWeek().get(i).getDate()+" <::::::::> "+container.getHistoryListWeek().get(i).getValue());
+					}
+					
+					System.out.println("----------------------------------------------------------------");
+					
+					System.out.println("ARRAY: MONTH");
+					for (int i = 0; i < container.getHistoryListMonth().size(); i++) 
+					{
+						System.out.println(container.getHistoryListMonth().get(i).getDate()+" <::::::::> "+container.getHistoryListMonth().get(i).getValue());
+					}
+					
+					System.out.println("----------------------------------------------------------------");
+					
+					System.out.println("ARRAY: YEAR");
+					for (int i = 0; i < container.getHistoryListYear().size(); i++) 
+					{
+						System.out.println(container.getHistoryListYear().get(i).getDate()+" <::::::::> "+container.getHistoryListYear().get(i).getValue());
+					}
+					
+					System.out.println(".........PRIMA DEL REVERSE.......");
+					
+					/////////////////////////////////////////////////////////////////////////////
+					
+					//INVERTO L'ORDINE DEGLI ARRAYLIST...
+					ArrayList<HistoricalData> week_ordinato = invertiOrdineElementi(container.getHistoryListWeek());
+					ArrayList<HistoricalData> month_ordinato = invertiOrdineElementi(container.getHistoryListMonth());
+					ArrayList<HistoricalData> year_ordinato = invertiOrdineElementi(container.getHistoryListYear());
+					
+					System.out.println(".........DOPO IL REVERSE.......");
+					
+					System.out.println("ARRAY: YEAR invertito...");
+					for (int i = 0; i < year_ordinato.size(); i++) 
+					{
+						System.out.println(year_ordinato.get(i).getDate()+" <=========================> "+year_ordinato.get(i).getValue());
+					}
+					
+					
 					//salviamo nel DB i dati restituiti dal server...e poi li cancelliamo....
 					
 					//1. Week data...........................................................
-					for (int i = 0; i < container.getHistoryListWeek().size(); i++) 
+					db.open();
+					for (int i = 0; i < week_ordinato.size(); i++) 
 					{
-						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryListWeek().get(i).getDate(), container.getHistoryListWeek().get(i).getValue());
+						db.addNewTemporaryToolInHistoryTable(toolIsin, week_ordinato.get(i).getDate(), week_ordinato.get(i).getValue());
 					}
+					db.close();
+					
 					getTemporaryHistoricalDataFromDatabase(historyListWeek);
+					
 					db.open();
 					db.deleteTOOLHistoricalData(toolIsin);
+					db.close();
 					
 					//2. Month data...........................................................
-					for (int i = 0; i < container.getHistoryListMonth().size(); i++) 
+					db.open();
+					for (int i = 0; i < month_ordinato.size(); i++) 
 					{
-						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryListMonth().get(i).getDate(), container.getHistoryListMonth().get(i).getValue());
+						db.addNewTemporaryToolInHistoryTable(toolIsin, month_ordinato.get(i).getDate(), month_ordinato.get(i).getValue());
 					}
+					db.close();
+					
 					getTemporaryHistoricalDataFromDatabase(historyListMonth);
+					
 					db.open();
 					db.deleteTOOLHistoricalData(toolIsin);
+					db.close();
 					
 					//3. Year data...........................................................
-					for (int i = 0; i < container.getHistoryListYear().size(); i++) 
+					db.open();
+					for (int i = 0; i < year_ordinato.size(); i++) 
 					{
-						db.addNewTemporaryToolInHistoryTable(toolIsin, container.getHistoryListYear().get(i).getDate(), container.getHistoryListYear().get(i).getValue());
+						db.addNewTemporaryToolInHistoryTable(toolIsin, year_ordinato.get(i).getDate(), year_ordinato.get(i).getValue());
 					}
+					db.close();
+					
 					getTemporaryHistoricalDataFromDatabase(historyListYear);
+					
 					db.open();
 					db.deleteTOOLHistoricalData(toolIsin);
-					
+					db.close();
 					
 					
 					
 					showShareGraphDialog();
 					
 					
-					db.close();
+					
 				}
 				else
 				{
@@ -1370,8 +1424,20 @@ public class ToolDetailsActivity extends Activity
 				}
 			}
 			
-			db.close();
+			
 		}
+	}
+	
+	private ArrayList<HistoricalData> invertiOrdineElementi(ArrayList<HistoricalData> array)
+	{
+		ArrayList<HistoricalData> daRestiruire = new ArrayList<HistoricalData>();
+		
+		for (int i = array.size()-1; i >= 0; i--) 
+		{
+			daRestiruire.add(new HistoricalData(array.get(i).getDate(), array.get(i).getValue()));
+		}
+		
+		return daRestiruire;
 	}
 	
 	private class ForcedRequestAsyncTask extends AsyncTask<ArrayList<Request>, Void, QuotationContainer>
