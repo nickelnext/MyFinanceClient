@@ -7,6 +7,7 @@ import it.util.ResponseHandler;
 import it.util.UpdateTimeTask;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -155,7 +156,9 @@ public class ToolListActivity extends Activity
 		{
 			capitalGainValue_TV.setTextColor(Color.RED);
 		}
-		capitalGainValue_TV.append(String.valueOf(calculatePortfolioCapitalGain()));
+		DecimalFormat dfloor = new DecimalFormat("0.00");
+		String cg = dfloor.format(calculatePortfolioCapitalGain());
+		capitalGainValue_TV.append(cg);
 	}
 
 	private void setPortfolioLastUpdate()
