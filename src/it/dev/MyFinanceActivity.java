@@ -484,7 +484,69 @@ public class MyFinanceActivity extends Activity
 	private void deleteSelectedPortfolio(String name)
 	{
 		db.open();
+		
+		//salvo tutti gli isin presenti nel portafoglio
+		ArrayList<String> listaBondDelPortafoglio = new ArrayList<String>();
+		ArrayList<String> listaFundDelPortafoglio = new ArrayList<String>();
+		ArrayList<String> listaShareDelPortafoglio = new ArrayList<String>();
+		listaBondDelPortafoglio.clear();
+		listaFundDelPortafoglio.clear();
+		listaShareDelPortafoglio.clear();
+		
+		Cursor allBonds = db.getAllBondsForPortfolio(name);
+		Cursor allFunds = db.getAllFundsForPortfolio(name);
+		Cursor allShares = db.getAllSharesForPortfolio(name);
+		
+		startManagingCursor(allBonds);
+		startManagingCursor(allFunds);
+		startManagingCursor(allShares);
+		
+		if(allBonds.getCount()!=0)
+		{
+			allBonds.moveToFirst();
+			do {
+				listaBondDelPortafoglio.add(allBonds.getString(2));
+			} while (allBonds.moveToNext());
+		}
+		
+		if(allFunds.getCount()!=0)
+		{
+			allFunds.moveToFirst();
+			do {
+				listaFundDelPortafoglio.add(allFunds.getString(2));
+			} while (allFunds.moveToNext());
+		}
+		
+		if(allShares.getCount()!=0)
+		{
+			allShares.moveToFirst();
+			do {
+				listaShareDelPortafoglio.add(allShares.getString(2));
+			} while (allShares.moveToNext());
+		}
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//elimino tutte le tuple nella tabella di transizione PORTFOLIO <--> BOND
+		db.deleteAllBondsInTransitionTableForPortfolio(name);
+		
+		//elimino tutte le tuple nella tabella di transizione PORTFOLIO <--> FUND
+		db.deleteAllFundsInTransitionTableForPortfolio(name);
+		
+		//elimino tutte le tuple nella tabella di transizione PORTFOLIO <--> SHARE
+		db.deleteAllSharesInTransitionTableForPortfolio(name);
+		
+		
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		//per tutti i bond, fund e share contenuti nel portafoglio devo controllare che non siano contenuti 
+		//in altri portafogli; in caso negativo posso cancellarli dalle tabelle QUOTATION....
+		
+		
+		
+		
 		db.deletePortfolioByName(name);
+		
 		db.close();
 	}
 

@@ -1360,11 +1360,11 @@ public class ToolDetailsActivity extends Activity
 					
 					System.out.println(".........DOPO IL REVERSE.......");
 					
-					System.out.println("ARRAY: YEAR invertito...");
-					for (int i = 0; i < year_ordinato.size(); i++) 
-					{
-						System.out.println(year_ordinato.get(i).getDate()+" <=========================> "+year_ordinato.get(i).getValue());
-					}
+//					System.out.println("ARRAY: YEAR invertito...");
+//					for (int i = 0; i < year_ordinato.size(); i++) 
+//					{
+//						System.out.println(year_ordinato.get(i).getDate()+" <=========================> "+year_ordinato.get(i).getValue());
+//					}
 					
 					
 					//salviamo nel DB i dati restituiti dal server...e poi li cancelliamo....

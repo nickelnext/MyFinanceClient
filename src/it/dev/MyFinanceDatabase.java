@@ -507,7 +507,7 @@ public class MyFinanceDatabase
 		database.insert(BondMetaData.BOND_TABLE, null, cv);
 		
 		ContentValues cv2 = new ContentValues();
-		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ID, getLastIndexOfHistoricalData()+1);
 		cv2.put(HistoricalDataMetadata.ISIN, newBond.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
 		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newBond.getPrezzoUltimoContratto()));
@@ -571,7 +571,7 @@ public class MyFinanceDatabase
 		database.insert(FundMetaData.FUND_TABLE, null, cv);
 		
 		ContentValues cv2 = new ContentValues();
-		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ID, getLastIndexOfHistoricalData()+1);
 		cv2.put(HistoricalDataMetadata.ISIN, newFund.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
 		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newFund.getUltimoPrezzo()));
@@ -718,6 +718,21 @@ public class MyFinanceDatabase
 		return database.query(PortfolioMetaData.PORTFOLIO_TABLE, null, PortfolioMetaData.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null, null, null, null);
 	}
 	
+	//3 methods that return all Tools 'contenuti' in a specific Portfolio....
+	public Cursor getAllBondsForPortfolio(String portfolioName)
+	{
+		return database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null, null, null, null);
+	}
+	
+	public Cursor getAllFundsForPortfolio(String portfolioName)
+	{
+		return database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null, null, null, null);
+	}
+	
+	public Cursor getAllSharesForPortfolio(String portfolioName)
+	{
+		return database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null, null, null, null);
+	}
 	
 	//3 methods that return data of BOND/FUND/SHARE from specific transition table...
 	public Cursor getSpecificBondOverviewInPortfolio(String portfolioName, String bondIsin, String purchaseDate)
@@ -788,13 +803,33 @@ public class MyFinanceDatabase
 	
 	public Cursor getHistoricalDataOfTool(String ISIN)
 	{
-		return database.query(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, HistoricalDataMetadata.ISIN+" = '"+ISIN+"'", null, null, null, null);
+		return database.query(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, HistoricalDataMetadata.ISIN+" = '"+ISIN+"'", null, null, null, HistoricalDataMetadata.ID);
 	}
 	
 	public Cursor getHistoricalDataOfSHARE(String ISIN)
 	{
 		return database.query(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, HistoricalDataMetadata.ISIN+" = '"+ISIN+"'", null, null, null, HistoricalDataMetadata.ID);
 	}
+	
+	//--------------------------------search index---------------------------------------//
+	public int getLastIndexOfHistoricalData()
+	{
+		int result = 0;
+		
+		Cursor c = database.query(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, null, null, null, null, null);
+		
+		if(c.getCount() == 0)
+		{
+			c.close();
+			return result;
+		}
+		else
+		{
+			c.close();
+			return c.getCount();
+		}
+	}
+	
 	
 	//--------------------------------boolean control methods----------------------------//
 	public boolean bondAlreadyInDatabase(String bondIsin)
@@ -895,6 +930,51 @@ public class MyFinanceDatabase
 		Cursor c = database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+ISIN+"'", null, null, null, null);
 		if(c.getCount()>0)
 			result = true;
+		c.close();
+		
+		return result;
+	}
+	
+	//control if other Portfolios contains the selected BOND ISIN..........................
+	public boolean bondInOtherPortfolios(String ISIN, String Portfolio)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, null, PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" != '"+Portfolio+"' and "+PortfolioBondMetadata.BOND_ISIN_KEY+" = '"+ISIN+"'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			result = true;
+		}
+		c.close();
+		
+		return result;
+	}
+	
+	//control if other Portfolios contains the selected FUND ISIN..........................
+	public boolean fundInOtherPortfolios(String ISIN, String Portfolio)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, null, PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" != '"+Portfolio+"' and "+PortfolioFundMetadata.FUND_ISIN_KEY+" = '"+ISIN+"'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			result = true;
+		}
+		c.close();
+		
+		return result;
+	}
+	
+	//control if other Portfolios contains the selected FUND ISIN..........................
+	public boolean shareInOtherPortfolios(String ISIN, String Portfolio)
+	{
+		boolean result = false;
+		
+		Cursor c = database.query(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, null, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" != '"+Portfolio+"' and "+PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+ISIN+"'", null, null, null, null);
+		if(c.getCount()>0)
+		{
+			result = true;
+		}
 		c.close();
 		
 		return result;
@@ -1047,7 +1127,7 @@ public class MyFinanceDatabase
 		database.update(BondMetaData.BOND_TABLE, cv, BondMetaData.BOND_ISIN+" = '"+newBond.getISIN()+"'", null);
 		
 		ContentValues cv2 = new ContentValues();
-		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ID, getLastIndexOfHistoricalData()+1);
 		cv2.put(HistoricalDataMetadata.ISIN, newBond.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
 		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newBond.getPrezzoUltimoContratto()));
@@ -1109,7 +1189,7 @@ public class MyFinanceDatabase
 		database.update(FundMetaData.FUND_TABLE, cv, FundMetaData.FUND_ISIN+" = '"+newFund.getISIN()+"'", null);
 		
 		ContentValues cv2 = new ContentValues();
-		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ID, getLastIndexOfHistoricalData()+1);
 		cv2.put(HistoricalDataMetadata.ISIN, newFund.getISIN());
 		cv2.put(HistoricalDataMetadata.DATE, lastUpdate);
 		cv2.put(HistoricalDataMetadata.VALUE, String.valueOf(newFund.getUltimoPrezzo()));
@@ -1264,6 +1344,21 @@ public class MyFinanceDatabase
 	public void deleteShareInTransitionTable(String portfolioName, String CODE, String purchaseDate) 
 	{
 		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"' AND "+PortfolioShareMetadata.SHARE_ISIN_KEY+" = '"+CODE+"' AND "+PortfolioShareMetadata.SHARE_BUYDATE_KEY+" = '"+purchaseDate+"'", null);
+	}
+	
+	public void deleteAllBondsInTransitionTableForPortfolio(String portfolioName)
+	{
+		database.delete(PortfolioBondMetadata.PORTFOLIO_BOND_TABLE, PortfolioBondMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+	}
+	
+	public void deleteAllFundsInTransitionTableForPortfolio(String portfolioName)
+	{
+		database.delete(PortfolioFundMetadata.PORTFOLIO_FUND_TABLE, PortfolioFundMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
+	}
+	
+	public void deleteAllSharesInTransitionTableForPortfolio(String portfolioName)
+	{
+		database.delete(PortfolioShareMetadata.PORTFOLIO_SHARE_TABLE, PortfolioShareMetadata.PORTFOLIO_NAME_KEY+" = '"+portfolioName+"'", null);
 	}
 	
 	public void deleteTOOLHistoricalData(String ISIN)

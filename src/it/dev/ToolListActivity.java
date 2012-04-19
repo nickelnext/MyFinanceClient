@@ -188,10 +188,10 @@ public class ToolListActivity extends Activity
 			sumOfQuantity = sumOfQuantity + Integer.parseInt(toolLoadedByDatabase.get(i).getRoundLot());
 		}
 		
-		result = sumOfProduct / sumOfQuantity;
-		
-		
-		
+		if(sumOfQuantity!=0)
+		{
+			result = sumOfProduct / sumOfQuantity;
+		}
 		
 		return result;
 	}
@@ -1067,17 +1067,41 @@ public class ToolListActivity extends Activity
 	private void deleteSelectedTool(String ISIN, String type, String purchaseDate)
 	{
 		db.open();
-		if(type.equals("bond")){
+		if(type.equals("bond"))
+		{
 			db.deleteBondInTransitionTable(portfolioName, ISIN, purchaseDate);
-			if(!db.bondAlreadyInDatabase(ISIN))db.deleteBond(ISIN);
+			
+			//if(!db.bondAlreadyInDatabase(ISIN))db.deleteBond(ISIN);
+			
+			if(!db.bondInOtherPortfolios(ISIN, portfolioName))
+			{
+				db.deleteBond(ISIN);
+				db.deleteTOOLHistoricalData(ISIN);
+			}
 		}
-		else if (type.equals("fund")){
+		else if (type.equals("fund"))
+		{
 			db.deleteFundInTransitionTable(portfolioName, ISIN, purchaseDate);
-			if(!db.fundAlreadyInDatabase(ISIN))db.deleteFund(ISIN);
+			
+			//if(!db.fundAlreadyInDatabase(ISIN))db.deleteFund(ISIN);
+			
+			if(!db.fundInOtherPortfolios(ISIN, portfolioName))
+			{
+				db.deleteFund(ISIN);
+				db.deleteTOOLHistoricalData(ISIN);
+			}
 		}
-		else if (type.equals("share")){
+		else if (type.equals("share"))
+		{
 			db.deleteShareInTransitionTable(portfolioName, ISIN, purchaseDate);
-			if(!db.shareAlreadyInDatabase(ISIN))db.deleteShare(ISIN);
+			
+			//if(!db.shareAlreadyInDatabase(ISIN))db.deleteShare(ISIN);
+			
+			if(!db.shareInOtherPortfolios(ISIN, portfolioName))
+			{
+				db.deleteShare(ISIN);
+				db.deleteTOOLHistoricalData(ISIN);
+			}
 		}
 		else{
 			System.out.println("type error");
