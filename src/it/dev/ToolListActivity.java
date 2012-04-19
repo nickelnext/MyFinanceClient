@@ -158,7 +158,7 @@ public class ToolListActivity extends Activity
 		}
 		DecimalFormat dfloor = new DecimalFormat("0.00");
 		String cg = dfloor.format(calculatePortfolioCapitalGain());
-		capitalGainValue_TV.append(cg);
+		capitalGainValue_TV.append(cg + "%");
 	}
 
 	private void setPortfolioLastUpdate()
