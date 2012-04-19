@@ -37,17 +37,14 @@ res/layout/custom_tools_context_menu.xml -text
 res/layout/custom_update_option_dialog.xml -text
 res/layout/help_activity.xml -text
 res/layout/main.xml -text svneol=unset#text/plain
-res/layout/month_graph_activity.xml -text
 res/layout/portfolio_listview_items.xml -text svneol=unset#text/plain
 res/layout/splashscreen.xml -text
 res/layout/tool_details.xml -text
 res/layout/tool_details_row.xml -text
 res/layout/tool_list_activity.xml -text
 res/layout/tool_listview_items.xml -text
-res/layout/week_graph_activity.xml -text
 res/layout/wishlist_activity.xml -text
 res/layout/wishlist_listview_items.xml -text
-res/layout/year_graph_activity.xml -text
 res/menu/add_portfolio_menu.xml -text svneol=unset#text/plain
 res/menu/add_share_menu.xml -text svneol=unset#text/plain
 res/menu/select_portfolio_context_menu.xml -text svneol=unset#text/plain
@@ -70,7 +67,6 @@ serverside/myUtils/UtilFuncs.java -text
 serverside/other/TypeSiteObject.java -text
 src/it/dev/AboutActivity.java -text
 src/it/dev/HelpActivity.java -text
-src/it/dev/MonthGraphActivity.java -text
 src/it/dev/MyFinanceActivity.java -text svneol=unset#text/plain
 src/it/dev/MyFinanceDatabase.java -text svneol=unset#text/plain
 src/it/dev/Splashscreen.java -text
@@ -78,9 +74,7 @@ src/it/dev/SupportDatabaseHelper.java -text
 src/it/dev/ToolDetailsActivity.java -text
 src/it/dev/ToolListActivity.java -text
 src/it/dev/ToolObject.java -text
-src/it/dev/WeekGraphActivity.java -text
 src/it/dev/WishlistActivity.java -text
-src/it/dev/YearGraphActivity.java -text
 src/it/util/Conn.java -text svneol=unset#text/plain
 src/it/util/ConnectionUtils.java -text svneol=unset#text/plain
 src/it/util/ResponseHandler.java -text
