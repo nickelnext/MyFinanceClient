@@ -6,7 +6,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="fill_parent"
+        android:minWidth="300dp">
         
         <TabWidget
             android:id="@android:id/tabs"
@@ -16,7 +17,33 @@
             android:id="@android:id/tabcontent"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
-            
+            <ScrollView android:id="@+id/ScrollView01"
+			       android:layout_width="wrap_content" 
+			       android:layout_height="wrap_content">
+			       <LinearLayout android:id="@+id/Week_layout"
+			       		android:layout_width="wrap_content" 
+			       		android:layout_height="wrap_content">
+			           
+			       </LinearLayout>
+			</ScrollView>
+			<ScrollView android:id="@+id/ScrollView02"
+			       android:layout_width="wrap_content" 
+			       android:layout_height="wrap_content">
+			       <LinearLayout android:id="@+id/Month_layout"
+			       		android:layout_width="wrap_content" 
+			       		android:layout_height="wrap_content">
+			           
+			       </LinearLayout>
+			</ScrollView>
+			<ScrollView android:id="@+id/ScrollView03"
+			       android:layout_width="wrap_content" 
+			       android:layout_height="wrap_content">
+			       <LinearLayout android:id="@+id/Year_layout"
+			       		android:layout_width="wrap_content" 
+			       		android:layout_height="wrap_content">
+			           
+			       </LinearLayout>
+			</ScrollView>
 		</FrameLayout>
     </LinearLayout>
     <Button

@@ -34,7 +34,6 @@ import Requests.Request;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.LocalActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -52,7 +51,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -252,6 +250,13 @@ public class ToolDetailsActivity extends Activity
 			do {
 				array.add(new HistoricalData(toolHD.getString(2), toolHD.getString(3)));
 			} while (toolHD.moveToNext());
+		}
+		
+		///////////////////////////////////////////////////////////////
+		System.out.println("ARRAY: ");
+		for (int i = 0; i < array.size(); i++) 
+		{
+			System.out.println("");
 		}
 		
 		db.close();
@@ -530,15 +535,38 @@ public class ToolDetailsActivity extends Activity
 	//this method open the dialog for graph plotting...!!! ONLY SHARE !!!
 	private void showShareGraphDialog()
 	{
-		String pkg = getPackageName();
 		
 		final Dialog graphDialog = new Dialog(ToolDetailsActivity.this);
 		graphDialog.setContentView(R.layout.custom_share_graph_dialog);
 		graphDialog.setTitle("History Graph");
 		graphDialog.setCancelable(false);
 		
+		LinearLayout week_layout = (LinearLayout) graphDialog.findViewById(R.id.Week_layout);
+		LinearLayout month_layout = (LinearLayout) graphDialog.findViewById(R.id.Month_layout);
+		LinearLayout year_layout = (LinearLayout) graphDialog.findViewById(R.id.Year_layout);
+		
+		
 		TabHost tabContainer = (TabHost) graphDialog.findViewById(R.id.tabhost);
-		tabContainer.setup(new LocalActivityManager(ToolDetailsActivity.this, true));
+		tabContainer.setup();
+		
+		TabHost.TabSpec week_spec = tabContainer.newTabSpec("Week");
+		week_spec.setIndicator("Week");
+		week_spec.setContent(R.id.Week_layout);
+		tabContainer.addTab(week_spec);
+		
+		TabHost.TabSpec month_spec = tabContainer.newTabSpec("Month");
+		month_spec.setIndicator("Month");
+		month_spec.setContent(R.id.Month_layout);
+		tabContainer.addTab(month_spec);
+		
+		TabHost.TabSpec year_spec = tabContainer.newTabSpec("Year");
+		year_spec.setIndicator("Year");
+		year_spec.setContent(R.id.Year_layout);
+		tabContainer.addTab(year_spec);
+		
+		
+		
+//		tabContainer.setup(new LocalActivityManager(ToolDetailsActivity.this, true));
 		Button close_graph_btn = (Button) graphDialog.findViewById(R.id.close_share_graph_btn);
 		
 		close_graph_btn.setOnClickListener(new View.OnClickListener() {
@@ -547,30 +575,96 @@ public class ToolDetailsActivity extends Activity
 			}
 		});
 		
-		//tab for week graph...
-		TabHost.TabSpec weekSpec = tabContainer.newTabSpec("Week");
-		weekSpec.setIndicator("Week");
-        Intent weekIntent = new Intent(ToolDetailsActivity.this, WeekGraphActivity.class);        
-        weekIntent.putExtra(pkg+".lists", historyListWeek);
-		weekSpec.setContent(weekIntent);
-		tabContainer.addTab(weekSpec);
+//		//tab for week graph...
+//		TabHost.TabSpec weekSpec = tabContainer.newTabSpec("Week");
+//		weekSpec.setIndicator("Week");
+//        Intent weekIntent = new Intent(ToolDetailsActivity.this, WeekGraphActivity.class);        
+//        weekIntent.putExtra(pkg+".lists", historyListWeek);
+//		weekSpec.setContent(weekIntent);
+//		tabContainer.addTab(weekSpec);
+//		
+//		//tab for month graph...
+//		TabHost.TabSpec monthSpec = tabContainer.newTabSpec("Month");
+//		monthSpec.setIndicator("Month");
+//        Intent monthIntent = new Intent(ToolDetailsActivity.this, MonthGraphActivity.class);        
+//        monthIntent.putExtra(pkg+".lists", historyListMonth);
+//        monthSpec.setContent(monthIntent);
+//        tabContainer.addTab(monthSpec);
+//        
+//		//tab for year graph...
+//        TabHost.TabSpec yearSpec = tabContainer.newTabSpec("Year");
+//		yearSpec.setIndicator("Year");
+//        Intent yearIntent = new Intent(ToolDetailsActivity.this, YearGraphActivity.class);        
+//        yearIntent.putExtra(pkg+".lists", historyListYear);
+//        yearSpec.setContent(yearIntent);
+//        tabContainer.addTab(yearSpec);
 		
-		//tab for month graph...
-		TabHost.TabSpec monthSpec = tabContainer.newTabSpec("Month");
-		monthSpec.setIndicator("Month");
-        Intent monthIntent = new Intent(ToolDetailsActivity.this, MonthGraphActivity.class);        
-        monthIntent.putExtra(pkg+".lists", historyListMonth);
-        monthSpec.setContent(monthIntent);
-        tabContainer.addTab(monthSpec);
+		plot_share_graph(week_layout, historyListWeek);
+		plot_share_graph(month_layout, historyListMonth);
+		plot_share_graph(year_layout, historyListYear);
+		
+		
+		
+		graphDialog.show();
         
-		//tab for year graph...
-        TabHost.TabSpec yearSpec = tabContainer.newTabSpec("Year");
-		yearSpec.setIndicator("Year");
-        Intent yearIntent = new Intent(ToolDetailsActivity.this, YearGraphActivity.class);        
-        yearIntent.putExtra(pkg+".lists", historyListYear);
-        yearSpec.setContent(yearIntent);
-        tabContainer.addTab(yearSpec);
+	}
+	
+	private void plot_share_graph(LinearLayout layout, ArrayList<HistoricalData> data)
+	{
+		String[] titles = new String[] {toolIsin};
+		List<Date[]> dates = new ArrayList<Date[]>();
+		List<double[]> values = new ArrayList<double[]>();
+		
+		//------------------retreaving data from ArrayList--------------------//
+		Date[] dateTmp = new Date[data.size()];
+		double[] valueTmp = new double[data.size()];
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		
+		ArrayList<Double> listaPerOrdinareY = new ArrayList<Double>();
+		
+	    for (int i = 0; i < data.size(); i++) 
+		{
+	    	try 
+	    	{
+	    		System.out.println(data.get(i).getDate());
+				dateTmp[i] = (Date)formatter.parse(data.get(i).getDate());
+			} 
+	    	catch (Exception e) 
+			{
+				e.printStackTrace();
+			}
+//			valueTmp[i] = Double.valueOf(String.valueOf(toolHistoricalData.get(i).getValue()));
+	    	valueTmp[i] = Double.parseDouble(data.get(i).getValue());
+			listaPerOrdinareY.add(valueTmp[i]);
+		}
+	    
+	    dates.add(dateTmp);
+	    values.add(valueTmp);
+        //------------------------------------------------------------------//
+	    
+	    int[] colors = new int[] {Color.BLUE};
+	    PointStyle[] styles = new PointStyle[] {PointStyle.DIAMOND};
+	    XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
+	    
+	    
+	    Collections.sort(listaPerOrdinareY);
+	    
+	    setChartSettings(renderer, "History Diagram", "Date", "Price", dates.get(0)[0].getTime(),dates.get(0)[data.size()-1].getTime(), 0, listaPerOrdinareY.get(listaPerOrdinareY.size()-1)*1.05, Color.GRAY, Color.LTGRAY);
+	    renderer.setXLabels(5);
+	    renderer.setYLabels(10);
+	    int length = renderer.getSeriesRendererCount();
+	    for (int i = 0; i < length; i++) 
+	    {
+	        SimpleSeriesRenderer seriesRenderer = renderer.getSeriesRendererAt(i);
+	        seriesRenderer.setDisplayChartValues(true);
+	    }
+	    View mChartView = ChartFactory.getTimeChartView(ToolDetailsActivity.this, buildDateDataset(titles, dates, values),
+	            renderer, "MM/dd/yyyy");
         
+		LayoutParams params = new LayoutParams(400, 400);
+		
+		layout.addView(mChartView, 0, params);
 	}
 	
 	
