@@ -526,7 +526,7 @@ public class MyFinanceActivity extends Activity
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
-		
+		System.out.println("DEBUG: elimino Bond Fund e Share dalle tabelle di Transizione...");
 		//elimino tutte le tuple nella tabella di transizione PORTFOLIO <--> BOND
 		db.deleteAllBondsInTransitionTableForPortfolio(name);
 		
@@ -538,7 +538,7 @@ public class MyFinanceActivity extends Activity
 		
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
-		
+		System.out.println("DEBUG: elimino Bond Fund e Share da tabelle QUOTATION e HISTORICAL DATA se non sono presenti in altri portafogli...");
 		//per tutti i bond, fund e share contenuti nel portafoglio devo controllare che non siano contenuti 
 		//in altri portafogli; in caso negativo posso cancellarli dalle tabelle QUOTATION....
 		for (int i = 0; i < listaBondDelPortafoglio.size(); i++) 
@@ -569,7 +569,7 @@ public class MyFinanceActivity extends Activity
 		}
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////
-		
+		System.out.println("DEBUG: elimino portafoglio dalla tabella dei portafogli...");
 		db.deletePortfolioByName(name);
 		
 		db.close();
