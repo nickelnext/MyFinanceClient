@@ -649,10 +649,10 @@ public class MyFinanceDatabase
 		database.insert(ShareMetaData.SHARE_TABLE, null, cv);
 	}
 	
-	public void addNewTemporaryToolInHistoryTable(String isin, String date, String value)
+	public void addNewTemporaryToolInHistoryTable(int ID, String isin, String date, String value)
 	{
 		ContentValues cv2 = new ContentValues();
-		cv2.put(HistoricalDataMetadata.ID, 1);
+		cv2.put(HistoricalDataMetadata.ID, ID);
 		cv2.put(HistoricalDataMetadata.ISIN, isin);
 		cv2.put(HistoricalDataMetadata.DATE, date);
 		cv2.put(HistoricalDataMetadata.VALUE, value);
@@ -789,6 +789,11 @@ public class MyFinanceDatabase
 	public Cursor getHistoricalDataOfTool(String ISIN)
 	{
 		return database.query(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, HistoricalDataMetadata.ISIN+" = '"+ISIN+"'", null, null, null, null);
+	}
+	
+	public Cursor getHistoricalDataOfSHARE(String ISIN)
+	{
+		return database.query(HistoricalDataMetadata.HISTORICAL_DATA_TABLE, null, HistoricalDataMetadata.ISIN+" = '"+ISIN+"'", null, null, null, HistoricalDataMetadata.ID);
 	}
 	
 	//--------------------------------boolean control methods----------------------------//

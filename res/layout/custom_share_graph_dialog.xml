@@ -8,14 +8,19 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:minWidth="300dp">
-        
+        <Button
+			android:id="@+id/close_share_graph_btn"
+        	android:layout_width="fill_parent"
+        	android:layout_height="35dp"
+        	android:layout_gravity="center_horizontal"
+        	android:text="Close Graph" />
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
         <FrameLayout
             android:id="@android:id/tabcontent"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent">
             <ScrollView android:id="@+id/ScrollView01"
 			       android:layout_width="wrap_content" 
@@ -45,12 +50,6 @@
 			       </LinearLayout>
 			</ScrollView>
 		</FrameLayout>
+		
     </LinearLayout>
-    <Button
-		android:id="@+id/close_share_graph_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="Close Graph" />
 </TabHost>

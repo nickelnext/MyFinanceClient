@@ -241,7 +241,7 @@ public class ToolDetailsActivity extends Activity
 		
 		db.open();
 		
-		Cursor toolHD = db.getHistoricalDataOfTool(toolIsin);
+		Cursor toolHD = db.getHistoricalDataOfSHARE(toolIsin);
 		startManagingCursor(toolHD);
 		if(toolHD.getCount()!=0)
 		{
@@ -1373,7 +1373,7 @@ public class ToolDetailsActivity extends Activity
 					db.open();
 					for (int i = 0; i < week_ordinato.size(); i++) 
 					{
-						db.addNewTemporaryToolInHistoryTable(toolIsin, week_ordinato.get(i).getDate(), week_ordinato.get(i).getValue());
+						db.addNewTemporaryToolInHistoryTable(i, toolIsin, week_ordinato.get(i).getDate(), week_ordinato.get(i).getValue());
 					}
 					db.close();
 					
@@ -1387,7 +1387,7 @@ public class ToolDetailsActivity extends Activity
 					db.open();
 					for (int i = 0; i < month_ordinato.size(); i++) 
 					{
-						db.addNewTemporaryToolInHistoryTable(toolIsin, month_ordinato.get(i).getDate(), month_ordinato.get(i).getValue());
+						db.addNewTemporaryToolInHistoryTable(i, toolIsin, month_ordinato.get(i).getDate(), month_ordinato.get(i).getValue());
 					}
 					db.close();
 					
@@ -1401,7 +1401,7 @@ public class ToolDetailsActivity extends Activity
 					db.open();
 					for (int i = 0; i < year_ordinato.size(); i++) 
 					{
-						db.addNewTemporaryToolInHistoryTable(toolIsin, year_ordinato.get(i).getDate(), year_ordinato.get(i).getValue());
+						db.addNewTemporaryToolInHistoryTable(i, toolIsin, year_ordinato.get(i).getDate(), year_ordinato.get(i).getValue());
 					}
 					db.close();
 					
