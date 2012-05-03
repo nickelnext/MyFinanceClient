@@ -505,7 +505,7 @@ public class ToolDetailsActivity extends Activity
 	    values.add(valueTmp);
         //------------------------------------------------------------------//
 	    
-	    int[] colors = new int[] {Color.BLUE};
+	    int[] colors = new int[] {Color.YELLOW};
 	    PointStyle[] styles = new PointStyle[] {PointStyle.DIAMOND};
 	    XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
 	    
@@ -643,7 +643,7 @@ public class ToolDetailsActivity extends Activity
 	    values.add(valueTmp);
         //------------------------------------------------------------------//
 	    
-	    int[] colors = new int[] {Color.BLUE};
+	    int[] colors = new int[] {Color.YELLOW};
 	    PointStyle[] styles = new PointStyle[] {PointStyle.DIAMOND};
 	    XYMultipleSeriesRenderer renderer = buildRenderer(colors, styles);
 	    
